@@ -1,20 +1,20 @@
 <?php
 
-
 function getbiodiv($mysqli, $what){
-    $link="not";
-    if ($what=="monitoring"){
-        $link="";
-    }
 
-$query0="select distinct popularGroupName from ocurrence join event on ocurrence.eventID=event.eventID join location on event.locationID=location.locationID where ".$link." location.locationType='monitoring'";
+$link="not";
+if ($what=="monitoring"){
+    $link="";
+}
+
+$query0="select distinct popularGroupName from occurrence join event on occurrence.eventID=event.eventID join location on event.locationID=location.locationID where ".$link." location.locationType='monitoring'";
 #echo $query0."<br>";
 $result0 = $mysqli->query($query0);
 $typestack=array();
 while($row0 = $result0->fetch_assoc()){
     $popularGroupName=$row0['popularGroupName'];
     $datasetstack=array(); #to store datasets
-    $query1="select distinct dataset.datasetID,datasetName,datasetDescription from ocurrence join event on ocurrence.eventID=event.eventID join dataset on event.datasetID=dataset.datasetID join location on location.locationID=event.locationID where popularGroupName='{$popularGroupName}' and ".$link." location.locationType='monitoring'";
+    $query1="select distinct dataset.datasetID,datasetName,datasetDescription from occurrence join event on occurrence.eventID=event.eventID join dataset on event.datasetID=dataset.datasetID join location on location.locationID=event.locationID where popularGroupName='{$popularGroupName}' and ".$link." location.locationType='monitoring'";
 #echo $query1."</br>";
     $result1 = $mysqli->query($query1);
     while ($row1= $result1->fetch_assoc()){
@@ -57,7 +57,7 @@ $typestack=array();
 while($row0 = $result0->fetch_assoc()){
     $variableType=$row0['variableType'];
     $datasetstack=array(); #to store datasets
-    $query1="select distinct dataset.datasetID,datasetName,datasetDescription from datastream join dataset on datastream.datasetID=dataset.datasetID join location on location.locationID=datastream.locationID where variableType='{$variableType}' and ".$link." location.locationType='monitoring'";
+    $query1="select distinct dataset.datasetID,datasetName,datasetDescription from dataset join location on location.datasetID=dataset.datasetID join datastream on location.locationID=datastream.locationID where variableType='{$variableType}' and ".$link." location.locationType='monitoring'";
 #echo $query1."</br>";
     $result1 = $mysqli->query($query1);
     while ($row1= $result1->fetch_assoc()){
@@ -85,6 +85,7 @@ return $grouparr;
 }
 
 
+
 $output=array();
 $monitoring=array();
 $campaign=array();
@@ -94,8 +95,8 @@ $campaign=array();
 include '/.creds/.credentials.php';
 $mysqli->select_db('envmondata');
 ###########################################################################
-$monitoring[]=getenvdata($mysqli,"monitoring");
-$campaign[]=getenvdata($mysqli,"campaign");
+#$monitoring[]=getenvdata($mysqli,"monitoring");
+#$campaign[]=getenvdata($mysqli,"campaign");
 
 ###########################################################################
 # connecting to db
@@ -104,7 +105,6 @@ $mysqli->select_db('biodivdata');
 ###########################################################################
 $monitoring[]=getbiodiv($mysqli,"monitoring");
 $campaign[]=getbiodiv($mysqli,"campaign");
-
 $output[]=array(
 	"groupName"=>"Monitoring",
 	"data"=>$monitoring

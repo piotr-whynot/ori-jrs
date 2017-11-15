@@ -98,10 +98,10 @@ if (isset($_GET['locationType'])){
 ###########################################################################
 # preparing query
 
-# this is expression for table join and it gives all ocurrences for given criteria, joins ocurrence, event, location, and dataset tables
-# need to include ocurrences results from the fact that we want taxonID to be included in the query
+# this is expression for table join and it gives all occurrences for given criteria, joins occurrence, event, location, and dataset tables
+# need to include occurrences results from the fact that we want taxonID to be included in the query
 
-$query_join=" from ocurrence join event on ocurrence.eventID=event.eventID join location on event.locationID=location.locationID join dataset on event.datasetID=dataset.datasetID join checklist on ocurrence.taxonID=checklist.taxonID ";
+$query_join=" from occurrence join event on occurrence.eventID=event.eventID join location on event.locationID=location.locationID join dataset on event.datasetID=dataset.datasetID join checklist on occurrence.taxonID=checklist.taxonID ";
 
 #echo $query_join;
 
@@ -145,7 +145,7 @@ if ($eventID){
     $con=" and ";
 }
 if ($popularGroup){
-    $query_crit=$query_crit.$con."ocurrence.popularGroupName='".$popularGroup."' ";
+    $query_crit=$query_crit.$con."occurrence.popularGroupName='".$popularGroup."' ";
     $con=" and ";
 }
 
@@ -174,47 +174,47 @@ while($row0 = $result0->fetch_assoc()){
         "locationType"=>$row12['locationType'],
         "locality"=>$row12['locality'],
         "geomorphologicalPosition"=>$row12['geomorphologicalPosition'],
-        "distributary"=>$row12['distributary']
     );
 
     $eventstack=array();
     if($calltype=="data" || $calltype=="event"){
         #data array will have the following structure:
         #   event
-        #     ocurrence
+        #     occurrence
         #       measurementorfact      
         # iterating through events for given location for given criteria
-        $query1="SELECT distinct event.eventID,eventDate,samplingProtocol,sampleSizeValue,sampleSizeValueUnit,recordedBy,eventRemarks ".$query_join.$query_crit." and location.locationID='".$locationID."'";
+        $query1="SELECT distinct event.eventID,eventDate,samplingProtocol,sampleSizeValue,sampleSizeUnit,recordedBy,eventRemarks ".$query_join.$query_crit." and location.locationID='".$locationID."'";
 #        echo $query1."<br>";
         $result1 = $mysqli->query($query1);
         while($row1 = $result1->fetch_assoc()){
             $eventID=$row1['eventID'];
-            $ocurrencestack=array();
+            $occurrencestack=array();
             if ($calltype=="data"){
-                #finding all ocurrences and populate ocurrencestack (actual data) if required
-                $query2="select ocurrenceID,organismQuantity,organismQuantityType,ocurrenceRemarks,associatedMedia,popularGroupName,scientificName ".$query_join." and event.eventID='{$eventID}'";
+                #finding all occurrences and populate occurrencestack (actual data) if required
+                $query2="select occurrenceID,organismQuantity,organismQuantityType,occurrenceRemarks,occurrence.associatedMedia,popularGroupName,scientificName,occurrence.taxonID ".$query_join." and event.eventID='{$eventID}'";
                 $con2=" and ";
 #                echo $query2;
                 $result2 = $mysqli->query($query2);
                 while($row2 = $result2->fetch_assoc()){
-                    $ocurrenceID=$row2['ocurrenceID'];
-                    # finding all measurementorfacts for given ocurrence
-                    $query21="select measurementID,measurementType,measurementValue,measurementUnit,measurementBy,measurementRemarks,measurementMethod from measurementorfact where ocurrenceID='{$ocurrenceID}'";
+                    $occurrenceID=$row2['occurrenceID'];
+                    # finding all measurementorfacts for given occurrence
+                    $query21="select measurementID,measurementType,measurementValue,measurementUnit,measurementBy,measurementRemarks,measurementMethod from measurementorfact where occurrenceID='{$occurrenceID}'";
 #                   echo $query21."<br>";
                     $result21 = $mysqli->query($query21);
                     $mofstack=array();
                     while($row21 = $result21->fetch_assoc()){
                         array_push($mofstack,$row21);
                     }
-                    $ocurrencedata=array(
-                    "ocurrenceID"=>$row2['ocurrenceID'],
+                    $occurrencedata=array(
+                    "occurrenceID"=>$row2['occurrenceID'],
                     "organismQuantity"=>$row2['organismQuantity'],
                     "organismQuantityType"=>$row2['organismQuantityType'],
-                    "ocurrenceRemarks"=>$row2['ocurrenceRemarks'],
+                    "occurrenceRemarks"=>$row2['occurrenceRemarks'],
                     "scientificName"=>$row2['scientificName'],
+                    "taxonID"=>$row2['taxonID'],
                     "measurementOrFact"=>$mofstack,
                     );
-                    array_push($ocurrencestack,$ocurrencedata);
+                    array_push($occurrencestack,$occurrencedata);
                 }
             }
             $eventdata=array(
@@ -222,10 +222,10 @@ while($row0 = $result0->fetch_assoc()){
             "eventDate"=>$row1['eventDate'],
             "samplingProtocol"=>$row1['samplingProtocol'],
             "sampleSizeValue"=>$row1['sampleSizeValue'],
-            "sampleSizeValueUnit"=>$row1['sampleSizeValueUnit'],
+            "sampleSizeUnit"=>$row1['sampleSizeUnit'],
             "recordedBy"=>$row1['recordedBy'],
             "eventRemarks"=>$row1['eventRemarks'],
-            "ocurrenceData"=>$ocurrencestack,
+            "occurrenceData"=>$occurrencestack,
             );
             array_push($eventstack, $eventdata);
         }

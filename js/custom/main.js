@@ -1,9 +1,10 @@
 function populateSideMenu(){
 //    popup(0.9,0.9, "welcome text, logos, login link, close button");
     //calls this, but that php should be merged with other api functions into a single function
-    $.get("api_menu.php",
+    apicall="./api_menu.php";
+    console.log(apicall);
+    $.get(apicall,
         function(data){
-            //console.log(data);
             topmenuarr=JSON.parse(data);
             txt="<ul class='topnav'>";
             for (topg in topmenuarr){
@@ -38,7 +39,6 @@ function populateSideMenu(){
             }
             txt+="</ul>";
             $("#sideMenuWindow").html(txt).hide();
-	    console.log(txt);
             wh=$(window).height()*0.9;
             $("#sideMenuWindow").css("max-height", wh+"px");
             $(".topnav").accordion({
@@ -181,7 +181,7 @@ function populateFirstPopup(feature,layer){
         featureapicall=apicall0+"&calltype=event&locationID="+feature.properties.locationID;
         $.get(featureapicall, 
         function(data){
-//            console.log(featureapicall);
+            console.log(featureapicall);
             alldata=JSON.parse(data);
             selfeature=alldata.features[0];
             txt="<div class=popupLocInfo>"
@@ -307,10 +307,10 @@ function showEventInPopup(ev){
     eventapicall="./api_biodiv.php?calltype=data&eventID="+ev;
     $.get(eventapicall, 
         function(data){
-//            console.log(eventapicall);
+            console.log(eventapicall);
             alldata=JSON.parse(data);
             selfeature=alldata.features[0];
-            //console.log(selfeature);
+            console.log(selfeature);
             txt="<div class=eventInfo>"
                 txt+="<h1>Location:"+"</h1>";
                 txt+="<table>";
@@ -318,17 +318,17 @@ function showEventInPopup(ev){
                 txt+="</table>";
                 txt+="<h1>Sampling events:"+"</h1>";
                 for (ev in selfeature.properties['events']){
+                    ev=selfeature.properties['events'][ev];
                     txt+="<h2>date:"+ev.eventDate+"</h2>";  
                     txt+="<table>";
-                    ev=selfeature.properties['events'][ev];
                     txt+="<tr><td>protocol:<td>"+ev.samplingProtocol+"</tr>";
-                    txt+="<tr><td>sampling size:<td>"+ev.sampleSizeValue+" "+ev.sampleSizeValueUnit+"</tr>";
+                    txt+="<tr><td>sampling size:<td>"+ev.sampleSizeValue+" "+ev.sampleSizeUnit+"</tr>";
                     txt+="<tr><td>remarks:<td>"+ev.eventRemarks+"</tr>";
                     txt+="<tr><td>recorded by: <td>"+ev.recordedBy+"</tr>";
                     txt+="</table>";
-                    txt+="<h3>Ocurrence records</h3>";
-                    for (oc in ev.ocurrenceData){
-                        oc=ev.ocurrenceData[oc];
+                    txt+="<h3>Occurrence records</h3>";
+                    for (oc in ev.occurrenceData){
+                        oc=ev.occurrenceData[oc];
                         txt+="<table width=600px>";
                         txt+="<tr><td width=200px>"+oc.scientificName+":<td width=200px>"+oc.organismQuantityType+":<td width=200px>"+oc.organismQuantity+"</tr>";
                         for (mf in oc.measurementOrFact){
