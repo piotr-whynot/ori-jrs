@@ -1,0 +1,42 @@
+.warning {
+    color:red;
+    font-weight:bold;
+}
+
+.nonempty, input[type=text].nonempty,textarea.nonempty, select option .nonempty{
+    background-color:#dddddd;
+}
+
+input.text {
+    height:8px;
+}
+
+th { 
+    background : #AAA;
+}
+
+.twoColour tr:nth-child(odd) { 
+    background : #FFF;
+}
+.twoColour tr:nth-child(even) {
+    background : #DDD;
+}
+
+.Cell {
+    border-right: solid 1px #33FFFF;
+    border-bottom: solid 1px #33FFFF;
+    background : #FFF;
+}
+
+
+.Cell input{
+    border : 0px solid #CCC;
+    font-size : 11px;
+    padding : 4px 5px;
+    margin : 0 0px 0 0px;
+}
+
+.centeritem{
+    text-align: center;
+    margin: auto;
+}
