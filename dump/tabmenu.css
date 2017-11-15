@@ -1,0 +1,62 @@
+/* TABMENU */
+#tabmenu{
+	margin : 0px;
+	position : relative;
+    height: 40px; 
+    display: block;
+    background: #ADD8E0;
+    min-width: 1200px;
+}
+
+.tabmenuItem {
+	height: 20px;
+    padding:  10px 20px 10px 20px;
+    margin:  0px 0px 0px 0px;
+    cursor : pointer;
+    background: #ADD8E6;
+    color: white;
+    font-weight:bold;
+    font-size:20px;
+//    display: inline;
+	float: left;
+    }
+
+.tabmenuItem:hover{
+	background: #FFC500;
+    }
+
+.minorItem {
+    font-size:12px;
+    }
+.veryminorItem {
+    font-size:8px;
+    }
+
+.tabmenuItemOn{
+    color: gray;
+    font-weight:bold;
+	background: #FFA500;
+    }
+    
+.tabmenuItemOn:hover{
+	background: #FFA500;
+    }
+
+.tabmenuItemInactive {
+    color: lightgray;
+    }
+
+.specialItem {
+    font-size:9px;
+	height:35px;
+    padding:5px 20px 0px 20px;
+    line-height: 70%;
+    float: right;
+    }
+.specialItem:hover {
+    background: #ADD8E0;
+}
+
+.directLink:hover {
+	color: grey;
+    }

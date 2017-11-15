@@ -1,0 +1,224 @@
+
+/* Reset */
+header, footer, article, nav, section, aside, time, hgroup {
+	display : block;
+}
+
+html, body, header, article, nav, section, aside, time, h1, h2, h3, p, a, ul, li, dl, dd, dt, table, thead, tfoot, tbody, th, tr, td {
+	border : 0;
+	font : 12px/18px Verdana, sans-serif;
+	margin : 0;
+	outline : 0;
+	padding : 0;
+}
+
+/* BASICS */
+BODY {
+	background : #FFF;
+	color : #444;
+}
+
+A {
+	color : #0A647C;
+	text-decoration : none;
+	}
+	A:HOVER {
+		color : #DB0202;
+	}
+
+H1, H3, H4, H6 {
+	border-bottom : 1px dotted #B5B3A9;
+	color : #333;
+	font-weight : bold;
+	margin : 0 0 10px;
+	padding : 0 0 0 25px;
+	}
+	H1 {
+		font-size : 15px;
+	}
+	H2 {
+		margin : 0 0 20px 0;
+	}
+	H3 {
+		font-size : 13px;
+	}
+    H4 {
+		font-size : 13px;
+	}
+    H6 {
+        font-size : 11px;
+    }	
+
+    H5{
+        font-size : 11px;
+    }	
+
+SUP {
+	top : -4px;
+}
+
+
+#footer {
+	border-top : 1px dotted #B5B3A9;
+	clear : both;
+    text-align: center;
+    line-height: 8px;
+	}
+	#footer a, #footer p {
+    line-height: 9px;
+    font-size : 9px;
+    color : #666;
+	}
+	#footer a:hover {
+		color : #888;
+	}
+
+
+.link{
+    cursor:pointer;
+}
+
+#sliderwrapper{
+    background: rgba(0, 0, 0, .7);
+    color: white;
+    width: 620px;
+    height: 90px;
+    position: absolute;
+    bottom: 10px;
+    left: 0px;
+}
+
+.boxLabel H1{
+    color: white;
+}
+
+#slider{
+    width: 300px;
+    position: relative;
+    left: 20px;
+}
+
+.dateValue{
+    width: 280px;
+    height: 35px;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 10px;
+	color: white;
+	font-size: 30px;
+	text-align: center;
+}
+
+#slidervalueBox P{
+color: white;
+font-size: 30px;
+}
+
+#sliderBox{
+    width: 360px;
+    position: relative;
+    top: 10%;
+	padding-left: 10px;
+}
+
+#sliderStartDate {
+width: 80px;
+float: left;
+}
+
+#sliderEndDate {
+width: 80px;
+float: right;
+}
+
+.controlGroupLabel{
+font-weight : bold;
+}
+
+#stationInfo{
+    background: rgba(0, 0, 0, .7);
+    color: white;
+    width: 650px;
+    max-height: 300px;
+    overflow: auto;
+    position: absolute;
+    bottom: 110px;
+    left: 0px;
+}
+
+#stationInfoinfo{
+    width:300px;
+    float:left;
+    padding:5px;
+}
+#stationInfodata{
+    width:300px;
+    float:right;
+    padding:5px;
+}
+
+#stationInfodata .link{
+color: lightblue;
+}
+
+#stationInfodata .link:hover{
+color: black;
+}
+
+#dateSelector{
+    background: rgba(0, 0, 0, .7);
+    color: white;
+    width: 550px;
+    height: 90px;
+    position: absolute;
+    top: 150px;
+    left: 0px;
+}
+#datevalueInfo{
+font-size:12px;
+color: red;
+margin: 10px;
+text-align:center;
+}
+.popupTable td{
+vertical-align:top;
+padding-left: 10px;
+}
+
+#periodInput{
+width: 100px;
+float:left;
+padding-right: 10px;
+}
+.centerItem{
+	text-align: center;
+	margin: auto;
+}
+
+#map{
+display: block;
+}
+
+#sideMenuWindow{
+    background: rgba(255, 255, 255, .7);
+    width: 400px;
+    position: absolute;
+    top: 20px;
+    height: 300px;
+    right:0;
+    overflow:auto;
+    border: 1px solid darkgray;
+    border-right: 0px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -webkit-box-shadow: 0 2px 2px rgba(0,0,0,0.3);
+}
+input[type="checkbox"]{
+  width: 30px; /*Desired width*/
+  height: 30px; /*Desired height*/
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
