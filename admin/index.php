@@ -1035,11 +1035,7 @@ if ($base=="biodivdata" & $table=="event"){
 if ($base=="biodivdata" & $table=="occurrence"){
     if ($datasetID=='' && $locationID==''){
         // shows list of datasets
-<<<<<<< HEAD
         $query="select datasetID, datasetName from dataset";
-=======
-	    $query="select datasetID, datasetName from dataset";
->>>>>>> 5308162c522beb7fa72d89115c2a87964cf3a99b
         $result = $mysqli->query($query);
         echo "<a href=./>back</a>";
         echo "<h3>Add/edit sampling events and occurrences in biodiversity monitoring database</h3>";
@@ -1054,10 +1050,7 @@ if ($base=="biodivdata" & $table=="occurrence"){
     if ($datasetID!='' && $locationID==''){
         //shows list of locations for given dataset
         $query="select distinct location.locationID,locationName,locality from  location where datasetID='".$datasetID."'";
-<<<<<<< HEAD
-=======
-	    echo $query;
->>>>>>> 5308162c522beb7fa72d89115c2a87964cf3a99b
+	#echo $query;
         $result = $mysqli->query($query);
         echo "<a href=./?base=biodivdata&do=edit&table=occurrence>back</a>";
         echo "<h3>Add/edit event in environmental monitoring database</h3>";
@@ -1093,11 +1086,7 @@ if ($base=="biodivdata" & $table=="occurrence"){
         echo "<input type=hidden name=datasetID value=$datasetID>";
         echo "<input type=hidden name=locationID value=$locationID>";
         echo "<input type=hidden name=eventID value=$eventID>";
-<<<<<<< HEAD
         echo "<h3>Add/edit occurrences in biodiversity database</h3>";
-=======
-        echo "<h3>Add/edit ocurrences in biodiversity database</h3>";
->>>>>>> 5308162c522beb7fa72d89115c2a87964cf3a99b
         echo "<h4>Dataset: ".$datasetID."</h4>";
         echo "<h4>Location: ".$locationID."</h4>";
         echo "<h4>Event: ".$eventID."</h4>";
