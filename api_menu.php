@@ -95,8 +95,8 @@ $campaign=array();
 include '/.creds/.credentials.php';
 $mysqli->select_db('envmondata');
 ###########################################################################
-#$monitoring[]=getenvdata($mysqli,"monitoring");
-#$campaign[]=getenvdata($mysqli,"campaign");
+$monitoring[]=getenvdata($mysqli,"monitoring");
+$campaign[]=getenvdata($mysqli,"campaign");
 
 ###########################################################################
 # connecting to db

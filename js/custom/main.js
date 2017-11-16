@@ -74,7 +74,7 @@ function showhideDataset(group, datasetID, typeCode){
         }else{
             apicall='./api_envdata.php?datasetID='+datasetID+"&variableType="+typeName+"";
         }
-       console.log(apicall);
+        console.log(apicall);
         $("#shade").show();
         $.get(apicall, 
             function(data){
@@ -179,6 +179,7 @@ function populateFirstPopup(feature,layer){
     if (dataGroup=="biodiv") {
         //  biodiv
         featureapicall=apicall0+"&calltype=event&locationID="+feature.properties.locationID;
+        console.log(featureapicall);
         $.get(featureapicall, 
         function(data){
             console.log(featureapicall);
@@ -208,6 +209,7 @@ function populateFirstPopup(feature,layer){
     }else{
         // this is when dataGroup=='envdata';
         featureapicall=apicall0+"&calltype=data&locationID="+feature.properties.locationID;
+        console.log(featureapicall);
         $.get(featureapicall, 
         function(data){
             console.log(featureapicall);
