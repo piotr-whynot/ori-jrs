@@ -50,5 +50,6 @@ session_start();
     <div id='sideMenuWindow'></div>
     <div id='sideMenuSymbol'>&#9776</div>
     <div id="shade"><img src="./img/ajax-loader.gif" class="ajax_loader"></div>
+    <?php include 'footer.php'; ?>
 </body>
 </html>
