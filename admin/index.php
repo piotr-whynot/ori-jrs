@@ -136,9 +136,6 @@ echo"
 <link rel=\"stylesheet\" href=\"../css/main.css\">
 <link rel=\"stylesheet\" href=\"../css/admin.css\">
 <link rel=\"stylesheet\" href=\"../css/popup.css\">
-<!--
-<link rel=\"stylesheet\" href=\"../css/bootstrap.css\">
--->
 </head>
 <body>
 ";
