@@ -13,7 +13,7 @@
 # implement csv, handle permissions, handle errors, transfer size limit
 #
 
-$debug=true;
+$debug=false;
 
 ###########################################################################
 # connecting to db
