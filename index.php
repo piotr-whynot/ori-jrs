@@ -10,16 +10,15 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="./js/custom/main.js"></script>
     <script type="text/javascript" src="./js/leaflet-1.0.3/leaflet.js"></script>
-    <script type="text/javascript" src="./js/jquery/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="./js/jquery/jquery-3.2.0.min.js"></script>
     <script type="text/javascript" src="./js/jquery/jquery-ui.min.js"></script>
-    <script type="text/javascript" src='./js/Highstock-1.3.9/js/highstock.js'></script>
+    <script type="text/javascript" src='./js/Highstock-1.3.9/highstock.js'></script>
     <script type="text/javascript" src="./js/custom/graph.js"></script>
     <script type="text/javascript" src="./js/custom/forms.js"></script>
     <script type="text/javascript" src="./js/custom/popup.js"></script>
     <script type="text/javascript" src="./js/custom/accordion.js"></script>
     <script type=\"text/javascript\" src=\"../js/bootstrap/bootstrap-datetimepicker.min.js\"></script>
     <script type=\"text/javascript\" src=\"../js/bootstrap/bootstrap.min.js\"></script>
-<!--
     <script type="text/javascript" src="./javascript/jquery/jquery.ui.datepicker.js"></script>
     <script src="./javascript/Leaflet.label-master/src/Label.js"></script>
     <script src="./javascript/Leaflet.label-master/src/BaseMarkerMethods.js"></script>

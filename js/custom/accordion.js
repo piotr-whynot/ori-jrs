@@ -25,7 +25,11 @@
          var $this = $(this);
          //add a mark [+] to a multilevel menu
          $this.find("li").each(function() {
+<<<<<<< HEAD
              if($(this).find("ul").size() != 0){
+=======
+             if($(this).find("ul").length != 0){
+>>>>>>> 5308162c522beb7fa72d89115c2a87964cf3a99b
                  //add the multilevel sign next to the link
                  $(this).find(".menuitem:first").prepend("<span class=openCloseSign>"+ opts.closedSign +"</span>");
                  //avoid jumping to the top of the page when the href is an #
@@ -42,7 +46,11 @@
          });
 
           $this.find("li .menuitem").click(function() {
+<<<<<<< HEAD
               if($(this).parent().find("ul").size() != 0){
+=======
+              if($(this).parent().find("ul").length != 0){
+>>>>>>> 5308162c522beb7fa72d89115c2a87964cf3a99b
                   if(opts.accordion){
                       //Do nothing when the list is open
                       if(!$(this).parent().find("ul").is(':visible')){

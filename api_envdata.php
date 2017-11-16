@@ -41,6 +41,10 @@ if (isset($_GET['format'])){
     }
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5308162c522beb7fa72d89115c2a87964cf3a99b
 $locationID=null;
 if (isset($_GET['locationID'])){
     $locationID=$_GET['locationID'];
@@ -69,10 +73,13 @@ $enddate=null;
 if (isset($_GET['enddate'])){
     $enddate=$_GET['enddate'];
 }
+<<<<<<< HEAD
 $datetime=null;
 if (isset($_GET['datetime'])){
     $datetime=$_GET['datetime'];
 }
+=======
+>>>>>>> 5308162c522beb7fa72d89115c2a87964cf3a99b
 $datasetID=null;
 if (isset($_GET['datasetID'])){
     $datasetID=$_GET['datasetID'];
@@ -95,10 +102,17 @@ if (isset($_GET['locationType'])){
 ###########################################################################
 # preparing query
 
+<<<<<<< HEAD
 # this is expression for table join and it gives all occurrences for given criteria, joins ocurrence, event, location, and dataset tables
 # need to include occurrences results from the fact that we want taxonID to be included in the query
 
 $query_join=" from measurement join datastream on measurement.datastreamID=datastream.datastreamID join location on datastream.locationID=location.locationID join dataset on location.datasetID=dataset.datasetID ";
+=======
+# this is expression for table join and it gives all ocurrences for given criteria, joins ocurrence, event, location, and dataset tables
+# need to include ocurrences results from the fact that we want taxonID to be included in the query
+
+$query_join=" from measurement join datastream on measurement.datastreamID=datastream.datastreamID join location on datastream.locationID=location.locationID join dataset on datastream.datasetID=dataset.datasetID ";
+>>>>>>> 5308162c522beb7fa72d89115c2a87964cf3a99b
 
 #echo $query_join;
 
@@ -125,11 +139,14 @@ if ($startdate){
     $query_crit=$query_crit.$con."measurementDateTime>='".$startdate."' ";
     $con=" and ";
 }
+<<<<<<< HEAD
 if ($datetime){
     $query_crit=$query_crit.$con."measurementDateTime='".$datetime."' ";
     $con=" and ";
 }
 
+=======
+>>>>>>> 5308162c522beb7fa72d89115c2a87964cf3a99b
 if ($datasetID){
     $query_crit=$query_crit.$con."dataset.datasetID='".$datasetID."' ";
     $con=" and ";
@@ -142,19 +159,28 @@ if ($variableType){
     $query_crit=$query_crit.$con."datastream.variableType='".$variableType."' ";
     $con=" and ";
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5308162c522beb7fa72d89115c2a87964cf3a99b
 if ($locationType){
     $query_crit=$query_crit.$con."location.locationType='".$locationType."' ";
     $con=" and ";
 }
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5308162c522beb7fa72d89115c2a87964cf3a99b
 ###########################################################################
 #querying datasets based on criteria
 
 #finding all locations in the current dataset that correspond to criteria
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5308162c522beb7fa72d89115c2a87964cf3a99b
 $query0="select distinct location.locationID ".$query_join.$query_crit;
 #echo $query0."<br>";
 $result0 = $mysqli->query($query0);
@@ -169,11 +195,18 @@ while($row0 = $result0->fetch_assoc()){
         "coordinates"=>array($row12['decimalLongitude'],$row12['decimalLatitude'])
         );
     $locationproperties=array(
+<<<<<<< HEAD
         "datasetID"=>$row12['datasetID'],
         "locationID"=>$row12['locationID'],
         "locationName"=>$row12['locationName'],
         "locality"=>$row12['locality'],
         "locationType"=>$row12['locationType'],
+=======
+        "locationID"=>$row12['locationID'],
+        "locationName"=>$row12['locationName'],
+        "locationType"=>$row12['locationType'],
+        "locality"=>$row12['locality'],
+>>>>>>> 5308162c522beb7fa72d89115c2a87964cf3a99b
         "geomorphologicalPosition"=>$row12['geomorphologicalPosition'],
     );
 
@@ -194,11 +227,19 @@ while($row0 = $result0->fetch_assoc()){
             #populate valuestack (actual data) if required
             $datastack=array();
             if ($calltype=="data"){
+<<<<<<< HEAD
                 $query2="select measurementDateTime,measurementValue,qcCode,censoredCode ".$query_join.$query_crit." and datastream.datastreamID='{$datastreamID}' order by measurementDateTime";
       #          echo $query2."<br>";
                 $result2 = $mysqli->query($query2);
                 while($row2 = $result2->fetch_assoc()){
                     array_push($datastack,array($row2['measurementDateTime'],$row2['measurementValue'],$row2['qcCode'],$row2['censoredCode']));
+=======
+                $query2="select measurementDateTime,measurementValue,qcCode ".$query_join.$query_crit." and datastream.datastreamID='{$datastreamID}' order by measurementDateTime";
+      #          echo $query2."<br>";
+                $result2 = $mysqli->query($query2);
+                while($row2 = $result2->fetch_assoc()){
+                    array_push($datastack,array($row2['measurementDateTime'],$row2['measurementValue'],$row2['qcCode']));
+>>>>>>> 5308162c522beb7fa72d89115c2a87964cf3a99b
                 }
             }
             $query3="select MIN(measurementDateTime),MAX(measurementDateTime) ".$query_join.$query_crit." and datastream.datastreamID='{$datastreamID}'";
