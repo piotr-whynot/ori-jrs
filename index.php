@@ -17,9 +17,10 @@ session_start();
     <script type="text/javascript" src="./js/custom/forms.js"></script>
     <script type="text/javascript" src="./js/custom/popup.js"></script>
     <script type="text/javascript" src="./js/custom/accordion.js"></script>
-    <script type=\"text/javascript\" src=\"../js/bootstrap/bootstrap-datetimepicker.min.js\"></script>
-    <script type=\"text/javascript\" src=\"../js/bootstrap/bootstrap.min.js\"></script>
+<!--
     <script type="text/javascript" src="./javascript/jquery/jquery.ui.datepicker.js"></script>
+    <script type="text/javascript" src="./js/bootstrap/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="./js/bootstrap/bootstrap.min.js"></script>
     <script src="./javascript/Leaflet.label-master/src/Label.js"></script>
     <script src="./javascript/Leaflet.label-master/src/BaseMarkerMethods.js"></script>
     <script src="./javascript/Leaflet.label-master/src/Marker.Label.js"></script>
@@ -28,14 +29,14 @@ session_start();
     <link rel="stylesheet" href='./stylesheets/jquery.ui.datepicker.css'>
     <link rel="stylesheet" href="./javascript/Leaflet.label-master/dist/leaflet.label.css" />
     <link rel="stylesheet" href='./css/jquery-ui-1.10.3.custom.min.css'>
+    <link rel="stylesheet" href="./css/bootstrap.css">
+    <link rel="stylesheet" href="./css/bootstrap-datetimepicker.css">
 -->
     <link rel="stylesheet" href='./css/popup.css'>
     <link rel="stylesheet" href="./js/leaflet-1.0.3/leaflet.css" />
     <link rel="stylesheet" href='./css/main.css'>
     <link rel="stylesheet" href='./css/graph.css'>
     <link rel="stylesheet" href='./css/accordion.css'>
-    <link rel=\"stylesheet\" href=\"../css/bootstrap.css\">
-    <link rel=\"stylesheet\" href=\"../css/bootstrap-datetimepicker.css\">
     <script>
         var map;
         var pointOverlays = new Array();
