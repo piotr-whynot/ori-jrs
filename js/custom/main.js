@@ -1,7 +1,7 @@
 function populateSideMenu(){
 //    popup(0.9,0.9, "welcome text, logos, login link, close button");
     //calls this, but that php should be merged with other api functions into a single function
-    apicall="./api_menu.php";
+    apicall="/api/api_menu.php";
     console.log(apicall);
     $.get(apicall,
         function(data){
@@ -70,9 +70,9 @@ function showhideDataset(group, datasetID, typeCode){
     if( $('#'+dataGroup+"-"+datasetID+"-"+typeCode).prop('checked')){
         typeName=typeCode.replace(/_/g," ");
         if (dataGroup=="biodiv"){
-            apicall='./api_biodiv.php?datasetID='+datasetID+"&popularGroup="+typeName+"";
+            apicall='/api/api_biodiv.php?datasetID='+datasetID+"&popularGroup="+typeName+"";
         }else{
-            apicall='./api_envdata.php?datasetID='+datasetID+"&variableType="+typeName+"";
+            apicall='/api/api_envdata.php?datasetID='+datasetID+"&variableType="+typeName+"";
         }
         console.log(apicall);
         $("#shade").show();
@@ -306,7 +306,7 @@ console.log(selfeature.properties.locationType);
 function showEventInPopup(ev){
 // when one clicks on "view" in leaflet popup. this is for biodiv data
 // popup to show stuff with is not leaflet popup, its the "full screen popup"
-    eventapicall="./api_biodiv.php?calltype=data&eventID="+ev;
+    eventapicall="/api/api_biodiv.php?calltype=data&eventID="+ev;
     $.get(eventapicall, 
         function(data){
             console.log(eventapicall);
@@ -352,7 +352,7 @@ function showOnceoffDatastreamInPopup(ds){
 // when one clicks on "view" in leaflet popup. this is for envmon data of non-monitoring type
 // popup to show stuff with is not leaflet popup, its the "full screen popup"
 // just shows a table of data, no graph
-    eventapicall="./api_envdata.php?calltype=data&datastreamID="+ds;
+    eventapicall="/api/api_envdata.php?calltype=data&datastreamID="+ds;
     $.get(eventapicall, 
         function(data){
 //            console.log(eventapicall);
@@ -404,7 +404,7 @@ function showMonitoringDatastreamInPopup(ds,firstDate,lastDate){
     lastDate=lastDate.replace(/_/g," ");
 //    console.log(firstDate+lastDate);
     console.log(ds);
-    eventapicall="./api_envdata.php?calltype=datastream&datastreamID="+ds;
+    eventapicall="/api/api_envdata.php?calltype=datastream&datastreamID="+ds;
     $.get(eventapicall, 
         function(data){
             console.log(eventapicall);
