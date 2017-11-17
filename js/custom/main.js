@@ -1,5 +1,5 @@
 function populateSideMenu(){
-//    popup(0.9,0.9, "welcome text, logos, login link, close button");
+    popup(0.9,0.9, "welcome text, logos, login link, close button");
     //calls this, but that php should be merged with other api functions into a single function
     apicall="/api/api_menu.php";
     console.log(apicall);
