@@ -1,5 +1,8 @@
 function populateSideMenu(){
-    popup(0.9,0.9, "welcome text, logos, login link, close button");
+// does what it promisses and more - e.g. loads login form/welcome screen, perhaps should be rename to initialize
+//    popup(0.9,0.9, "welcome text, logos, login link, close button");
+    login('loginform');
+
     //calls this, but that php should be merged with other api functions into a single function
     apicall="/api/api_menu.php";
     console.log(apicall);
@@ -49,7 +52,6 @@ function populateSideMenu(){
             });
 
             $("#sideMenuSymbol").click(function(){
-//                $("#sideMenuWindow").slideToggle("slow");
                 $("#sideMenuWindow").toggle('slide',{direction: "right" });
             });
  
@@ -60,7 +62,6 @@ function populateSideMenu(){
 
 
 function showhideDataset(group, datasetID, typeCode){
-// changed by Piotr on 20170331
 // shows and hide datasets from the main menu
 // needs to be richer. For example, should allow displaying all datasets for a given data type with one click
 //
@@ -145,7 +146,7 @@ function showMap(){
 
 
 function onEachFeature(feature,layer){
-// what happens when one hovers over marker in map, or clicks on it
+// what happens when one hovers over marker in a map, or clicks on it
     // this function needs to be here to enable closing or not closing popup dependent on context
     // this is leaflet popup
     function closePopup(){
@@ -448,7 +449,13 @@ function showMonitoringDatastreamInPopup(ds,firstDate,lastDate){
 }
 
 
+
+
+
+
 //Function to be used by x-editable
+/*
+// this appears to be old one
 function editContent(id){ //id is the contentID in text table
     $.fn.editable.defaults.mode = 'inline'; // Can be set to popup or inline
     $('.editable-field').editable({
@@ -461,6 +468,352 @@ function editContent(id){ //id is the contentID in text table
         }
      }); 
 }
+*/
 
 
-                
+function content(action,contentID){ 
+    //id is the contentID in text table
+    if(action=='view'){
+        alert(action);
+        var formData = {
+            'action': 'content',
+	    'contentID': contentID
+	};       
+    }
+    if(action=='edit'){
+
+    }
+    var formdata = JSON.stringify(formData);
+    $.ajax({ type : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+        url  : 'admin.php', // the url where we want to POST
+        data  : {data : formdata}, // our data object
+        dataType  : 'json', // what type of data do we expect back from the server
+        encode  : true
+    })
+    // using the done promise callback
+    .done(function(data) {alert(data);
+        console.log(data);
+    }); 
+}
+
+
+
+
+function editContentForm(){
+    username = $('input[name=uname]').val();
+     //pwd = $('input[name=psw]').val();
+    if(username!="" && pwd!=""){
+        var formData = {
+            'action': 'editContent',
+            'username': $('input[name=uname]').val(),
+	};
+        var formdata = JSON.stringify(formData);// data is converted to string before being sent to the server
+        //preventDefault();
+        //console.log('Form data '+formData['password']);//alert(formdata);
+        // process the form
+        $.ajax({ type : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url  : 'admin.php', // the url where we want to POST
+            data  : {data : formdata}, // our data object
+            dataType  : 'json', // what type of data do we expect back from the server
+            encode  : true
+        })
+        // using the done promise callback
+        .done(function(data){
+            alert(data);
+            console.log(data);
+            if(data=='true'){	          
+                //$('#login_menu').html("<a href='#' onClick='logout()'>Log Out</a>");
+                disablePopup();
+                location.reload();
+            }else{
+                $('#errors').html("Username or password incorrect!");	      
+            }
+            // here we will handle errors and validation messages 
+        });
+        //from submitting the normal way and refreshing the page
+        //event.preventDefault();
+    }  
+}
+
+
+
+function login(login){ 
+    if(login=="login"){ 
+        username = $('input[name=uname]').val();
+        pwd = $('input[name=psw]').val();
+        if(username !="" && pwd!=""){
+            var formData = {
+              'action': 'login',
+              'username': username,
+              'password': pwd
+            };
+        }else{
+            $('#errors').html("Username and/or Password cannot be blank!");
+        }
+    }
+    if(login=='loginform'){
+        //Remove the element before it could be added from the form
+        $(".modal-content").remove();
+        var formData = {
+            'action': 'loginForm',
+            'status': 'login'
+        };        
+    }
+    console.log(formData);
+    var formdata = JSON.stringify(formData);// data is converted to string before being sent to the server
+    //preventDefault();
+    // process the form
+    $.ajax({ type : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+        url  : 'admin.php', // the url where we want to POST
+        data  : {data : formdata}, // our data object
+        dataType  : 'json', // what type of data do we expect back from the server
+        encode  : true
+    })
+    // using the done promise callback
+    .done(function(data){
+        console.log("login:");
+        console.log(data);
+        var dataArray = data.split('_'); //PW not sure if this is ok. what if returned string contains more than one underscore? perhaps it would be better to return json
+        if(dataArray[0]=='islogged'){//There is a session which already existed
+            $('#login_menu').html(dataArray[1]);
+        }
+        if(dataArray[0]=='true'){//If the user has successfully logged on
+            $('#login_menu').html("<a href='#' onClick='logout()'>Log Out</a>");
+            disablePopup();
+            location.reload();
+        }
+        if(dataArray[0]=='false'){  //console.log(dataArray[1]);
+            if(dataArray[1]!=""){
+                $('#errors').html(dataArray[1]);       
+            }
+            $('#login_menu').html(" <a href='#' onClick=login('loginform')>Log In</a>"); //alert($("#form-table").length);
+            //If the form is already on the pop it shouldn't be loaded again
+            // if($(".modal-content").length!=1){
+            if(login='loginform'){
+                // $('.modal-content').remove(); 
+                popup(0.4,0.6, dataArray[1]);
+            }
+            // }
+            // $('#errors').html("Username or password incorrect!");	      
+        }
+        // here we will handle errors and validation messages 
+    });                                                                                      
+}
+
+
+function resetPassword(action){
+    if(action=='loadform'){ 
+        var formData = {
+            'action': 'resetPassword',
+            'what':'loadform'
+        };
+    }
+    if(action=='reset'){
+        username=$('input[name=uname]').val();
+        var formData = {
+            'action': 'resetPassword',
+            'what':'reset',
+            'username': $('input[name=uname]').val()
+        };
+//alert(action);
+    }
+     // var reset = {'action':'resetPassword'}
+    var resetData = JSON.stringify(formData);
+    $.ajax({ type : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+        url  : 'admin.php', // the url where we want to POST
+        data  : {data : resetData}, // our data object
+        dataType  : 'json', // what type of data do we expect back from the server
+        encode  : true
+    })
+    // using the done promise callback
+    .done(function(data) {
+        //alert(data);
+        if(action=='loadform'){
+            disablePopup();
+            popup(0.3,0.5, data);
+        }
+        if(action=='reset'){
+            if(username=="" || username == null){
+                $('#errors').html('Username field cannot be empty!');        
+            }else{
+                if(data=='success'){
+                    $(document).ready(function(){
+                        $('<div id=notification>Email has been sent, Check you email</div>').insertAfter('#popupWindow');
+                        $('#notification').delay(3000).fadeOut("slow");
+                    });
+                    disablePopup();
+                }else{
+                    $('<div id=notification>'+data+'</div>').insertAfter('#popupWindow');
+                    $('#notification').delay(3000).fadeOut("slow");
+                }
+                //$('#header').append('<div id=notification>Email has been sent, Check you email</div>').show().delay(10000).hide();
+            }
+            if(data!='success'){
+                $('#errors').html(data);
+            }
+        }
+        console.log(data);
+        location.reload;
+        if(data='success'){
+            //$('#signin_menu').css('display','none'); 
+        }
+        // here we will handle errors and validation messages 
+    });
+}
+
+
+
+
+
+function editUser(action){
+    if(action=='view'){
+    }
+    if(action=='edit'){
+    }
+    username = $('input[name=uname]').val();
+    pwd = $('input[name=psw]').val();
+    if(username!="" && pwd!=""){ 
+        var formData = {
+            'action': 'editUser',
+            'username': $('input[name=uname]').val(),
+            'password': $('input[name=psw]').val()
+        };
+        var formdata = JSON.stringify(formData);// data is converted to string before being sent to the server
+        //preventDefault();
+        //console.log('Form data '+formData['password']);//alert(formdata);
+        // process the form
+        $.ajax({ type : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url  : 'admin.php', // the url where we want to POST
+            data  : {data : formdata}, // our data object
+            dataType  : 'json', // what type of data do we expect back from the server
+            encode  : true
+        })
+        // using the done promise callback
+        .done(function(data) {
+             //console.log(data);
+             if(data=='true'){
+                 //$('#login_menu').html("<a href='#' onClick='logout()'>Log Out</a>");
+                 //disablePopup();
+                 //location.reload();
+             }else{
+                 $('#errors').html("Error occured and change not saved!");     
+             }
+             // here we will handle errors and validation messages 
+        });
+        //from submitting the normal way and refreshing the page
+        //event.preventDefault();
+    }
+}
+
+
+
+
+function register(action){
+    if(action=='register'){
+        validate=true;
+        firstname=$('input[name=uname]').val();
+        lastname=$('input[name=lname]').val();
+        username=$('input[name=lname]').val();
+        email=$('input[email=uname]').val();
+        password=$('input[name=psw]').val();
+        organisation=$('input[name=institute]').val();
+        if(validate===register('validate')){
+            alert('done');  
+        }
+        var formData = {
+            'action': 'register',
+            'what':'register'
+        };
+    }
+    if(action=='loadform'){validate=true;
+        var formData = {
+            'action': 'register',
+            'what':'loadform'
+        };
+    }
+    if(action=='loadform' || action =='register'){
+        //var act = {'action':actioninfo};
+        var regData = JSON.stringify(formData); 
+        $.ajax({ type : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url  : 'admin.php', // the url where we want to POST
+            data  : {data : regData}, // our data object
+            dataType  : 'json', // what type of data do we expect back from the server
+            encode  : true
+        })
+        // using the done promise callback
+        .done(function(data){
+            console.log(data);
+            if(action=='loadform'){
+                disablePopup();
+                popup(0.7,0.5,data);
+            }
+            //location.reload();
+            if(data='success'){
+               //$('#signin_menu').css('display','none'); 
+            }
+            // here we will handle errors and validation messages 
+        });
+    }
+    if(action=='validate'){
+        return true;
+    }
+}
+
+
+
+
+function logout(){ //call a php function to unset sessions
+    //alert('logout');
+    var logOut = {'action':'logout'}
+    var logOutData = JSON.stringify(logOut);
+    $.ajax({ type : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+        url  : 'admin.php', // the url where we want to POST
+        data  : {data : logOutData}, // our data object
+        dataType  : 'json', // what type of data do we expect back from the server
+        encode  : true
+    })
+    // using the done promise callback
+    .done(function(data) {//alert(data);
+         //console.log(data);
+         //This element existed when the form was created
+         // it has to be remove in order to successfully show the form again
+         //$("#form-table").remove();
+         $('#login_menu').html(" <a href='#' onClick=login('loginform')>Log In</a>");
+         location.reload();
+         if(data='success'){
+              //$('#signin_menu').css('display','none'); 
+         }
+         // here we will handle errors and validation messages 
+    });
+}
+
+
+
+function adminMenu(action){
+    if(action=='list'){//alert(action);
+        var formData = {
+            'action': 'adminContent',
+            'what':'list'
+        };
+    }
+    if(action=='view'){
+    }
+    var adminData = JSON.stringify(formData); 
+    $.ajax({ type : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+        url  : 'admin.php', // the url where we want to POST
+        data  : {data : adminData}, // our data object
+        dataType  : 'json', // what type of data do we expect back from the server
+        encode  : true
+    })
+    // using the done promise callback
+    .done(function(data) { console.log(data);
+        if(action=='list'){
+            //disablePopup();
+            popup(0.4,0.9,data);
+        }
+        //location.reload();
+        if(data='success'){            
+        }
+        // here we will handle errors and validation messages 
+    });
+}               
