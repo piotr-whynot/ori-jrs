@@ -10,11 +10,23 @@ $function= stripslashes($data->action);
 
 
 switch($function) {
-    case "loginForm"://Loads login form only
-        $form=loginForm('loginform');
-#        $form="test1";
-        echo json_encode($form);
+    case "loginCheck"://Loads login form only
+        if(isset($_SESSION['userInfo'])){
+            $userName=null;
+            $isAdmin=null;
+            $inSession=true;
+        }else{
+            $userName=null;
+            $isAdmin=null;
+            $inSession=false;
+        }
+        $outArray=array(
+	    "isloggedin"=>$inSession,
+	    "userName"=>$userName,
+	    "isAdmin"=>$isAdmin);
+        echo json_encode($outArray);
         break;
+
     case "register": 
         $load=stripslashes($data->what);
         //echo json_encode($load);
@@ -33,22 +45,17 @@ switch($function) {
         break;         
     case "login":
         $logged="false";
-        //include '/creds/.credentials.php';
-        //session_start();
-        $username=stripslashes($data->username);
+        $username=stripslashes($data->userName);
         $password=md5(stripslashes($data->password));
         $mysqli->select_db('users');
         $sql= "SELECT * FROM users WHERE username="."'$username'"." AND ";
         $sql.="password="."'$password'";
-      # $sql.="password="."'$password'"." AND ";
-      # $sql.=" active='1'";
-        $res=$mysqli->query($sql); //echo json_encode($res->num_rows);
+        $res=$mysqli->query($sql);
         if($res->num_rows>0){
             while($user=$res->fetch_array()){
                 $userArray=array($user['username'],
                 $user['privilege'],
                 $user['email_address']);
-               //$_SESSION['is_admin']=$user['is_admin'];
                 $_SESSION['userinfo']=$userArray;
                 $logged="true_";
                //Update the last time the user successfully logged in
@@ -61,14 +68,18 @@ switch($function) {
                 echo json_encode($logged);
               // header("Refresh:0");
             }
+
         }else{
-          // if($logged=="false"){//Creditials are incorrect or the user doesn't exit
-            $logged.="_"."Username or Password Incorrect.";
-           echo json_encode($logged);
+            $inSession=false;
+            $userName=null;
+            $isAdmin=null;
         }
-          //else{
-             //echo json_encode('false');
-           //} 
+
+        $outArray=array(
+	    "isloggedin"=>$inSession,
+	    "userName"=>$userName,
+	    "isAdmin"=>$isAdmin);
+        echo json_encode($data);
         break;
     case "logout":
         session_unset();
@@ -186,8 +197,9 @@ switch($function) {
 
 
 
-
-function loginForm($logininfo){
+// this is old throwaway
+/*
+function loginform($logininfo){
     if($logininfo=='loginform'){
         if(isset($_SESSION['userinfo'][0])!=null && $_SESSION['userinfo'][0] !="" && $_SESSION['userinfo'][1]=='admin'){
             $data="islogged_ Logged in as <span id=user onClick=editUser()>".$_SESSION['userinfo'][0]."</span><a href='#' onClick='logout()'> Log Out</a>";
@@ -218,6 +230,14 @@ function loginForm($logininfo){
     //echo json_encode($frm);
     return $data;
 }
+*/
+
+
+function loginCheck(){
+    //checks for current session, returns array with 
+    return $outArray;
+}
+
 
 
 

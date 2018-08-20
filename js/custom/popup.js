@@ -24,6 +24,7 @@ $.get(page,
 //0 means disabled; 1 means enabled;
 var popupStatus = 0;
 
+
 function popup(H, W, data){
         //centering with css
         centerPopup(H, W);
@@ -45,6 +46,8 @@ function popup(H, W, data){
         }
     });
 }
+
+
 //loading popup with jQuery magic!
 function loadPopup(data){
 
@@ -61,6 +64,7 @@ function loadPopup(data){
         popupStatus = 1;
     }
 }
+
 
 //disabling popup with jQuery magic!
 function disablePopup(){

@@ -1,7 +1,7 @@
 function populateSideMenu(){
 // does what it promisses and more - e.g. loads login form/welcome screen, perhaps should be rename to initialize
 //    popup(0.9,0.9, "welcome text, logos, login link, close button");
-    login('loginform');
+//    loginFunctions('loginForm');
 
     //calls this, but that php should be merged with other api functions into a single function
     apicall="/api/api_menu.php";
@@ -537,67 +537,123 @@ function editContentForm(){
 
 
 
-function login(login){ 
-    if(login=="login"){ 
-        username = $('input[name=uname]').val();
-        pwd = $('input[name=psw]').val();
-        if(username !="" && pwd!=""){
+function loginFunctions(action){
+    console.log(popupStatus); 
+    if (popupStatus==0){
+        txt="<span id=logo></span><div class=header>Okavango Delta Monitoring & Forecasting Portal</div>";
+        txt+="<div id=loginForm class='container'>";
+        txt+="</div>";
+        popup(0.4,0.6,txt);
+    }
+    if(action=="login"){ 
+        userName = $('input[name=userName]').val();
+        pwd = $('input[name=pwd]').val();
+        if(userName !="" && pwd!=""){
             var formData = {
               'action': 'login',
-              'username': username,
+              'userName': userName,
               'password': pwd
             };
+            var formdata = JSON.stringify(formData);// data is converted to string before being sent to the server
+            // process the form
+            $.ajax({ type : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+                url  : 'admin.php', // the url where we want to POST
+                data  : {data : formdata}, // our data object
+                dataType  : 'json', // what type of data do we expect back from the server
+                encode  : true
+            })
+            .done(function(data){
+                console.log("login:");
+                console.log(data);
+                var dataArray = data;
+                console.log(dataArray['isloggedin']);
+                if(dataArray['isloggedin']){ 
+                    //login successful
+                    txt="You are logged in as...<br>";
+                    txt+="<button type='button' onClick=disablePopup() >OK, bring me to data</button>";
+                    $("#loginForm").html(txt);
+                }else{
+                    $("#errors").html("username or password do not match. Try again.");
+                }
+            });                                                                                     
         }else{
             $('#errors').html("Username and/or Password cannot be blank!");
         }
     }
-    if(login=='loginform'){
-        //Remove the element before it could be added from the form
-        $(".modal-content").remove();
+    if(action=='loginForm'){
         var formData = {
-            'action': 'loginForm',
-            'status': 'login'
-        };        
+            'action': 'loginCheck',
+        }; 
+        console.log(formData);
+        var formdata = JSON.stringify(formData);// data is converted to string before being sent to the server
+        // process the form
+        $.ajax({ type : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url  : 'admin.php', // the url where we want to POST
+            data  : {data : formdata}, // our data object
+            dataType  : 'json', // what type of data do we expect back from the server
+            encode  : true
+        })
+        .done(function(data){
+            console.log("loginCheck:");
+            console.log(data);
+            //var dataArray = JSON.parse(data); 
+            var dataArray = data;
+            console.log(dataArray['isloggedin']);
+            
+            if(dataArray['isloggedin']){ 
+                //There is a session which already existed
+                txt="You are logged in as... Would you like to log out?<br>";
+                txt+="<button type='button' onClick=loginFunctions('logout') >Yes</button>";
+                txt+="<tr><td></td><td><button type='button' onClick=disablePopup() >Cancel</button> || ";
+            }else{
+                txt="<table id=form-table><form class='modal-content animate'>"; 
+                txt+="<tr><td><td><div id='errors'></div></td></tr>";
+                txt+="<tr><td><label><b>Username:</b></label></td>";
+                txt+="<td><input type='text' placeholder='Enter Username' name='userName' required><br /></td></tr>";
+                txt+="<tr><td><label><b>Password:</b></label></td>";
+                txt+="<td><input type='password' placeholder='Enter Password' name='passwd' required><br /></td></tr>";
+                txt+="<tr><td></td><td><button type='button' onClick=loginFunctions('login') >Login</button></tr>";
+                txt+="<tr><td><td><input type='checkbox' name=rememberMe> Remember me</tr>";
+                txt+="<tr><td></td><td><span>Forgot <a href=# onClick=loginFunctions('resetPasswordForm')>password?</a></span></td></tr>";           
+                txt+="<tr><td></td><td><a href=# onClick=loginFunctions('registerForm')>Register</a></td></td></tr>";
+                txt+="</form></table>";
+           }
+           $("#loginForm").html(txt);
+        });                                                                                      
     }
-    console.log(formData);
-    var formdata = JSON.stringify(formData);// data is converted to string before being sent to the server
-    //preventDefault();
-    // process the form
-    $.ajax({ type : 'POST', // define the type of HTTP verb we want to use (POST for our form)
-        url  : 'admin.php', // the url where we want to POST
-        data  : {data : formdata}, // our data object
-        dataType  : 'json', // what type of data do we expect back from the server
-        encode  : true
-    })
-    // using the done promise callback
-    .done(function(data){
-        console.log("login:");
-        console.log(data);
-        var dataArray = data.split('_'); //PW not sure if this is ok. what if returned string contains more than one underscore? perhaps it would be better to return json
-        if(dataArray[0]=='islogged'){//There is a session which already existed
-            $('#login_menu').html(dataArray[1]);
-        }
-        if(dataArray[0]=='true'){//If the user has successfully logged on
-            $('#login_menu').html("<a href='#' onClick='logout()'>Log Out</a>");
-            disablePopup();
-            location.reload();
-        }
-        if(dataArray[0]=='false'){  //console.log(dataArray[1]);
-            if(dataArray[1]!=""){
-                $('#errors').html(dataArray[1]);       
-            }
-            $('#login_menu').html(" <a href='#' onClick=login('loginform')>Log In</a>"); //alert($("#form-table").length);
-            //If the form is already on the pop it shouldn't be loaded again
-            // if($(".modal-content").length!=1){
-            if(login='loginform'){
-                // $('.modal-content').remove(); 
-                popup(0.4,0.6, dataArray[1]);
-            }
-            // }
-            // $('#errors').html("Username or password incorrect!");	      
-        }
-        // here we will handle errors and validation messages 
-    });                                                                                      
+    if(action=='resetPasswordForm'){
+        txt="<form class='modal-content animate' >";
+        txt+="<div id='errors'></div>";
+        txt+="<div id='info'>Reset password will be sent to your email for the username provided below.</div>";
+        txt+="<label><b>Username:  </b></label>";
+        txt+="<input type='text' placeholder='Enter Username' name='uname' required><br />";
+        txt+="<button type='button' onClick=loginFunctions('resetPassword') >Reset</button>";
+        txt+="<tr><td></td><td><button type='button' onClick=disablePopup() >Cancel</button> || ";
+        txt+="</form>";
+        $("#loginForm").html(txt);
+    }
+    if(action=='registerForm'){
+        txt="<table><form class='modal-content animate' >";
+        txt+= "<div class='container'>";
+        txt+="<tr><td></td><td><div id='errors'></div></td></tr>";
+        txt+="<tr><td><label><b>Firstname:  </b></label></td>";
+        txt+="<td><input type='text' placeholder='Enter Firstname' name='fname' required></td></tr>";
+        txt+="<tr><td><label><b>Lastname:  </b></label></td>";
+        txt+="<td><input type='text' placeholder='Enter Lastname' name='lname' required></td></tr>";
+        txt+="<tr><td><label><b>Email Address:  </b></label></td>";
+        txt+="<td><input type='email' placeholder='Enter Email Adress' name='email' required></td></tr>";
+        txt+="<tr><td><label><b>Password:  </b></label></td>";
+        txt+="<td><input type='password' placeholder='Enter Password'  name='psw' required></td></tr>";
+        txt+="<tr><td><label><b>Confirm Password:  </b></label></td>";
+        txt+="<td><input type='password' placeholder='Confirm Password'  name='psw1' required></td></tr>";
+        txt+="<tr><td><label><b>Organisation/Institution:  </b></label></td>";
+        txt+="<td><input type='text' placeholder='Enter Organisation/Institution represented' name='lname' required></td></tr>";
+        txt+="<tr><td></td><td><button type='button' onClick=disablePopup() >Cancel</button> || ";
+        txt+="<button type='button' onClick=loginFunctions('register') >Submit</button></td></tr>";
+        txt+="</div>";
+        txt+="</form></table>";
+        $("#loginForm").html(txt);
+    }
 }
 
 
@@ -778,7 +834,7 @@ function logout(){ //call a php function to unset sessions
          //This element existed when the form was created
          // it has to be remove in order to successfully show the form again
          //$("#form-table").remove();
-         $('#login_menu').html(" <a href='#' onClick=login('loginform')>Log In</a>");
+         $('#login_menu').html(" <a href='#' onClick=loginFunctions('loginForm')>Log In</a>");
          location.reload();
          if(data='success'){
               //$('#signin_menu').css('display','none'); 
