@@ -24,7 +24,7 @@ $mysqli->select_db('envmondata');
 ###########################################################################
 #inital checks on arguments
 #check what type of call is this and make sure calltype is correct
-$calltypes=array("data", "datastream");
+$calltypes=array("data", "datastream", "datasetinfo");
 $calltype=''; #empty call returns info
 if (isset($_GET['calltype'])){
     if (in_array($_GET['calltype'],$calltypes)){
@@ -91,7 +91,13 @@ if (isset($_GET['locationType'])){
     $locationType=$_GET['locationType'];
 }
 
-
+if ($calltype=="datasetinfo"){
+#if datasetinfo call
+    $query="select * from dataset where datasetID='".$datasetID."' ";
+    $result = $mysqli->query($query);
+    $output = $result->fetch_assoc();
+}else{
+# if not datasetinfo call
 
 ###########################################################################
 # preparing query
@@ -241,6 +247,7 @@ $output=array(
     "type"=>"FeatureCollection",
     "features"=>$featurestack
 );
+}
 
 #    "url"=>$_SERVER['REQUEST_URI'],
 

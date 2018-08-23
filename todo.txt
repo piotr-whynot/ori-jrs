@@ -1,11 +1,12 @@
 ************general************
-
 vocabulary for variableType
 public vs private data
 "favourites"
 what is the difference between institution and ownerInstitution?
 add datasetRemarks in biodiv dataset table
 add datasetID to location table in biodivdata
+add associated media to checklist
+
 
 ************map page*************
 adjust field lengths in definition of datastream table
@@ -15,9 +16,6 @@ vocabulary for baseTime
 
 link to add measurements from main page
 issue with figures in monitoring if only one point
-menu - checkboxes shift in chrome
-menu - checkbox inactive after checking in firefox
-menu - hand pointer over text at lowest level
 figures - shading for rainy season or for flood season
 
 handle photos for locations

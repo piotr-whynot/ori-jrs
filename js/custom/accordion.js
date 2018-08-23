@@ -13,10 +13,12 @@
     //pass the options variable to the function
     accordion: function(options) {
         var defaults = {
-            accordion: 'true',
-            speed: 300,
-            closedSign: '[+]',
-            openedSign: '[-]'
+            accordion: false,
+            speed: 500,
+            closedSign: '<svg height="16" viewBox="0 0 6 16" width="6"><path fill-rule="evenodd" d="M0 14l6-6-6-6z"></path></svg>',
+            openedSign: '<svg height="16" viewBox="1 0 12 16" width="12"><path fill-rule="evenodd" d="M0 5l6 6 6-6z"></path></svg>'
+//            closedSign: '[+]',
+//            openedSign: '[-]'
         };
 
         // Extend our default options with those provided.

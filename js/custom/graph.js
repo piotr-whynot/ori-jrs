@@ -1,7 +1,7 @@
 function loadPlot(datastream, graphType, isFirst, showcumsum){
 // find first and last date of record and other information from metadata call
     ds=datastream;
-    eventapicall="./api_envdata.php?calltype=datastream&datastreamID="+ds;
+    eventapicall="./api/api_envdata.php?calltype=datastream&datastreamID="+ds;
     //console.log(eventapicall);
     //console.log(isFirst);
     if (isFirst){
@@ -62,7 +62,7 @@ function loadPlot(datastream, graphType, isFirst, showcumsum){
 
 function getData(ds, firstDateString, lastDateString, seriesType, dateType, callback){
 // reads data from api for a given year, calculates cumsum and adjusts dates to be in 1970
-    apidatacall="./api_envdata.php?calltype=data&datastreamID="+ds+"&startdate="+firstDateString+"&enddate="+lastDateString;
+    apidatacall="./api/api_envdata.php?calltype=data&datastreamID="+ds+"&startdate="+firstDateString+"&enddate="+lastDateString;
     //console.log(apidatacall);
     $.get(apidatacall, 
         function(data){

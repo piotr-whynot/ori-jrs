@@ -270,8 +270,8 @@ if ($base=="envmondata" & $table=="location"){
     $decimalLongitude="";
     $coordinateUncertaintyInMeters="";
     $geodeticDatum="";
-    $altitude="";
-    $altitudeUncertaintyInMeters="";
+    $elevation="";
+    $elevationUncertaintyInMeters="";
     $locationType="";
     $parentLocationID="";
     $childLocationValue="";
@@ -312,8 +312,8 @@ if ($base=="envmondata" & $table=="location"){
         $decimalLongitude=$row['decimalLongitude'];
         $coordinateUncertaintyInMeters=$row['coordinateUncertaintyInMeters'];
         $geodeticDatum=$row['geodeticDatum'];
-        $altitude=$row['altitude'];
-        $altitudeUncertaintyInMeters=$row['altitudeUncertaintyInMeters'];
+        $elevation=$row['elevation'];
+        $elevationUncertaintyInMeters=$row['elevationUncertaintyInMeters'];
         $locationType=$row['locationType'];
         $parentLocationID=$row['parentLocationID'];
         $childLocationValue=$row['childLocationValue'];
@@ -377,15 +377,15 @@ echo"
 <span id=geodeticDatum class=warning></span>
 <input type=text size=10 name=geodeticDatum value='{$geodeticDatum}'><br>
 
-<h4>altitude</h4>
+<h4>elevation</h4>
 <label>max length:10 characters<br>Altitude in meters. That should actually be elevation in m a.m.s.l. rather than geoidal height. If you don't know what it means - don't worry, it is not THAT important</label><br>
-<span id=altitude class=warning></span>
-<input type=text size=10 name=altitude class='numeric' value='{$altitude}'><br>
+<span id=elevation class=warning></span>
+<input type=text size=10 name=elevation class='numeric' value='{$elevation}'><br>
 
-<h4>altitudeUncertaintyInMeters</h4>
-<label>max length:10 characters<br>Uncertainty of altitude value, in meters. If from handheld GPS it will be in the order of 10m. Precisely levelled sites can have uncertainty as low as 0.01m. </label><br>
-<span id=altitudeUncertaintyInMeters class=warning></span>
-<input type=text size=10 name=altitudeUncertaintyInMeters class='numeric' value='{$altitudeUncertaintyInMeters}'><br>
+<h4>elevationUncertaintyInMeters</h4>
+<label>max length:10 characters<br>Uncertainty of elevation value, in meters. If from handheld GPS it will be in the order of 10m. Precisely levelled sites can have uncertainty as low as 0.01m. </label><br>
+<span id=elevationUncertaintyInMeters class=warning></span>
+<input type=text size=10 name=elevationUncertaintyInMeters class='numeric' value='{$elevationUncertaintyInMeters}'><br>
 
 <h4>locationType</h4>
 <label>max length:50 characters<br>Type of location. Either \"monitoring\" or \"short-term\"</label><br>
@@ -785,13 +785,11 @@ if ($base=="biodivdata" & $table=="location"){
     $decimalLongitude="";
     $coordinateUncertaintyInMeters="";
     $geodeticDatum="";
-    $altitude="";
-    $altitudeUncertaintyInMeters="";
+    $elevation="";
+    $elevationUncertaintyInMeters="";
     $locationType="";
     $geomorphologicalPosition="";
     $countryCode="";
-    $footprintWKT="";
-    $footprintSRS="";
     $locationRemarks="";
     $associatedMedia="";
 
@@ -825,13 +823,11 @@ if ($base=="biodivdata" & $table=="location"){
         $decimalLongitude=$row['decimalLongitude'];
         $coordinateUncertaintyInMeters=$row['coordinateUncertaintyInMeters'];
         $geodeticDatum=$row['geodeticDatum'];
-        $altitude=$row['altitude'];
-        $altitudeUncertaintyInMeters=$row['altitudeUncertaintyInMeters'];
+        $elevation=$row['elevation'];
+        $elevationUncertaintyInMeters=$row['elevationUncertaintyInMeters'];
         $locationType=$row['locationType'];
         $geomorphologicalPosition=$row['geomorphologicalPosition'];
         $countryCode=$row['countryCode'];
-        $footprintWKT=$row['footprintWKT'];
-        $footprintSRS=$row['footprintSRS'];
         $associatedMedia=$row['associatedMedia'];
         $locationRemarks=$row['locationRemarks'];
     }
@@ -883,15 +879,15 @@ if ($base=="biodivdata" & $table=="location"){
 <span id=geodeticDatum class=warning></span>
 <input type=text size=10 name=geodeticDatum class='none' value='{$geodeticDatum}'><br>
 
-<h4>altitude</h4>
+<h4>elevation</h4>
 <label>max length:10 characters<br>Altitude in meters. That should actually be elevation in m a.m.s.l. rather than geoidal height. If you don't know what it means - don't worry, it is not THAT important</label><br>
-<span id=altitude class=warning></span>
-<input type=text size=10 name=altitude class='numeric' value='{$altitude}'><br>
+<span id=elevation class=warning></span>
+<input type=text size=10 name=elevation class='numeric' value='{$elevation}'><br>
 
-<h4>altitudeUncertaintyInMeters</h4>
-<label>max length:10 characters<br>Uncertainty of altitude value, in meters. If from handheld GPS it will be in the order of 10m. Precisely levelled sites can have uncertainty as low as 0.01m. </label><br>
-<span id=altitudeUncertaintyInMeters class=warning></span>
-<input type=text size=10 name=altitudeUncertaintyInMeters class='numeric' value='{$altitudeUncertaintyInMeters}'><br>
+<h4>elevationUncertaintyInMeters</h4>
+<label>max length:10 characters<br>Uncertainty of elevation value, in meters. If from handheld GPS it will be in the order of 10m. Precisely levelled sites can have uncertainty as low as 0.01m. </label><br>
+<span id=elevationUncertaintyInMeters class=warning></span>
+<input type=text size=10 name=elevationUncertaintyInMeters class='numeric' value='{$elevationUncertaintyInMeters}'><br>
 
 <h4>locationType</h4>
 <label>max length:50 characters<br>Type of location. Either \"monitoring\", \"short-term\" or \"once-off\"</label><br>
@@ -908,15 +904,17 @@ if ($base=="biodivdata" & $table=="location"){
 <span id=countryCode class=warning></span>
 <input type=text size=2 name=countryCode class='none' value='{$countryCode}'><br>
 
+<!--
 <h4>footprintWKT</h4>
 <label>max length:1000 characters<br>Reserved for future use. FootprintWKT is a plain text representation of geometry of a measurement location if that is different than a point (e.g. transect, or a polygon). For the time being it is not used as the mapping tool cannot handle other geometries than a point</label><br>
 <span id=footprintWKT class=warning></span>
-<textarea cols=40 rows=6 size=1000 name=footprintWKT disabled>{$footprintWKT}</textarea><br>
+<textarea cols=40 rows=6 size=1000 name=footprintWKT disabled></textarea><br>
 
 <h4>footprintSRS</h4>
 <label>max length:10 characters<br>Reserved for future use. FootprintSRS is a description of coordinate system in which footprintWKT is defined </label><br>
 <span id=footprintSRS class=warning></span>
-<input type=text size=10 name=footprintSRS class='numeric' disabled value='{$footprintSRS}'><br>
+<input type=text size=10 name=footprintSRS class='numeric' disabled value=''><br>
+-->
 
 <h4>locationRemarks</h4>
 <label>max length:255 characters<br>Any other remarks you might have</label><br>
@@ -956,7 +954,7 @@ if ($base=="biodivdata" & $table=="event"){
     $samplingEffort='';
     $samplingProtocol='';
     $sampleSizeValue='';
-    $sampleSizeValueUnit='';
+    $sampleSizeUnit='';
    if ($eventID!='' && $do=='edit'){
         // when eventID is set through url argument - query database for event values
         $query="select * from event where eventID='{$eventID}'";
@@ -968,7 +966,7 @@ if ($base=="biodivdata" & $table=="event"){
         $samplingEffort=$row['samplingEffort'];
         $samplingProtocol=$row['samplingProtocol'];
         $sampleSizeValue=$row['sampleSizeValue'];
-        $sampleSizeValueUnit=$row['sampleSizeValueUnit'];
+        $sampleSizeUnit=$row['sampleSizeUnit'];
     }
     if (($eventID!="" && $do=="edit") || $do=="add"){
         //shows form
@@ -1008,10 +1006,10 @@ if ($base=="biodivdata" & $table=="event"){
 <span id=sampleSizeValue class=warning></span>
 <input type=text size=10 name=sampleSizeValue class='numeric' value='{$sampleSizeValue}'><br>
 
-<h4>sampleSizeValueUnit</h4>
+<h4>sampleSizeUnit</h4>
 <label>max length:10 characters<br>Unit of the value reflecting sample size. Example: l, ml. Leave blank if measurement done in situ, or</label><br>
-<span id=sampleSizeValueUnit class=warning></span>
-<input type=text size=10 name=sampleSizeValueUnit class='none' value='{$sampleSizeValueUnit}'><br>
+<span id=sampleSizeUnit class=warning></span>
+<input type=text size=10 name=sampleSizeUnit class='none' value='{$sampleSizeUnit}'><br>
 
 <input type='submit' class='button' value=' Save '>
 </form>

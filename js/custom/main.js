@@ -1,11 +1,11 @@
 function populateSideMenu(){
     popup(0.9,0.9, "welcome text, logos, login link, close button");
     //calls this, but that php should be merged with other api functions into a single function
-    apicall="/api/api_menu.php";
+    apicall="./api/api_menu.php";
     console.log(apicall);
     $.get(apicall,
         function(data){
-            topmenuarr=JSON.parse(data);
+	    topmenuarr=JSON.parse(data);
             txt="<ul class='topnav'>";
             for (topg in topmenuarr){
                 topGroupName=topmenuarr[topg].groupName; 
@@ -26,7 +26,16 @@ function populateSideMenu(){
                         for (d in menuarr[g].dataTypes[tp].datasets){
                             datasetName=menuarr[g].dataTypes[tp].datasets[d].datasetName;
                             // alert(datasetName);
-                            txt+="<li><div class=menuitem><span class=markerHolder id=marker-"+groupCode+"-"+d+"-"+typeCode+"></span><label><span class=checkboxLabel>"+datasetName+"</span><input class=menuCheckbox type=checkbox id="+groupCode+"-"+d+"-"+typeCode+" onClick=showhideDataset(\""+groupCode+"\",'"+d+"','"+typeCode+"')></label></div></li>";
+			    txt+="<li>";
+			    txt+="<div class=markerHolder id=marker-"+groupCode+"-"+d+"-"+typeCode+">&nbsp</div>"
+                            txt+="<label class=checkboxLabel>";
+			    txt+="<input type=checkbox id="+groupCode+"-"+d+"-"+typeCode+" onClick=showhideDataset(\""+groupCode+"\",'"+d+"','"+typeCode+"')>"+datasetName;
+			    txt+="</label>";
+			    txt+="<div class=extrasHolder id=extras-"+groupCode+"-"+d+"-"+typeCode+">";
+			    txt+="<span class=clickable onClick=describeDataset(\""+groupCode+"\",'"+d+"','"+typeCode+"') id=list-"+groupCode+"-"+d+"-"+typeCode+">dataset info</span><br>";
+			    txt+="<span class=clickable onClick=listDataset(\""+groupCode+"\",'"+d+"','"+typeCode+"') id=list-"+groupCode+"-"+d+"-"+typeCode+">list all locations</span>";
+			    txt+="</div>";
+			    txt+="</li>";
                         }
                         txt+="</ul>";
                         txt+="</li>";
@@ -39,14 +48,11 @@ function populateSideMenu(){
             }
             txt+="</ul>";
             $("#sideMenuWindow").html(txt).hide();
-            wh=$(window).height()*0.9;
+            $(".extrasHolder").hide();
+            $(".topnav").accordion();
+
+	    wh=$(window).height()*0.9;
             $("#sideMenuWindow").css("max-height", wh+"px");
-            $(".topnav").accordion({
-                accordion:false,
-                speed: 500,
-                closedSign: '<svg height="16" viewBox="0 0 6 16" width="6"><path fill-rule="evenodd" d="M0 14l6-6-6-6z"></path></svg>',
-                openedSign: '<svg height="16" viewBox="1 0 12 16" width="12"><path fill-rule="evenodd" d="M0 5l6 6 6-6z"></path></svg>'
-            });
 
             $("#sideMenuSymbol").click(function(){
 //                $("#sideMenuWindow").slideToggle("slow");
@@ -55,6 +61,78 @@ function populateSideMenu(){
  
         }
     );
+}
+
+
+function listDataset(group, datasetID, typeCode){
+    dataGroup=group;
+    typeName=typeCode.replace(/_/g," ");
+    if (dataGroup=="biodiv"){
+        apicall='./api/api_biodiv.php?datasetID='+datasetID+"&popularGroup="+typeName+"";
+    }else{
+        apicall='./api/api_envdata.php?datasetID='+datasetID+"&variableType="+typeName+"";
+    }
+    $("#shade").show();
+    $.get(apicall, 
+        function(data){
+            alldata=JSON.parse(data);
+		features=alldata['features'];
+		txt="<table width=1000>";
+                txt+="<tr><th>Location ID<th>Location name<th>Locality<th>Geomorphological Position<th></tr>";
+		for (i in features){
+		    props=features[i]['properties'];
+                    txt+="<tr><td>"+props['locationID']+"<td>"+props['locationName']+"<td>"+props['locality']+"<td>"+props['geomorphologicalPosition']+"<td><span class=clickable onClick=clickOnMapItem('"+props['locationID']+"','"+dataGroup+"','"+datasetID+"','"+typeCode+"')>view data</span></tr>";
+		}
+		txt+="</table>";
+		popup(0.9,0.9,txt);
+                $("#shade").hide();
+            }
+        );
+
+}
+
+function clickOnMapItem(itemId, dataGroup, datasetID, typeCode) {
+    disablePopup();
+    //get target layer by it's id
+    alayer=pointOverlays[dataGroup+"-"+datasetID+"-"+typeCode]
+    var layer = alayer.getLayer(itemId);
+    //fire event 'click' on target layer 
+    layer.fireEvent('click');  
+}
+
+
+
+function describeDataset(group, datasetID, typeCode){
+    dataGroup=group;
+    if (dataGroup=="biodiv"){
+        apicall="./api/api_biodiv.php?calltype=datasetinfo&datasetID="+datasetID+"";
+    }else{
+        apicall="./api/api_envdata.php?calltype=datasetinfo&datasetID="+datasetID+"";
+    }
+	    console.log(apicall);
+    $("#shade").show();
+    $.get(apicall, 
+        function(data){
+            alldata=JSON.parse(data);
+		txt="<h1>Dataset info:</h1>";
+		txt="<table width=1000>";
+                txt+="<tr><td>dataset ID:<td>"+alldata['datasetID']+"</tr>";
+                txt+="<tr><td>dataset name:<td>"+alldata['datasetName']+"</tr>";
+                txt+="<tr><td>description:<td>"+alldata['datasetDescription']+"</tr>";
+                txt+="<tr><td>institution holding data:<td>"+alldata['institutionCode']+"</tr>";
+                txt+="<tr><td>institution owning data:<td>"+alldata['ownerInstitutionCode']+"</tr>";
+		if (alldata['publications']){
+                    txt+="<tr><td>relevant publications:<td>"+alldata['publications']+"</tr>";
+		}
+		if (alldata['datasetRemarks']){
+                    txt+="<tr><td>remarks:<td>"+alldata['datasetRemarks']+"</tr>";
+		}
+		txt+="</table>";
+		popup(0.9,0.9,txt);
+                $("#shade").hide();
+            }
+        );
+
 }
 
 
@@ -70,9 +148,9 @@ function showhideDataset(group, datasetID, typeCode){
     if( $('#'+dataGroup+"-"+datasetID+"-"+typeCode).prop('checked')){
         typeName=typeCode.replace(/_/g," ");
         if (dataGroup=="biodiv"){
-            apicall='/api/api_biodiv.php?datasetID='+datasetID+"&popularGroup="+typeName+"";
+            apicall='./api/api_biodiv.php?datasetID='+datasetID+"&popularGroup="+typeName+"";
         }else{
-            apicall='/api/api_envdata.php?datasetID='+datasetID+"&variableType="+typeName+"";
+            apicall='./api/api_envdata.php?datasetID='+datasetID+"&variableType="+typeName+"";
         }
         console.log(apicall);
         $("#shade").show();
@@ -86,7 +164,7 @@ function showhideDataset(group, datasetID, typeCode){
 //                   popupAnchor:  [1, -24],
                      iconUrl:"img/marker"+n+".svg" 
                 });
-                $('#marker-'+dataGroup+"-"+datasetID+"-"+typeCode).html("<img src=img/marker"+n+".svg width=22>");
+                $('#marker-'+dataGroup+"-"+datasetID+"-"+typeCode).html("<img src=img/marker"+n+".svg width=16>");
                 alldata=JSON.parse(data);
                 var geoJSONLayer = L.geoJSON(alldata, {
                     pointToLayer: function(feature, latlng) {
@@ -96,6 +174,7 @@ function showhideDataset(group, datasetID, typeCode){
                 }).addTo(map);
                 //pointOverlays is a global array that stores currently displayed layers
                 pointOverlays[dataGroup+"-"+datasetID+"-"+typeCode]=geoJSONLayer; 
+                $('#extras-'+dataGroup+"-"+datasetID+"-"+typeCode).show();
                 $("#shade").hide();
             }
         );
@@ -103,7 +182,8 @@ function showhideDataset(group, datasetID, typeCode){
         // not sure if it wouldnt be better to hide the overlay... but let's remove it for the time being
         map.removeLayer(pointOverlays[dataGroup+"-"+datasetID+"-"+typeCode]);
         delete pointOverlays[dataGroup+"-"+datasetID+"-"+typeCode];
-        $('#marker-'+dataGroup+"-"+datasetID+"-"+typeCode).html("");
+        $('#marker-'+dataGroup+"-"+datasetID+"-"+typeCode).html("&nbsp");
+        $('#extras-'+dataGroup+"-"+datasetID+"-"+typeCode).hide();
         $("#shade").hide();
     }
 }
@@ -151,6 +231,7 @@ function onEachFeature(feature,layer){
     function closePopup(){
         layer.closePopup();
     }
+
     layer.bindPopup("<img src=img/ajax-loader.gif>");
     // this attaches apicall and dataGroup to properties of the feature for later use in populating popup
     // apicall and dataGroup are not passsed directly, they are defined here using js variable scope,
@@ -158,6 +239,8 @@ function onEachFeature(feature,layer){
     layer.feature.properties.apicall = apicall;
     layer.feature.properties.dataGroup = dataGroup;
     layer.on('click', function (e) {
+	    console.log(feature);
+	    console.log(layer);
       populateFirstPopup(feature,layer); 
       layer.removeEventListener('mouseout', closePopup);
     });
@@ -166,10 +249,8 @@ function onEachFeature(feature,layer){
       layer.bindPopup(txt, {maxWidth: "auto"}).openPopup();
       layer.addEventListener('mouseout', closePopup);
     });
+    layer._leaflet_id = feature.properties['locationID'];
 }
-
-
-
 
 
 function populateFirstPopup(feature,layer){
@@ -179,15 +260,16 @@ function populateFirstPopup(feature,layer){
     if (dataGroup=="biodiv") {
         //  biodiv
         featureapicall=apicall0+"&calltype=event&locationID="+feature.properties.locationID;
+        console.log("test");
         console.log(featureapicall);
         $.get(featureapicall, 
         function(data){
-            console.log(featureapicall);
             alldata=JSON.parse(data);
             selfeature=alldata.features[0];
             txt="<div class=popupLocInfo>"
             txt+="<h1>Location:</h1>";
             txt+="<table width=400px>";
+	    // this displays all properties coming from api
             for (key in selfeature.properties){
                 if ( key != "events"){
                     txt+="<tr><td>"+key+":<td>"+selfeature.properties[key]+"</tr>";
@@ -204,7 +286,7 @@ function populateFirstPopup(feature,layer){
             }
             txt+="</table>";
             txt+="</div>";
-            layer.bindPopup(txt).openPopup();
+            layer.bindPopup(txt, {maxWidth: "auto"}).openPopup();
         });
     }else{
         // this is when dataGroup=='envdata';
@@ -306,7 +388,8 @@ console.log(selfeature.properties.locationType);
 function showEventInPopup(ev){
 // when one clicks on "view" in leaflet popup. this is for biodiv data
 // popup to show stuff with is not leaflet popup, its the "full screen popup"
-    eventapicall="/api/api_biodiv.php?calltype=data&eventID="+ev;
+    eventapicall="./api/api_biodiv.php?calltype=data&eventID="+ev;
+    console.log(eventapicall);
     $.get(eventapicall, 
         function(data){
             console.log(eventapicall);
@@ -352,12 +435,12 @@ function showOnceoffDatastreamInPopup(ds){
 // when one clicks on "view" in leaflet popup. this is for envmon data of non-monitoring type
 // popup to show stuff with is not leaflet popup, its the "full screen popup"
 // just shows a table of data, no graph
-    eventapicall="/api/api_envdata.php?calltype=data&datastreamID="+ds;
+    eventapicall="./api/api_envdata.php?calltype=data&datastreamID="+ds;
     $.get(eventapicall, 
         function(data){
 //            console.log(eventapicall);
             alldata=JSON.parse(data);
-            selfeature=alldata.features[0];
+		selfeature=alldata.features[0];
             txt="<div class=dataStreamInfo>"
 //            console.log(selfeature.properties);
             txt+="<h1>Location info:</h1>";
@@ -404,7 +487,7 @@ function showMonitoringDatastreamInPopup(ds,firstDate,lastDate){
     lastDate=lastDate.replace(/_/g," ");
 //    console.log(firstDate+lastDate);
     console.log(ds);
-    eventapicall="/api/api_envdata.php?calltype=datastream&datastreamID="+ds;
+    eventapicall="./api/api_envdata.php?calltype=datastream&datastreamID="+ds;
     $.get(eventapicall, 
         function(data){
             console.log(eventapicall);

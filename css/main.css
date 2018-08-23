@@ -17,7 +17,7 @@ input,textarea{
 }
 
 body{
-    margin-left : 20px;
+    margin-left : 0px;
 }
 
 /* BASICS */
@@ -114,10 +114,6 @@ H6 {
     overflow:auto;
     z-index: 240;
     padding: 10px 0px 10px 20px; 
-}
-
-.menuitem{
-    line-height:50px;
 }
 
 .clickable {

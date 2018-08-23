@@ -1,14 +1,15 @@
 <?php
 
 function getbiodiv($mysqli, $what){
-
 $link="not";
 if ($what=="monitoring"){
     $link="";
 }
 
 $query0="select distinct popularGroupName from occurrence join event on occurrence.eventID=event.eventID join location on event.locationID=location.locationID where ".$link." location.locationType='monitoring'";
-#echo $query0."<br>";
+//echo $query0."<br>";
+
+
 $result0 = $mysqli->query($query0);
 $typestack=array();
 while($row0 = $result0->fetch_assoc()){
@@ -58,7 +59,7 @@ while($row0 = $result0->fetch_assoc()){
     $variableType=$row0['variableType'];
     $datasetstack=array(); #to store datasets
     $query1="select distinct dataset.datasetID,datasetName,datasetDescription from dataset join location on location.datasetID=dataset.datasetID join datastream on location.locationID=datastream.locationID where variableType='{$variableType}' and ".$link." location.locationType='monitoring'";
-#echo $query1."</br>";
+//echo $query1."</br>";
     $result1 = $mysqli->query($query1);
     while ($row1= $result1->fetch_assoc()){
         $datasetID=$row1['datasetID'];
@@ -84,14 +85,19 @@ return $grouparr;
 
 }
 
+#inital checks on arguments
+#check if dataset is set
 
 
+#standard menu call
 $output=array();
 $monitoring=array();
 $campaign=array();
 ###########################################################################
 # connecting to db
 # using mysqli
+
+
 include '/.creds/.credentials.php';
 $mysqli->select_db('envmondata');
 ###########################################################################
@@ -100,11 +106,13 @@ $campaign[]=getenvdata($mysqli,"campaign");
 
 ###########################################################################
 # connecting to db
-# using mysqli
+# 
 $mysqli->select_db('biodivdata');
 ###########################################################################
+
 $monitoring[]=getbiodiv($mysqli,"monitoring");
 $campaign[]=getbiodiv($mysqli,"campaign");
+
 $output[]=array(
 	"groupName"=>"Monitoring",
 	"data"=>$monitoring

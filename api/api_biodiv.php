@@ -1,9 +1,10 @@
 <?php
 # API function for querrying biodiversity database
 # returns data in GeoJSON format
-# at the moment handles two types of calls:
+# at the moment handles three types of calls:
 # - default call lists all locations, or their subset, based on criteria (dataset, lat, lon, eventDate, taxonID, popularGroup, datasetID)
 # - calltype=data: data for all locations fulfilling criteria (lat,lon,eventDate, taxonID, locationID, popularGroup, dataasetID)
+# - calltype=="datasetinfo" - returns dataset info
 #
 # all criteria are assessed using AND condition
 #
@@ -25,7 +26,7 @@ $mysqli->select_db('biodivdata');
 ###########################################################################
 #inital checks on arguments
 #check what type of call is this and make sure calltype is correct
-$calltypes=array("data","event");
+$calltypes=array("data","event", "datasetinfo");
 $calltype=''; #empty call returns locationinfo
 if (isset($_GET['calltype'])){
     if (in_array($_GET['calltype'],$calltypes)){
@@ -48,6 +49,7 @@ $locationID=null;
 if (isset($_GET['locationID'])){
     $locationID=$_GET['locationID'];
 }
+
 $latmin=null;
 if (isset($_GET['latmin'])){
     $latmin=$_GET['latmin'];
@@ -95,6 +97,15 @@ if (isset($_GET['locationType'])){
 
 
 
+
+
+if ($calltype=="datasetinfo"){
+#if datasetinfo call
+    $query="select * from dataset where datasetID='".$datasetID."' ";
+    $result = $mysqli->query($query);
+    $output = $result->fetch_assoc();
+}else{
+# if not datasetinfo call
 ###########################################################################
 # preparing query
 
@@ -103,7 +114,7 @@ if (isset($_GET['locationType'])){
 
 $query_join=" from occurrence join event on occurrence.eventID=event.eventID join location on event.locationID=location.locationID join dataset on event.datasetID=dataset.datasetID join checklist on occurrence.taxonID=checklist.taxonID ";
 
-#echo $query_join;
+//echo $query_join;
 
 #this merges all criteria
 $query_crit='';
@@ -245,6 +256,8 @@ $output=array(
 );
 
 #    "url"=>$_SERVER['REQUEST_URI'],
+}# end of 
+
 
 echo json_encode($output);
 ?>

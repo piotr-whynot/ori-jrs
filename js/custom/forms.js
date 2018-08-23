@@ -160,12 +160,13 @@ function editOnceoffRecordsInPopup(datasetID, locationID, datetime){
     txt="<div id=records_header></div><div id=records_date></div><div id=records_table class=centeritem></div>";
     popup(0.95,0.95, txt);
     // header
+    datetime=decodeURIComponent(datetime);
     txt="<p>Dataset: <b>"+datasetID+"</b>&nbspLocation: <b>"+locationID+"</b>&nbspDate: <b>"+datetime+"</b></p>";
     $("#records_header").html(txt);
 
     // create table with all datastreams in columns
-    console.log("/api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID)
-     $.get("/api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID,
+    console.log("./api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID)
+     $.get("./api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID,
     function(data0){
         data0=JSON.parse(data0);
         datastreams=data0.features[0].properties.datastreams;
@@ -226,8 +227,8 @@ function editOnceoffRecordsInPopup(datasetID, locationID, datetime){
 function populateOnceoffRecords(datasetID, locationID){
     datetime=$("#dateSelect option:selected").text();
     console.log(datetime);
-    console.log("/api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID);
-    $.get("/api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID,
+    console.log("./api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID);
+    $.get("./api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID,
     function(data0){
         data0=JSON.parse(data0);
         datastreams=data0.features[0].properties.datastreams;
@@ -249,8 +250,8 @@ function populateOnceoffRecords(datasetID, locationID){
         $("#records_table").html(txt);
         if(datetime){
             // populate table - get data for given month
-            console.log("/api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID+"&datetime="+datetime);
-            $.get("/api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID+"&datetime="+datetime,
+            console.log("./api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID+"&datetime="+datetime);
+            $.get("./api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID+"&datetime="+datetime,
             function(data){
                 data=JSON.parse(data);
                 if (data.features.length>0){
@@ -353,8 +354,8 @@ function populateMonitoringRecords(datasetID, locationID, baseTime){
         console.log(fdstr, ldstr);
         $('#records_table').html("<center style='font-size:14px; color:lightgrey;'><img src='../img/ajax-loader.gif'><br><b>Loading...</b></center>");
         // reading all datastreams for location
-        console.log("/api/api_envdata.php?calltype=datastream&datasetID="+datasetID+"&locationID="+locationID);
-        $.get("/api/api_envdata.php?calltype=datastream&datasetID="+datasetID+"&locationID="+locationID,
+        console.log("./api/api_envdata.php?calltype=datastream&datasetID="+datasetID+"&locationID="+locationID);
+        $.get("./api/api_envdata.php?calltype=datastream&datasetID="+datasetID+"&locationID="+locationID,
         function(data0){
             data0=JSON.parse(data0);
             datastreams=data0.features[0].properties.datastreams;
@@ -402,8 +403,8 @@ function populateMonitoringRecords(datasetID, locationID, baseTime){
 
             //populate cells with actual data
 
-            console.log("/api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID+"&startdate="+fdstr+"&enddate="+ldstr);
-            $.get("/api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID+"&startdate="+fdstr+"&enddate="+ldstr,
+            console.log("./api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID+"&startdate="+fdstr+"&enddate="+ldstr);
+            $.get("./api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID+"&startdate="+fdstr+"&enddate="+ldstr,
             function(data){
                 data=JSON.parse(data);
                 if (data.features.length>0){
@@ -494,8 +495,8 @@ function editOccurrences(){
     console.log(datasetID, locationID);
     // create data table
     $('#records_table').html("<center style='font-size:14px; color:lightgrey;'><img src='../img/ajax-loader.gif'><br><b>Loading...</b></center>");
-    console.log("/api/api_biodiv.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID+"&eventID="+eventID);
-    $.get("/api/api_biodiv.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID+"&eventID="+eventID,
+    console.log("./api/api_biodiv.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID+"&eventID="+eventID);
+    $.get("./api/api_biodiv.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID+"&eventID="+eventID,
     function(data){
             data=JSON.parse(data);
             occurrences=data.features[0].properties.events[0].occurrenceData;
