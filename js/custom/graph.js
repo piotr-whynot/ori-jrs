@@ -17,7 +17,9 @@ function loadPlot(datastream, graphType, isFirst, showcumsum){
     $.get(eventapicall,
         function(data){
             alldata=JSON.parse(data);
-            metadata=alldata.features[0].properties.datastreams[0];
+            console.log(alldata[0]);
+            //metadata=alldata.features[0].properties.datastreams[0];
+            metadata=alldata[0].datastreams[0];
             firstDate=metadata.firstMeasurementDate;
             lastDate=metadata.lastMeasurementDate;
             a = new Date(lastDate);
@@ -27,7 +29,7 @@ function loadPlot(datastream, graphType, isFirst, showcumsum){
             // function that plots
             measuringUnit=metadata.variableUnit;
             variableName=metadata.variableName;
-            locationName=alldata.features[0].properties.locality;
+            locationName=alldata[0].locality;
             if(graphType=="compareyearscumsum"){
                 prepareChart_compareyears("graph", ds, fy, ly, measuringUnit, variableName, locationName, "cumsum")
                 txt="<b> Highlight years:</b><br>";
@@ -69,7 +71,8 @@ function getData(ds, firstDateString, lastDateString, seriesType, dateType, call
             // this will be a geojson objest with a number of columns. It needs to be processed
             data=JSON.parse(data);
             // now we get data only
-            data=data.features[0].properties.datastreams[0].data;
+            console.log(data[0].datastreams[0]);
+            data=data[0].datastreams[0].data;
             // this will be returned
             outdata= new Array();
             if (dateType=="sameyear"){

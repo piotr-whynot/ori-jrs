@@ -10,6 +10,7 @@ if(isset($_REQUEST['base'])){
     //this makes sure base is not empty
     $base="admin";
 }
+
 //this is table name
 if(isset($_REQUEST['item'])){
     $item  = $_REQUEST['item'];

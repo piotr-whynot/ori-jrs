@@ -104,7 +104,6 @@ if ($base=="envmondata" & $table=="location"){
         echo "success";
     }
     $stmt->close();
-
     $url="./?base=envmondata&do=edit&table=location&datasetID={$_POST['datasetID']}";
 }
 
@@ -158,6 +157,8 @@ if ($base=="biodivdata" & $table=="dataset"){
     if (!$stmt->execute()) {
         $errorflag=true;
         echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
+    }else{
+	echo "success";
     }
     $stmt->close();
     $url="./?base=biodivdata&do=edit&table=dataset";
@@ -218,14 +219,46 @@ if ($base=="biodivdata" & $table=="checklist"){
 }
 
 
+#******************************************************************************************************************************************
+# user & user
+#
+if ($base=="users" & $table=="users"){
+    $errorflag=false;
+    $mysqli->select_db('users1');
+    if ($do=="add"){
+	$datestr = date('Y-m-d H:i:s');
+	$passwordCode=md5(mt_rand(0,1000000));
+	//using prepared statements - apparently v.secure way of interacting with database	
+	if ($_POST['password']){
+            $password=md5($_POST['password']);
+            $stmt = $mysqli->prepare("insert into users (lastName, firstName,emailAddress,organization,userType,dateRegistered,passwordCode,password) values (?,?,?,?,?,?,?,?)");
+            $stmt->bind_param("ssssssss", $_POST['lastName'], $_POST['firstName'],$_POST['emailAddress'],$_POST['organization'],$_POST['userType'],$datestr, $passwordCode, $password);
+	}else{
+            $stmt = $mysqli->prepare("insert into users (lastName, firstName,emailAddress,organization,userType,dateRegistered,passwordCode) values (?,?,?,?,?,?,?)");
+            $stmt->bind_param("sssssss", $_POST['lastName'], $_POST['firstName'],$_POST['emailAddress'],$_POST['organization'],$_POST['userType'],$datestr, $passwordCode);
+	}
+    }else if ($do=="edit"){
 
+	if ($_POST['password']){
+            $password=md5($_POST['password']);
+            $stmt = $mysqli->prepare("update users set firstName=?, lastName=?, emailAddress=?, organization=?, userType=?,password=? where userID=?");
+            $stmt->bind_param("ssssssd", $_POST['firstName'], $_POST['lastName'],$_POST['emailAddress'],$_POST['organization'],$_POST['userType'],$password, $_POST['userID']);
 
-
-
+	}else{
+            $stmt = $mysqli->prepare("update users set firstName=?, lastName=?, emailAddress=?, organization=?, userType=? where userID=?");
+            $stmt->bind_param("sssssd", $_POST['firstName'], $_POST['lastName'],$_POST['emailAddress'],$_POST['organization'],$_POST['userType'],$_POST['userID']);
+        }
+    }
+    if (!$stmt->execute()) {
+        $errorflag=true;
+        echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
+    }else{
+        echo "success";
+    }
+    $stmt->close();
+    $url="./?base=users&do=edit&table=users";
+}
 if ($errorflag) {
 echo "Some errors occurred";
-}else{
-//echo "done <br>";
-//echo "<a href={$url}>back</a>";
 }
 ?>

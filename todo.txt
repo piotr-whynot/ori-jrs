@@ -1,12 +1,19 @@
-************general************
+add redirect to admin pages in main.js
+
+
+************database************
+  add datasetRemarks in biodiv dataset table
+  add datasetID to location table in biodivdata
+  add associated media to checklist
+  add habitat to event
+  elevation to verbatimElevation
+
 vocabulary for variableType
+
+************general************
 public vs private data
 "favourites"
-what is the difference between institution and ownerInstitution?
-add datasetRemarks in biodiv dataset table
-add datasetID to location table in biodivdata
-add associated media to checklist
-
+zoom on location when picked from list all locations table
 
 ************map page*************
 adjust field lengths in definition of datastream table
@@ -23,18 +30,20 @@ consolidate what's shown in popup for location and datastream
 accomodate subsites
 
 *********admin pages*************
-
 loading data from excel spreadsheet functionality
 definition of basisOfRecord
 baseTime for monitoring data - must not be instantaneous, once off-measurements may be instantaneous
 sort out functionality of qc code and censored code
 add cancel buttons to admin forms
-
 add variableCode to datastream table and elsewhere - not sure why?
-
 when adding occurrence to event in biodiv - remove buttons should show as blue links
-
 sort out checklist - should it be based on dataset, or universal?
-
 make sure form validation happens on submit - IMPORTANT
-check all the back links 
+add delete user functionalit
+
+***************general*****************
+warning about cookies in openstreetmaps
+
+
+**************login*******************
+add e-mail syntax check to resetPassword in login.js

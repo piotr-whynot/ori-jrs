@@ -23,13 +23,9 @@ function initialize(){
 	    console.log(data)
 	    data=JSON.parse(data);
 	    if (data[0]==null){ //when not registered;
-            $('#loginContainerFooter').html("<span class=clickable onClick=loginForm()>login</span>&nbsp|&nbsp<span class=clickable onClick=registerForm()>register</span>");
-        }else{
-            if(data[1]=="admin"){
-                $('#loginContainerFooter').html("<span class=clickable onClick=>admin pages</span>&nbsp|&nbsp<span class=clickable onClick=logoutForm()>logout</span>&nbsp|&nbsp<span class=clickable onClick=updateUserForm()>your account</span>");
+                $('#loginContainerFooter').html("<span class=clickable onClick=loginForm()>login</span>&nbsp|&nbsp<span class=clickable onClick=registerForm()>register</span>");
             }else{
                 $('#loginContainerFooter').html("<span class=clickable onClick=logoutForm()>logout</span>&nbsp|&nbsp<span class=clickable onClick=updateUserForm()>your account</span>");
-            }
 	    }
 	    if (init=="updatePassword"){
                 updatePasswordForm(tempPassword);
@@ -72,7 +68,7 @@ function populateSideMenu(){
 			    txt+="</label>";
 			    txt+="<div class=extrasHolder id=extras-"+groupCode+"-"+d+"-"+typeCode+">";
 			    txt+="<span class=clickable onClick=describeDataset(\""+groupCode+"\",'"+d+"','"+typeCode+"') id=list-"+groupCode+"-"+d+"-"+typeCode+">dataset info</span><br>";
-			    txt+="<span class=clickable onClick=listLocationsInDataset(\""+groupCode+"\",'"+d+"','"+typeCode+"') id=list-"+groupCode+"-"+d+"-"+typeCode+">list all locations</span>";
+			    txt+="<span class=clickable onClick=listDataset(\""+groupCode+"\",'"+d+"','"+typeCode+"') id=list-"+groupCode+"-"+d+"-"+typeCode+">list all locations</span>";
 			    txt+="</div>";
 			    txt+="</li>";
                         }
@@ -86,7 +82,7 @@ function populateSideMenu(){
                 txt+="</li>";
             }
             txt+="</ul>";
-            $("#sideMenuWindow").html(txt) //.hide();
+            $("#sideMenuWindow").html(txt).hide();
             $(".extrasHolder").hide();
             $(".topnav").accordion();
 
@@ -103,7 +99,7 @@ function populateSideMenu(){
 }
 
 
-function listLocationsInDataset(group, datasetID, typeCode){
+function listDataset(group, datasetID, typeCode){
     dataGroup=group;
     typeName=typeCode.replace(/_/g," ");
     if (dataGroup=="biodiv"){
@@ -120,8 +116,7 @@ function listLocationsInDataset(group, datasetID, typeCode){
                 txt+="<tr><th>Location ID<th>Location name<th>Locality<th>Geomorphological Position<th></tr>";
 		for (i in features){
 		    props=features[i]['properties'];
-                    txt+="<tr><td>"+props['locationID']+"<td>"+props['locationName']+"<td>"+props['locality']+"<td>"+props['geomorphologicalPosition']+"<td><span class=clickable onClick=clickOnMapItem('"+props['locationID']+"','"+dataGroup+"','"+datasetID+"','"+typeCode+"')>view data</span>";
-                    txt+="<td><span class=clickable onClick=downloadAPI('"+dataGroup+"','','"+props['locationID']+"','','','csv')>download csv</span></td></tr>";
+                    txt+="<tr><td>"+props['locationID']+"<td>"+props['locationName']+"<td>"+props['locality']+"<td>"+props['geomorphologicalPosition']+"<td><span class=clickable onClick=clickOnMapItem('"+props['locationID']+"','"+dataGroup+"','"+datasetID+"','"+typeCode+"')>view data</span></tr>";
 		}
 		txt+="</table>";
 		popup(0.9,0.9,txt);
@@ -130,7 +125,6 @@ function listLocationsInDataset(group, datasetID, typeCode){
         );
 
 }
-
 
 function clickOnMapItem(itemId, dataGroup, datasetID, typeCode) {
     closePopup();
@@ -168,7 +162,6 @@ function describeDataset(group, datasetID, typeCode){
 		if (alldata['datasetRemarks']){
                     txt+="<tr><td>remarks:<td>"+alldata['datasetRemarks']+"</tr>";
 		}
-        txt+="<tr><td><td><span class=clickable onClick=downloadAPI('"+dataGroup+"','"+alldata['datasetID']+"','','','','csv')>download entire dataset in csv format</span></tr>";
 		txt+="</table>";
 		popup(0.9,0.9,txt);
                 $("#shade").hide();
@@ -179,13 +172,14 @@ function describeDataset(group, datasetID, typeCode){
 
 
 
-function showhideDataset(group, datasetID, typeCode){
+function showhideDataset(grouproup, datasetID, typeCode){
+// changed by Piotr on 20170331
 // shows and hide datasets from the main menu
 // needs to be richer. For example, should allow displaying all datasets for a given data type with one click
 //
-    dataGroup=group;
 //    alert(group+datasetID+typeCode);
 //    alert($('#'+group+"-"+datasetID+"-"+typeCode).prop('checked'));
+    dataGroup=group;
     if( $('#'+dataGroup+"-"+datasetID+"-"+typeCode).prop('checked')){
         typeName=typeCode.replace(/_/g," ");
         if (dataGroup=="biodiv"){
@@ -197,7 +191,6 @@ function showhideDataset(group, datasetID, typeCode){
         $("#shade").show();
         $.get(apicall, 
             function(data){
-		console.log(data); 
 //              this randomizes colours of markers
                 n=Math.round(((Math.random()*19)),0);
                 var smallIcon = new L.Icon({
@@ -208,27 +201,25 @@ function showhideDataset(group, datasetID, typeCode){
                 });
                 $('#marker-'+dataGroup+"-"+datasetID+"-"+typeCode).html("<img src=img/marker"+n+".svg width=16>");
                 alldata=JSON.parse(data);
-		console.log(alldata);
-                geoJSONLayer = L.geoJSON(alldata, {
+                var geoJSONLayer = L.geoJSON(alldata, {
                     pointToLayer: function(feature, latlng) {
                         return L.marker(latlng, {icon: smallIcon});
                     },
                     onEachFeature: onEachFeature
-                });
-		console.log(geoJSONLayer);
-		geoJSONLayer.addTo(map)
+                }).addTo(map);
                 //pointOverlays is a global array that stores currently displayed layers
                 pointOverlays[dataGroup+"-"+datasetID+"-"+typeCode]=geoJSONLayer;
+		console.log(pointOverlays);
                 $('#extras-'+dataGroup+"-"+datasetID+"-"+typeCode).show();
                 $("#shade").hide();
             }
         );
     }else{
         // not sure if it wouldnt be better to hide the overlay... but let's remove it for the time being
-        $('#marker-'+dataGroup+"-"+datasetID+"-"+typeCode).html("&nbsp");
-        $('#extras-'+dataGroup+"-"+datasetID+"-"+typeCode).hide();
         map.removeLayer(pointOverlays[dataGroup+"-"+datasetID+"-"+typeCode]);
         delete pointOverlays[dataGroup+"-"+datasetID+"-"+typeCode];
+        $('#marker-'+dataGroup+"-"+datasetID+"-"+typeCode).html("&nbsp");
+        $('#extras-'+dataGroup+"-"+datasetID+"-"+typeCode).hide();
         $("#shade").hide();
     }
 }
@@ -305,26 +296,26 @@ function populateFirstPopup(feature,layer){
     if (dataGroup=="biodiv") {
         //  biodiv
         featureapicall=apicall0+"&calltype=event&locationID="+feature.properties.locationID;
-//        console.log("apicall:");
-//        console.log(featureapicall);
+        console.log("test");
+        console.log(featureapicall);
         $.get(featureapicall, 
         function(data){
             alldata=JSON.parse(data);
-            selfeature=alldata[0];
+            selfeature=alldata.features[0];
             txt="<div class=popupLocInfo>"
             txt+="<h1>Location:</h1>";
             txt+="<table width=400px>";
 	    // this displays all properties coming from api
-            for (key in selfeature){
+            for (key in selfeature.properties){
                 if ( key != "events"){
-                    txt+="<tr><td>"+key+":<td>"+selfeature[key]+"</tr>";
+                    txt+="<tr><td>"+key+":<td>"+selfeature.properties[key]+"</tr>";
                 }
             }
             txt+="</table>";
             txt+="<h1>Sampling events:</h1>";
             txt+="<table width=400px>";
-            for (ev in selfeature['events']){
-                ev=selfeature['events'][ev];
+            for (ev in selfeature.properties['events']){
+                ev=selfeature.properties['events'][ev];
                 txt+="<tr><td>date: <td>"+ev.eventDate+"<td><span onClick=showEventInPopup('"+ev.eventID+"') class='clickable rf'>view</span></tr>";  
                 txt+="<tr><td>protocol:<td>"+ev.samplingProtocol+"</tr>";
                 txt+="<tr><td>recorded by:<td>"+ev.recordedBy+"</tr>";
@@ -336,30 +327,29 @@ function populateFirstPopup(feature,layer){
     }else{
         // this is when dataGroup=='envdata';
         featureapicall=apicall0+"&calltype=data&locationID="+feature.properties.locationID;
-        //console.log(featureapicall);
+        console.log(featureapicall);
         $.get(featureapicall, 
         function(data){
             console.log(featureapicall);
             alldata=JSON.parse(data);
-            selfeature=alldata[0];
-            console.log(selfeature);
+            selfeature=alldata.features[0];
             txt="<div class=popupDataStreamInfo>"
             // Location info
             txt+="<h1>Location info:</h1>";
             txt+="<table width=300px>";
-            for (key in selfeature){
+            for (key in selfeature.properties){
                 if ( key != "datastreams"){
-                    txt+="<tr><td>"+key+"<td>"+selfeature[key]+"</tr>";
+                    txt+="<tr><td>"+key+"<td>"+selfeature.properties[key]+"</tr>";
                 }
             }
             txt+="</table><br>";
             // base times or events
-            if (selfeature.locationType=="monitoring"){
+            if (selfeature.properties.locationType=="monitoring"){
                 //monitoring
                 txt+="<h1>Measurement frequencies:</h1>";
                 baseTimes=new Array();
-                for (dstrm in selfeature['datastreams']){
-                    dstrm=selfeature['datastreams'][dstrm];
+                for (dstrm in selfeature.properties['datastreams']){
+                    dstrm=selfeature.properties['datastreams'][dstrm];
                     if ($.inArray(dstrm.baseTime, baseTimes)==-1){
                         baseTimes.push(dstrm.baseTime);
                     }
@@ -368,9 +358,7 @@ function populateFirstPopup(feature,layer){
                 for (i in baseTimes){
                     txt+="<tr><td>"+baseTimes[i];
                     // this will need to be dependent on access rights
-                    txt+="<td><span class=clickable onClick=editMonitoringRecordsInPopup('"+selfeature.datasetID+"','"+selfeature.locationID+"','"+dstrm.baseTime+"')>edit/add data</span>";
-                    txt+="</td>";
-                    txt+="<td><span class=clickable onClick=downloadAPI('envdata','','"+selfeature.locationID+"','"+baseTimes[i]+"','','csv')>download csv</span></td></tr>"; //downloadAPI(dataGroup, datasetID, locationID, baseTime, datastreamID, format)
+                    txt+="<td><span class=clickable onClick=editMonitoringRecordsInPopup('"+selfeature.properties.datasetID+"','"+selfeature.properties.locationID+"','"+dstrm.baseTime+"')>edit/add data</span>";
                 }
                 txt+="</table>";
             }else{
@@ -378,8 +366,8 @@ function populateFirstPopup(feature,layer){
                 txt+="<h1>Measurement events:</h1>";
                 // this will need to be dependent on access rights
                 eventDates=new Array();
-                for (dstrm in selfeature['datastreams']){
-                    data=selfeature['datastreams'][dstrm].data;
+                for (dstrm in selfeature.properties['datastreams']){
+                    data=selfeature.properties['datastreams'][dstrm].data;
                     for (rec in data){
                         if ($.inArray(data[rec][0], eventDates)==-1){
                             eventDates.push(data[rec][0]);
@@ -390,10 +378,8 @@ function populateFirstPopup(feature,layer){
                 for (i in eventDates){
                     txt+="<tr><td>"+eventDates[i];
                     // this will need to be dependent on access rights
-                    txt+="<td><span class=clickable onClick=editOnceoffRecordsInPopup('"+selfeature.datasetID+"','"+selfeature.locationID+"','"+encodeURIComponent(eventDates[i])+"')>edit/add data</span>";
-                    txt+="</td>";
-                    txt+="<td><span class=clickable onClick=downloadAPI('envdata','','"+selfeature.locationID+"','','','csv')>download csv</span></td></tr>";
-                    console.log("editOnceoffRecordsInPopup('"+selfeature.datasetID+"','"+selfeature.locationID+"','"+eventDates[i]+"')");
+                    txt+="<td><span class=clickable onClick=editOnceoffRecordsInPopup('"+selfeature.properties.datasetID+"','"+selfeature.properties.locationID+"','"+encodeURIComponent(eventDates[i])+"')>edit/add data</span>";
+                    console.log("editOnceoffRecordsInPopup('"+selfeature.properties.datasetID+"','"+selfeature.properties.locationID+"','"+eventDates[i]+"')");
                 }
                 txt+="</table>";
             }
@@ -403,11 +389,11 @@ function populateFirstPopup(feature,layer){
             
             txt+="<div style='height:200px; overflow-y:auto; width:600px;'>";  
             txt+="<table width=580px>";  
-            txt+="<tr><th>Name</th><th>Unit</th><th>Type</th><th>Time period</th><th></th><th></th></tr>"; 
-            for (dstrm in selfeature['datastreams']){
-                dstrm=selfeature['datastreams'][dstrm];
-console.log(selfeature.locationType);
-                if (selfeature.locationType=="monitoring"){
+            txt+="<tr><th>Name</th><th>Unit</th><th>Type</th><th>Time period</th><th></th></tr>"; 
+            for (dstrm in selfeature.properties['datastreams']){
+                dstrm=selfeature.properties['datastreams'][dstrm];
+console.log(selfeature.properties.locationType);
+                if (selfeature.properties.locationType=="monitoring"){
                     firstDate=dstrm.firstMeasurementDate;
                     lastDate=dstrm.lastMeasurementDate;
                     var fD = new Date(firstDate);
@@ -418,12 +404,10 @@ console.log(selfeature.locationType);
                     firstDate=firstDate.replace(/ /g,"_");
                     lastDate=lastDate.replace(/ /g,"_");
                     txt+="<tr><td>"+dstrm.variableName+"</td><td>["+dstrm.variableUnit+"]</td><td>"+dstrm.baseTime+"</td><td>"+firstDatestr+"-"+lastDatestr+"<td><span onClick=showMonitoringDatastreamInPopup('"+dstrm.datastreamID+"','"+firstDate+"','"+lastDate+"') class='clickable rf'>view</span>&nbsp&nbsp"; 
-                    txt+="</td>";
-                    txt+="<td><span class=clickable onClick=downloadAPI('envdata','','','','"+dstrm.datastreamID+"','csv')>download csv</span></td></tr>"; //downloadAPI(dataGroup, datasetID, locationID, baseTime, datastreamID, format)
+                    txt+="</td></tr>";
                 }else{
                     txt+="<tr><td>"+dstrm.variableName+"<td>["+dstrm.variableUnit+"]<td>"+dstrm.baseTime+"<td><span onClick=showOnceoffDatastreamInPopup('"+dstrm.datastreamID+"') class='clickable rf'>view</span>&nbsp&nbsp"; 
-                    txt+="</td>";
-                    txt+="<td><span class=clickable onClick=downloadAPI('envdata','','','','"+dstrm.datastreamID+"','csv')>download csv</span></td></tr>";
+                    txt+="</td></tr>";
                 } 
             }
             txt+="</table>";
@@ -436,29 +420,6 @@ console.log(selfeature.locationType);
 
 
 
-function downloadAPI(_base, _datasetID, _locationID, _baseTime, _datastreamID, _format){
-    alert("not available at the moment");
-}
-
-function downloadAPI_final(_base, _datasetID, _locationID, _baseTime, _datastreamID, _format){
-
-    apicall="./api/api_"+_base+".php?calltype=data";
-
-    if (_datasetID!=''){
-        apicall+="&datasetID="+_datasetID;
-    }
-    if (_locationID!=''){
-        apicall+="&locationID="+_locationID;
-    }
-    if (_datastreamID!=''){
-        apicall+="&datastreamID="+_datastreamID;
-    }
-    if (_baseTime!=''){
-        apicall+="&baseTime="+_baseTime;
-    }
-    console.log(apicall);
-}
-
 
 function showEventInPopup(ev){
 // when one clicks on "view" in leaflet popup. this is for biodiv data
@@ -469,16 +430,16 @@ function showEventInPopup(ev){
         function(data){
             console.log(eventapicall);
             alldata=JSON.parse(data);
-            selfeature=alldata[0];
+            selfeature=alldata.features[0];
             console.log(selfeature);
             txt="<div class=eventInfo>"
                 txt+="<h1>Location:"+"</h1>";
                 txt+="<table>";
-                txt+="<tr><td>"+selfeature.locationID+"</tr>";
+                txt+="<tr><td>"+selfeature.properties.locationID+"</tr>";
                 txt+="</table>";
                 txt+="<h1>Sampling events:"+"</h1>";
-                for (ev in selfeature['events']){
-                    ev=selfeature['events'][ev];
+                for (ev in selfeature.properties['events']){
+                    ev=selfeature.properties['events'][ev];
                     txt+="<h2>date:"+ev.eventDate+"</h2>";  
                     txt+="<table>";
                     txt+="<tr><td>protocol:<td>"+ev.samplingProtocol+"</tr>";
@@ -515,22 +476,22 @@ function showOnceoffDatastreamInPopup(ds){
         function(data){
 //            console.log(eventapicall);
             alldata=JSON.parse(data);
-		selfeature=alldata[0];
+		selfeature=alldata.features[0];
             txt="<div class=dataStreamInfo>"
 //            console.log(selfeature.properties);
             txt+="<h1>Location info:</h1>";
             txt+="<table width=400px>";
-            for (key in selfeature){
+            for (key in selfeature.properties){
                 if ( key != "datastreams"){
-                    txt+="<tr><td>"+key+":<td>"+selfeature[key]+"</tr>";
+                    txt+="<tr><td>"+key+":<td>"+selfeature.properties[key]+"</tr>";
                 }
             }
             txt+="</table>";
             txt+="<h1>Observations:</h1>";
             txt+="<table width=400px>";
-            for (dstrm in selfeature['datastreams']){
+            for (dstrm in selfeature.properties['datastreams']){
 //              console.log(ds);
-                dstrm=selfeature['datastreams'][dstrm];
+                dstrm=selfeature.properties['datastreams'][dstrm];
 //               console.log(ds);
                 txt+="<table width=400px>";  
                 txt+="<tr><td>variable: <td>"+dstrm.variableName+"<td>["+dstrm.variableUnit+"]</tr>";  
@@ -567,19 +528,23 @@ function showMonitoringDatastreamInPopup(ds,firstDate,lastDate){
         function(data){
             console.log(eventapicall);
             alldata=JSON.parse(data);
-            selfeature=alldata[0];
+            selfeature=alldata.features[0];
             txt="<div class=dataStreamInfo>"
 //            console.log(selfeature.properties);
+            txt+="<h1>Location info:</h1>";
+            txt+="<table width=400px>";
+            for (key in selfeature.properties){
+                if ( key != "datastreams"){
+                    txt+="<tr><td>"+key+"<td>"+selfeature.properties[key]+"</tr>";
+                }
+            }
+            txt+="</table>";
             txt+="<h1>Monitoring Data:</h1>";
             txt+="<table width=400px>";
             // there should be only one datastream at this stage...
-            for (dstrm in selfeature['datastreams']){
-                key="locationID";
-                txt+="<tr><td>"+key+"<td>"+selfeature[key]+"</tr>";
-                key="locationName";
-                txt+="<tr><td>"+key+"<td>"+selfeature[key]+"</tr>";
+            for (dstrm in selfeature.properties['datastreams']){
 //              console.log(ds);
-                dstrm=selfeature['datastreams'][dstrm];
+                dstrm=selfeature.properties['datastreams'][dstrm];
 //              console.log(ds);
                 txt+="<tr><td>variable <td>"+dstrm.variableName+" "+dstrm.variableUnit+"]</tr>";
                 txt+="<tr><td>base time <td>"+dstrm.baseTime+"</tr>";

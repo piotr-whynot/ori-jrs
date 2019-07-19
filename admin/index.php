@@ -31,14 +31,20 @@
 # note3 - querying database is done through sql rather than though api commands, this is because api does not have to exprose all variables in the database
 #
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 session_start();
-include '/.creds/.credentials.php';
 
+if(isset($_SESSION['userInfo'])==false){
+    echo "You are not authorized to access this page.";
+}elseif($_SESSION['userInfo'][1]!="admin"){
+    echo "You are not authorized to access this page.";
+}else{
+    $result=$_SESSION['userInfo'];
+
+include '/.creds/.credentials.php';
 #
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #
-//possible values: env, biodiv or admin
+//possible values: env, biodiv or users
 if(isset($_REQUEST['base'])){
         $base = $_REQUEST['base'];
 }else{
@@ -46,7 +52,7 @@ if(isset($_REQUEST['base'])){
     $base="admin";
 }
 
-//possible values: add, edit
+//possible values: add, edit, delete
 if(isset($_REQUEST['do'])){
     $do  = $_REQUEST['do'];
 }else{
@@ -56,7 +62,7 @@ if(isset($_REQUEST['do'])){
 //possible values: 
 //for env: dataset, location, datastream, measurement
 //for biodiv: dataset, event, location, checklist, occurrence
-//for staff: not yet determined
+//for users: users, ownership
 if(isset($_REQUEST['table'])){
     $table  = $_REQUEST['table'];
 }else{
@@ -88,6 +94,13 @@ if(isset($_REQUEST['eventID'])){
     $eventID="";
 }
 
+if(isset($_REQUEST['userID'])){
+    $userID  = $_REQUEST['userID'];
+}else{
+    $userID="";
+}
+
+
 if(isset($_REQUEST['date'])){
     $date  = $_REQUEST['date'];
 }else{
@@ -112,6 +125,19 @@ if(isset($_REQUEST['taxonID'])){
     $taxonID="";
 }
 
+if(isset($_REQUEST['ownedItemID'])){
+    $ownedItemID  = $_REQUEST['ownedItemID'];
+}else{
+    $ownedItemID="";
+}
+if(isset($_REQUEST['databaseID'])){
+    $databaseID  = $_REQUEST['databaseID'];
+}else{
+    $databaseID="";
+}
+
+
+
 
 // opening database link
 $mysqli->select_db($base);
@@ -124,7 +150,7 @@ echo"
 <!DOCTYPE html>
 <html lang=\"en\">
 <head>
-<title>Okavango Data</title>
+<title>Okavango Data - Admin</title>
 <meta charset=\"UTF-8\">
 <meta name=\"description\" content=\"Okavango biodiversity and environmental monitoring\">
 <script type=\"text/javascript\" src=\"../js/jquery/jquery-3.2.0.min.js\"></script>
@@ -137,12 +163,15 @@ echo"
 <link rel=\"stylesheet\" href=\"../css/admin.css\">
 <link rel=\"stylesheet\" href=\"../css/popup.css\">
 </head>
+<script>
+suff=\"/biodiv\";
+</script>
 <body>
 ";
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //home button
-echo"<a href=\"./\">home</a><br><br>";
+echo"<a href=\"../\">main page</a> &nbsp&nbsp <a href=\"./\">admin home</a><br><br>";
 
 // this is a "plain" call - shows menu
 if ($base=="admin" | ($do=="" & $table=="")){
@@ -158,7 +187,7 @@ echo "
 <tr><td>Management of database structure, adding/editing datasets and locations and datastreams<td><a href=\"./?base=envmondata&do=edit&table=dataset\">go</a></tr>
 <tr><td>Add/edit measurements<td><a href=\"./?base=envmondata&do=edit&table=measurement\">go</a></tr>
 <tr><th>Site admin<th></tr>
-<tr><td>Users</><td><a href=\"./saddusr.php\">new</a>&nbsp&nbsp<a href=\"./seditusr.php\">edit</a></tr>
+<tr><td>Users</><td><a href=\"./?base=users&do=edit&table=users\">go</a></tr>
 </table>
 ";
 }
@@ -1243,16 +1272,227 @@ if ($base=="biodivdata" & $table=="checklist"){
 
 
 
+#
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# user and user table
+#
+if ($base=="users" & $table=="users"){
+    // resetting dataset variables
+//    $userID="";
+    $firstName="";
+    $lastName="";
+    $emailAddress="";
+    $organization="";
+    $userType="";
+    $dateRegistered="";
+    $lastLoggedIn="";
+    $lastIpAddress="";
+    if ($userID=="" && $do!='add'){
+	$query="select * from users1.users";
+        $result = $mysqli->query($query);
+        echo "<a href=./>back</a>";
+        echo "<h3>View/edit registered users database</h3>";
+        echo "<b><a href=\"./?base=users&do=add&table=users\">Add user</a></b>";
+        echo "<table width=800px>";
+        echo "<tr><th>name<th>e-mail<th>type<th>last logged in<th>last IP<th></tr>";
+        while ($row = $result->fetch_assoc()){
+            echo "<tr><td>".$row['firstName']." ".$row['lastName']."<td>".$row['emailAddress']."<td>".$row['userType']."<td>".$row['lastLoggedIn']."<td>".$row['lastIpAddress']."<td><a href='./?base=users&do=edit&table=users&userID=".$row['userID']."' >edit</a>&nbsp<a href='./?base=users&do=delete&table=users&userID=".$row['userID']."' >delete</a>&nbsp<a href='./?base=users&do=edit&table=ownership&userID=".$row['userID']."' >edit ownership</a></tr>";
+        }
+        echo "</table>";
+    }
+    if ($userID!='' && $do=="edit"){
+       // when $datasetID is set through url argument - query database for dataset values
+        $query="select * from users1.users where userID='{$userID}'";
+        $result = $mysqli->query($query);
+        $row = $result->fetch_assoc();
+        $userID=$row['userID'];
+        $firstName=$row['firstName'];
+        $lastName=$row['lastName'];
+        $organization=$row['organization'];
+        $emailAddress=$row['emailAddress'];
+        $userType=$row['userType'];
+        $dateRegistered=$row['dateRegistered'];
+        $lastLoggedIn=$row['lastLoggedIn'];
+        $lastIpAddress=$row['lastIpAddress'];
+    }
+    if (($userID!='' && $do=="edit") || $do=="add"){
+     // this is common to "edit" and "add" functionality - form that is populated when "edit", or remains empty when "add"
+        echo "<a href=./?base=users&do=edit&table=users>back</a>";
+        if ($do=="add"){
+            echo "<h3>Adding user to database</h3>";
+        }else{
+            echo "<h3>Editing user in database</h3>";
+        }
+        echo"
+<label> required fields shaded in grey</label>
+<form id=form action='#' method=post>
+
+<h4>userID</h4>
+<label>cannot be changed<br></label><br>
+<span id=userID class=warning></span>
+<input type=text size=10 name=userID0 value='{$userID}' disabled><br>
+<input type=text size=10 name=userID value='{$userID}' hidden><br>
+
+<h4>First Name</h4>
+<label>max length:50 </label><br>
+<span id=firstName class=warning></span>
+<input type=text size=50 name=firstName class=nonempty value='{$firstName}'><br>
+
+<h4>Last Name</h4>
+<label>max length:50 </label><br>
+<span id=lastName class=warning></span>
+<input type=text size=50 name=lastName class=nonempty value='{$lastName}'><br>
+
+<h4>Email Address</h4>
+<label>max length:100 characters<br>Email address</label><br>
+<span id=emailAddress class=warning></span>
+<input type=text size=100 name=emailAddress class='nonempty unique nospace' value='{$emailAddress}'><br>
+
+<h4>Organization Name</h4>
+<label>max length:100 characters<br>Name of institution/organization. Put 'private individual' if organization is not relevant</label><br>
+<span id=organization class=warning></span>
+<input type=text size=100 name=organization class=nonempty value='{$organization}'><br>
+
+<h4>User Type</h4>
+<label>either 'registered' or 'admin'</label><br>
+<span id=userType class=warning></span>
+<input type=text size=20 name=userType class=nonempty value='{$userType}'><br>
+
+<h4>Date Registered</h4>
+<label>Cannot be changed</label><br>
+<span id=dateRegistered class=warning></span>
+<input type=text size=50 name=dateRegistered value='{$dateRegistered}' disabled><br>
+
+<h4>Last Logged In</h4>
+<label>Cannot be changed</label><br>
+<span id=lastLoggedIn class=warning></span>
+<input type=text size=50 name=lastLoggedIn value='{$lastLoggedIn}' disabled><br>
+
+<h4>Last IP</h4>
+<label>Cannot be changed</label><br>
+<span id=lastIpAddress class=warning></span>
+<input type=text size=50 name=lastIpAddress value='{$lastIpAddress}' disabled><br>
+
+<h4>Password</h4>
+<label>If you have to..</label><br>
+<span id=password class=warning></span>
+<input type=password size=50 name=password value=''><br>
 
 
+<input type='button' class='button' value=' Save ' onClick=validateForm(\"$do\",'base=users&do={$do}&table=users','./?base=users&do=edit&table=users');>
+</form>
+        ";
+    }
+} //end user and user table
+
+if ($base=="users" & $table=="ownership"){
+    if ($do=="edit"){
+        $query="select * from users1.ownership where userID='{$userID}'";
+        $result = $mysqli->query($query);
+        echo "<a href=./?base=users&do=edit&table=users>back</a>";
+        echo "<h3>Dataset/location ownership for user:{$userID} </h3>";
+        echo "<b><a href=\"./?base=users&do=listDatasets&table=ownership&userID={$userID}\">Add new ownership</a></b>";
+        echo "<table width=800px>";
+        echo "<tr><th>itemID<th></tr>";
+        while ($row = $result->fetch_assoc()){
+            $ownedItemID=$row['ownedItemID'];
+            echo "<tr><td>".$row['ownedItemID']."<td>&nbsp<a href='./?base=users&do=delete&table=ownership&userID=".$row['userID']."&ownedItemID=".$row['ownedItemID']."'>delete</a></tr>";
+        }
+        echo "</table>";
+    }else if ($do=="delete"){
+        echo "<a href=./?base=users&do=edit&table=ownership&userID={$userID}>back</a>";
+        $query="delete from users1.ownership where userID={$userID} and ownedItemID='{$ownedItemID}'";
+	$result = $mysqli->query($query);
+	if($result){
+	    echo "<br>Done";
+	}else{
+	    echo "<br>Problems...";
+	}
+    }else if ($do=="listDatasets"){
+	//check which items are owned
+        $query="select ownedItemID from users1.ownership where userID='{$userID}'";
+        $result = $mysqli->query($query);
+	while ($row = $result->fetch_assoc()){
+	    $owneditems[]=$row['ownedItemID'];
+	}
+        echo "<a href=./?base=users&do=edit&table=ownership&userID={$userID}>back</a>";
+        echo "<h3>View/edit dataset/location ownership</h3>";
+        echo "<table width=800px>";
+        echo "<tr><th>Database<th>datasetID<th><th></tr>";
+	$query="select datasetID from envmondata.dataset";
+        $result = $mysqli->query($query);
+	while ($row = $result->fetch_assoc()){
+	    //check if already owner
+	    if (in_Array($row['datasetID'], $owneditems)){
+	        echo "<tr><td>envmon<td>".$row['datasetID']."<td>already owned <td>&nbsp</tr>";
+	    }else{
+	        echo "<tr><td>envmon<td>".$row['datasetID']."<td>&nbsp<a href='./?base=users&do=addownershipDataset&table=ownership&userID=".$userID."&ownedItemID=".$row['datasetID']."'>add entire dataset</a><td>&nbsp<a href='./?base=users&do=listLocations&table=ownership&userID=".$userID."&datasetID=".$row['datasetID']."&databaseID=envmondata'>select locations</a></tr>";
+	    }
+        }
+        $query="select datasetID from biodivdata.dataset";
+        $result = $mysqli->query($query);
+        while ($row = $result->fetch_assoc()){
+	    if (in_Array($row['datasetID'], $owneditems)){
+	        echo "<tr><td>envmon<td>".$row['datasetID']."<td>already owned <td>&nbsp</tr>";
+	    }else{
+	        echo "<tr><td>envmon<td>".$row['datasetID']."<td>&nbsp<a href='./?base=users&do=addownershipDataset&table=ownership&userID=".$userID."&ownedItemID=".$row['datasetID']."'>add entire dataset</a><td>&nbsp<a href='./?base=users&do=listLocations&table=ownership&userID=".$userID."&datasetID=".$row['datasetID']."&databaseID=envmondata'>select locations</a></tr>";
+	    }
+	}
+        echo "</table>";
+
+    }else if ($do=="addownershipDataset"){
+        echo "<a href=./?base=users&do=edit&table=ownership&userID={$userID}>back</a>";
+        $query="insert into users1.ownership values ({$userID}, '{$ownedItemID}')";
+	$result = $mysqli->query($query);
+	if($result){
+	    echo "<br>Done";
+	}else{
+	echo "<br>Problems";
+	}
+    }else if ($do=="addownershipLocation"){
+        echo "<a href=./?base=users&do=edit&table=ownership&userID={$userID}>back</a>";
+        $query="insert into users1.ownership values ({$userID}, '{$locationID}')";
+	$result = $mysqli->query($query);
+	if($result){
+	    echo "<br>Done";
+	}else{
+	echo "<br>Problems";
+	}
+
+    }else if ($do=="listLocations"){
+        $query="select ownedItemID from users1.ownership where userID='{$userID}'";
+        $result = $mysqli->query($query);
+	$owneditems=array();
+	while ($row = $result->fetch_array()){
+	    $owneditems[]=$row['ownedItemID'];
+	}
+        echo "<a href=./?base=users&do=edit&table=ownership&userID={$userID}>back</a>";
+        echo "<h3>View/edit dataset/location ownership</h3>";
+        echo "<table width=800px>";
+        echo "<tr><th>datasetID<th><th></tr>";
+        $query="select * from {$databaseID}.location where datasetID='{$datasetID}'";
+	$result = $mysqli->query($query);
+	while ($row = $result->fetch_assoc()){
+	    if (in_Array($row['locationID'], $owneditems)){
+		echo "<tr><td>".$row['locationID']."<td>already owned <td>&nbsp</tr>";
+	    }else{
+                echo "<tr><td>".$row['locationID']."<td>&nbsp<a href='./?base=users&do=addownershipLocation&table=ownership&userID=".$userID."&locationID=".$row['locationID']."'>add this location</a></tr>";
+	    }
+        }
+        echo "</table>";
+    }
+}
 
 echo"
 <br>
 <br>
-<a href=\"./\">home</a>
+<a href=\"../\">main page</a> &nbsp&nbsp <a href=\"./\">admin home</a><br><br>
 ";
-?>
-    <div id='popupBackground'></div>
-    <div id='popupWindow'></div>
+echo"
+<div id='popupBackground'></div>
+<div id='popupWindow'></div>
 </body>
-</html>
+</html>";
+}//end authorized user check
+?>

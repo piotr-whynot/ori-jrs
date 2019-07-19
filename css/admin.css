@@ -1,13 +1,25 @@
 body{
-    margin-left:20px;
+    margin-left:30px;
 }
 .warning {
     color:red;
     font-weight:bold;
 }
 
-.nonempty, input[type=text].nonempty,textarea.nonempty, select option .nonempty{
-    background-color:#dddddd;
+input[type=text] {
+    background:#ffffff;
+    border-color:#dddddd;
+}
+
+input[disabled] {
+    background:#ffffff;
+    border-color:#ffffff;
+    border-width:0px;
+    color:#555555;
+}
+
+.nonempty, input[type=text].nonempty, textarea.nonempty, select option .nonempty{
+    background:#eeeeee;
 }
 
 input.text {

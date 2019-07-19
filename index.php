@@ -9,6 +9,7 @@ session_start();
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="./js/custom/main.js"></script>
+    <script type="text/javascript" src="./js/custom/login.js"></script>
     <script type="text/javascript" src="./js/leaflet-1.0.3/leaflet.js"></script>
     <script type="text/javascript" src="./js/jquery/jquery-3.2.0.min.js"></script>
     <script type="text/javascript" src="./js/jquery/jquery-ui.min.js"></script>
@@ -27,14 +28,16 @@ session_start();
     <link rel="stylesheet" href='./css/main.css'>
     <link rel="stylesheet" href='./css/graph.css'>
     <link rel="stylesheet" href='./css/accordion.css'>
+    <link rel="stylesheet" href='./css/login.css'>
     <link rel="stylesheet" href="./css/bootstrap-datetimepicker.css">
     <script>
         var map;
         var pointOverlays = new Array();
+        var suff="/biodiv";
     </script>
 </head>
 
-<body onload='initializeMap();populateSideMenu();'>
+<body onload='initialize();'>
     <div id="map"></div>
     <div id='popupBackground'></div>
     <div id='popupWindow'></div>
