@@ -47,11 +47,17 @@
 }
 
 #popupWindowContents{
+    background:#FFFFFF;
     position:absolute;
-    margin:auto;
-    height:95%;
+    height:90%;
     width:96%;
     overflow:auto;
-    padding-left:2%;
-    padding-right:2%;
+    padding-left:0%;
+    padding-right:0%;
+    padding-top:0%;
+    padding-bottom:0%;
+    margin-left:20px;
+    margin-right:20px;
+    margin-top:25px;
+    margin-bottom:20px;
 }

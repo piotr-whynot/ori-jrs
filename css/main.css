@@ -80,7 +80,7 @@ H6 {
     height: 100%;
     top:0px;
     left:0px;
-    z-index: 250;
+    z-index: 11000;
     background: white;
     opacity: 0.3;
 }
@@ -91,6 +91,14 @@ H6 {
     width: 100px;
     padding: 100px 0; 
  }
+
+#loader{
+    display: block;
+    margin: auto;
+    width: 100px;
+    padding: 100px 0; 
+ }
+
 
 #sideMenuSymbol{
     font-weight: bold;

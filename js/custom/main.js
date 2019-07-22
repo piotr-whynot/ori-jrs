@@ -12,6 +12,7 @@ function initialize(){
 	    init="updatePassword";
 	    var tempPassword=argValue;
 	}
+
     }else{
 	// normal init
         txt="<span id=logo></span><div class=header>Welcome to Okavango Delta Monitoring and Data Sharing place</div>";
@@ -46,6 +47,15 @@ function populateSideMenu(){
         function(data){
 	    topmenuarr=JSON.parse(data);
             txt="<ul class='topnav'>";
+            txt+="<li><div class=menuitem id=topgroup0>Key monitoring locations</div>";
+            txt+="<ul>";
+            txt+="<li><span class=clickable onClick=showMonitoringDatastreamInPopup('dwa_mohemb_wdisch','1970-01-01','2019-01-01')>Discharge at Mohembo</span></li>";
+            txt+="<li><span class=clickable onClick=showMonitoringDatastreamInPopup('com_xakana_wlevel','1970-01-01','2019-01-01')>Water level at Xakanare</span></li>";
+            txt+="<li><span class=clickable onClick=showMonitoringDatastreamInPopup('com_xakana_rainf','1970-01-01','2019-01-01')>Rainfall at Xakanare</span></li>";
+            txt+="</ul>";
+            txt+="</li>";
+            txt+="<li><div class=menuitem id=topgroup1>Explore all datasets</div>";
+            txt+="<ul>";
             for (topg in topmenuarr){
                 topGroupName=topmenuarr[topg].groupName; 
                 txt+="<li><div class=menuitem id=topgroup"+topg+">"+topGroupName+"</div>";
@@ -65,16 +75,16 @@ function populateSideMenu(){
                         for (d in menuarr[g].dataTypes[tp].datasets){
                             datasetName=menuarr[g].dataTypes[tp].datasets[d].datasetName;
                             // alert(datasetName);
-			    txt+="<li>";
-			    txt+="<div class=markerHolder id=marker-"+groupCode+"-"+d+"-"+typeCode+">&nbsp</div>"
+                            txt+="<li>";
+			                txt+="<div class=markerHolder id=marker-"+groupCode+"-"+d+"-"+typeCode+">&nbsp</div>"
                             txt+="<label class=checkboxLabel>";
-			    txt+="<input type=checkbox id="+groupCode+"-"+d+"-"+typeCode+" onClick=showhideDataset(\""+groupCode+"\",'"+d+"','"+typeCode+"')>"+datasetName;
-			    txt+="</label>";
-			    txt+="<div class=extrasHolder id=extras-"+groupCode+"-"+d+"-"+typeCode+">";
-			    txt+="<span class=clickable onClick=describeDataset(\""+groupCode+"\",'"+d+"','"+typeCode+"') id=list-"+groupCode+"-"+d+"-"+typeCode+">dataset info</span><br>";
-			    txt+="<span class=clickable onClick=listLocationsInDataset(\""+groupCode+"\",'"+d+"','"+typeCode+"') id=list-"+groupCode+"-"+d+"-"+typeCode+">list all locations</span>";
-			    txt+="</div>";
-			    txt+="</li>";
+			                txt+="<input type=checkbox id="+groupCode+"-"+d+"-"+typeCode+" onClick=showhideDataset(\""+groupCode+"\",'"+d+"','"+typeCode+"')>"+datasetName;
+			                txt+="</label>";
+			                txt+="<div class=extrasHolder id=extras-"+groupCode+"-"+d+"-"+typeCode+">";
+			                txt+="<span class=clickable onClick=describeDataset(\""+groupCode+"\",'"+d+"','"+typeCode+"') id=list-"+groupCode+"-"+d+"-"+typeCode+">dataset info</span><br>";
+			                txt+="<span class=clickable onClick=listLocationsInDataset(\""+groupCode+"\",'"+d+"','"+typeCode+"') id=list-"+groupCode+"-"+d+"-"+typeCode+">list all locations</span>";
+			                txt+="</div>";
+			                txt+="</li>";
                         }
                         txt+="</ul>";
                         txt+="</li>";
@@ -89,15 +99,12 @@ function populateSideMenu(){
             $("#sideMenuWindow").html(txt) //.hide();
             $(".extrasHolder").hide();
             $(".topnav").accordion();
-
-	    wh=$(window).height()*0.9;
+	        wh=$(window).height()*0.9;
             $("#sideMenuWindow").css("max-height", wh+"px");
-
             $("#sideMenuSymbol").click(function(){
 //                $("#sideMenuWindow").slideToggle("slow");
                 $("#sideMenuWindow").toggle('slide',{direction: "right" });
             });
- 
         }
     );
 }
@@ -115,20 +122,19 @@ function listLocationsInDataset(group, datasetID, typeCode){
     $.get(apicall, 
         function(data){
             alldata=JSON.parse(data);
-		features=alldata['features'];
-		txt="<table width=1000>";
-                txt+="<tr><th>Location ID<th>Location name<th>Locality<th>Geomorphological Position<th></tr>";
-		for (i in features){
-		    props=features[i]['properties'];
-                    txt+="<tr><td>"+props['locationID']+"<td>"+props['locationName']+"<td>"+props['locality']+"<td>"+props['geomorphologicalPosition']+"<td><span class=clickable onClick=clickOnMapItem('"+props['locationID']+"','"+dataGroup+"','"+datasetID+"','"+typeCode+"')>view data</span>";
-                    txt+="<td><span class=clickable onClick=downloadAPI('"+dataGroup+"','','"+props['locationID']+"','','','csv')>download csv</span></td></tr>";
-		}
-		txt+="</table>";
-		popup(0.9,0.9,txt);
-                $("#shade").hide();
-            }
-        );
-
+		    features=alldata['features'];
+		    txt="<table width=1000>";
+            txt+="<tr><th>Location ID<th>Location name<th>Locality<th>Geomorphological Position<th></tr>";
+		    for (i in features){
+		        props=features[i]['properties'];
+                txt+="<tr><td>"+props['locationID']+"<td>"+props['locationName']+"<td>"+props['locality']+"<td>"+props['geomorphologicalPosition']+"<td><span class=clickable onClick=clickOnMapItem('"+props['locationID']+"','"+dataGroup+"','"+datasetID+"','"+typeCode+"')>view data</span>";
+                txt+="<td><span class=clickable onClick=downloadAPI('"+dataGroup+"','','"+props['locationID']+"','','','csv')>download csv</span></td></tr>";
+		    }
+		    txt+="</table>";
+		    popup(0.9,0.9,txt);
+            $("#shade").hide();
+        }
+    );
 }
 
 
@@ -155,26 +161,25 @@ function describeDataset(group, datasetID, typeCode){
     $.get(apicall, 
         function(data){
             alldata=JSON.parse(data);
-		txt="<h1>Dataset info:</h1>";
-		txt="<table width=1000>";
-                txt+="<tr><td>dataset ID:<td>"+alldata['datasetID']+"</tr>";
-                txt+="<tr><td>dataset name:<td>"+alldata['datasetName']+"</tr>";
-                txt+="<tr><td>description:<td>"+alldata['datasetDescription']+"</tr>";
-                txt+="<tr><td>institution holding data:<td>"+alldata['institutionCode']+"</tr>";
-                txt+="<tr><td>institution owning data:<td>"+alldata['ownerInstitutionCode']+"</tr>";
-		if (alldata['publications']){
-                    txt+="<tr><td>relevant publications:<td>"+alldata['publications']+"</tr>";
-		}
-		if (alldata['datasetRemarks']){
-                    txt+="<tr><td>remarks:<td>"+alldata['datasetRemarks']+"</tr>";
-		}
-        txt+="<tr><td><td><span class=clickable onClick=downloadAPI('"+dataGroup+"','"+alldata['datasetID']+"','','','','csv')>download entire dataset in csv format</span></tr>";
-		txt+="</table>";
-		popup(0.9,0.9,txt);
-                $("#shade").hide();
-            }
-        );
-
+		    txt="<h1>Dataset info:</h1>";
+		    txt="<table width=1000>";
+            txt+="<tr><td>dataset ID:<td>"+alldata['datasetID']+"</tr>";
+            txt+="<tr><td>dataset name:<td>"+alldata['datasetName']+"</tr>";
+            txt+="<tr><td>description:<td>"+alldata['datasetDescription']+"</tr>";
+            txt+="<tr><td>institution holding data:<td>"+alldata['institutionCode']+"</tr>";
+            txt+="<tr><td>institution owning data:<td>"+alldata['ownerInstitutionCode']+"</tr>";
+		    if (alldata['publications']){
+                txt+="<tr><td>relevant publications:<td>"+alldata['publications']+"</tr>";
+		    }
+		    if (alldata['datasetRemarks']){
+                txt+="<tr><td>remarks:<td>"+alldata['datasetRemarks']+"</tr>";
+		    }
+            txt+="<tr><td><td><span class=clickable onClick=downloadAPI('"+dataGroup+"','"+alldata['datasetID']+"','','','','csv')>download entire dataset in csv format</span></tr>";
+		    txt+="</table>";
+		    popup(0.9,0.9,txt);
+            $("#shade").hide();
+        }
+    );
 }
 
 
@@ -197,7 +202,6 @@ function showhideDataset(group, datasetID, typeCode){
         $("#shade").show();
         $.get(apicall, 
             function(data){
-		console.log(data); 
 //              this randomizes colours of markers
                 n=Math.round(((Math.random()*19)),0);
                 var smallIcon = new L.Icon({
@@ -208,15 +212,13 @@ function showhideDataset(group, datasetID, typeCode){
                 });
                 $('#marker-'+dataGroup+"-"+datasetID+"-"+typeCode).html("<img src=img/marker"+n+".svg width=16>");
                 alldata=JSON.parse(data);
-		console.log(alldata);
                 geoJSONLayer = L.geoJSON(alldata, {
                     pointToLayer: function(feature, latlng) {
                         return L.marker(latlng, {icon: smallIcon});
                     },
                     onEachFeature: onEachFeature
                 });
-		console.log(geoJSONLayer);
-		geoJSONLayer.addTo(map)
+		        geoJSONLayer.addTo(map)
                 //pointOverlays is a global array that stores currently displayed layers
                 pointOverlays[dataGroup+"-"+datasetID+"-"+typeCode]=geoJSONLayer;
                 $('#extras-'+dataGroup+"-"+datasetID+"-"+typeCode).show();
@@ -229,7 +231,6 @@ function showhideDataset(group, datasetID, typeCode){
         $('#extras-'+dataGroup+"-"+datasetID+"-"+typeCode).hide();
         map.removeLayer(pointOverlays[dataGroup+"-"+datasetID+"-"+typeCode]);
         delete pointOverlays[dataGroup+"-"+datasetID+"-"+typeCode];
-        $("#shade").hide();
     }
 }
 
@@ -237,10 +238,8 @@ function showhideDataset(group, datasetID, typeCode){
 
 function initializeMap(){
 //main function for initializing map interface
-// $("#shade").show();
     showMap();
 //    loadBaseMap(); // this is switched off for debugging
-// $("#shade").hide("scale",2000);
 }
 
 
@@ -536,6 +535,7 @@ function showOnceoffDatastreamInPopup(ds){
                 txt+="<tr><td>variable: <td>"+dstrm.variableName+"<td>["+dstrm.variableUnit+"]</tr>";  
                 txt+="<tr><td>base time:<td>"+dstrm.baseTime+"<td></tr>";
                 txt+="</table width=400px>";
+                txt+="</div>";
                 txt+="<h1>Data:</h1>";
                 txt+="<table width=400px>";
                 txt+="<tr><th>Date<th>Value</tr>";
@@ -585,6 +585,7 @@ function showMonitoringDatastreamInPopup(ds,firstDate,lastDate){
                 txt+="<tr><td>base time <td>"+dstrm.baseTime+"</tr>";
                 txt+="</table>";
                 txt+="<br>";
+                txt+="</div>";
                 txt+="<div id=graphWrapper>";
                 txt+="<div id=graphControls></div>";
                 txt+="<div id=graph></div>";
@@ -598,6 +599,7 @@ function showMonitoringDatastreamInPopup(ds,firstDate,lastDate){
             showcumsum=false;
         }
         loadPlot(ds,"compareyearsnormal", true, showcumsum);
+       // loadPlot(ds,"timeseries", true, false, firstm);
     });
 }
 

@@ -13,15 +13,16 @@ session_start();
     <script type="text/javascript" src="./js/leaflet-1.0.3/leaflet.js"></script>
     <script type="text/javascript" src="./js/jquery/jquery-3.2.0.min.js"></script>
     <script type="text/javascript" src="./js/jquery/jquery-ui.min.js"></script>
-    <script type="text/javascript" src='./js/Highstock-1.3.9/highstock.js'></script>
     <script type="text/javascript" src="./js/custom/graph.js"></script>
     <script type="text/javascript" src="./js/custom/forms.js"></script>
     <script type="text/javascript" src="./js/custom/popup.js"></script>
     <script type="text/javascript" src="./js/custom/accordion.js"></script>
     <script type="text/javascript" src="./js/bootstrap/bootstrap-datetimepicker.min.js"></script>
     <script type="text/javascript" src="./js/bootstrap/bootstrap.min.js"></script>
+    <script type="text/javascript" src='./js/highcharts-5.0.12.js'></script>
 <!--
     <link rel="stylesheet" href="./css/bootstrap.css">
+    <script type="text/javascript" src='./js/Highstock-1.3.9/highstock.js'></script>
 -->
     <link rel="stylesheet" href='./css/popup.css'>
     <link rel="stylesheet" href="./css/leaflet.css" />
