@@ -14,12 +14,12 @@
 	z-index:10000;
 }
 
-#popupwindowClose{
+#popupWindowClose{
     position:absolute; 
     right:15px; 
     top:4px;
     cursor:pointer;
-    font-size:20px;
+    font-size:25px;
     font-weight: bold;
     color:#d3d3d3;
     width: 10px; 
@@ -30,34 +30,35 @@
     z-index: 10002;
   }
 
-#popupwindowClose:hover{
+#popupWindowClose:hover{
     color:#888888;
 }
 
 #popupWindow{	
     display:none;
-    position:relative;
+    position: fixed;
+    top: 0;
+    left: 0;
     _position:absolute; /* hack for internet explorer 6*/
     background:#FFFFFF;
     border: 0px solid #cecece;
     z-index: 10001;
     font-size: 13px;
-    padding-bottom: 10px;
-    border-radius: 12px;	
+    padding-bottom: 20px;
+    vertical-align: middle;
 }
 
 #popupWindowContents{
-    background:#FFFFFF;
-    position:absolute;
-    height:90%;
-    width:96%;
+    z-index: 10002;
+    position:relative;
     overflow:auto;
+    background:#FFFFFF;
     padding-left:0%;
     padding-right:0%;
     padding-top:0%;
     padding-bottom:0%;
-    margin-left:20px;
-    margin-right:20px;
-    margin-top:25px;
+    margin-left:10px;
+    margin-right:10px;
+    margin-top:30px;
     margin-bottom:20px;
 }

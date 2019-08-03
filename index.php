@@ -19,18 +19,24 @@ session_start();
     <script type="text/javascript" src="./js/custom/accordion.js"></script>
     <script type="text/javascript" src="./js/bootstrap/bootstrap-datetimepicker.min.js"></script>
     <script type="text/javascript" src="./js/bootstrap/bootstrap.min.js"></script>
-    <script type="text/javascript" src='./js/highcharts-5.0.12.js'></script>
+    <script type="text/javascript" src='./js/highstock-7.1.2.js'></script>
+    <script type="text/javascript" src='./js/exporting.js'></script>
 <!--
+    note: loading highstock above, although graph.js uses highcharts 
     <link rel="stylesheet" href="./css/bootstrap.css">
     <script type="text/javascript" src='./js/Highstock-1.3.9/highstock.js'></script>
+    <script type="text/javascript" src='./js/highcharts-5.0.12.js'></script>
+    <script type="text/javascript" src='./js/highcharts-7.1.2.js'></script>
+    <script type="text/javascript" src='./js/highcharts-more-7.1.2.js'></script>
 -->
+    <link rel="stylesheet" href="./css/bootstrap-datetimepicker.css">
+    <link rel="stylesheet" href="./css/bootstrap.css">
     <link rel="stylesheet" href='./css/popup.css'>
     <link rel="stylesheet" href="./css/leaflet.css" />
     <link rel="stylesheet" href='./css/main.css'>
     <link rel="stylesheet" href='./css/graph.css'>
     <link rel="stylesheet" href='./css/accordion.css'>
     <link rel="stylesheet" href='./css/login.css'>
-    <link rel="stylesheet" href="./css/bootstrap-datetimepicker.css">
     <script>
         var map;
         var pointOverlays = new Array();
@@ -41,7 +47,7 @@ session_start();
 <body onload='initialize();'>
     <div id="map"></div>
     <div id='popupBackground'></div>
-    <div id='popupWindow'></div>
+    <div id='popupWindow'><div id=popupWindowClose>&times</div><div id='popupWindowContents'></div></div>
     <div id='sideMenuWindow'></div>
     <div id='sideMenuSymbol'>&#9776</div>
     <div id="shade"><img src="./img/ajax-loader.gif" class="ajax_loader"></div>

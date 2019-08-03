@@ -1,4 +1,7 @@
 <?php
+session_start();
+
+//foreach($_SESSION['userInfo'] as $test){echo $test;}
 
 function getbiodiv($mysqli, $what){
 $link="not";
@@ -21,21 +24,20 @@ while($row0 = $result0->fetch_assoc()){
     while ($row1= $result1->fetch_assoc()){
         $datasetID=$row1['datasetID'];
         $datasetarr=array(
-            "datasetName"=>$row1['datasetName'],
-            "datasetDescription"=>$row1['datasetDescription'],
+            "groupName"=>$row1['datasetName'],
+            "groupDescription"=>$row1['datasetDescription'],
         );
         $datasetstack[$datasetID]=$datasetarr;
     }
     $typearr=array(
-    "typeName"=>$popularGroupName,
-    "datasets"=>$datasetstack,
+    "groupName"=>$popularGroupName,
+    "data"=>$datasetstack,
     );
-    $typestack[]=$typearr;
+    $typestack[$popularGroupName]=$typearr;
 }
 $grouparr=array(
-	"groupCode"=>"biodiv",
 	"groupName"=>"Biodiversity Data",
-	"dataTypes"=>$typestack)
+	"data"=>$typestack)
 ;
 return $grouparr;
 
@@ -64,26 +66,108 @@ while($row0 = $result0->fetch_assoc()){
     while ($row1= $result1->fetch_assoc()){
         $datasetID=$row1['datasetID'];
         $datasetarr=array(
-            "datasetName"=>$row1['datasetName'],
-            "datasetDescription"=>$row1['datasetDescription'],
+            "groupName"=>$row1['datasetName'],
+            "groupDescription"=>$row1['datasetDescription'],
         );
     $datasetstack[$datasetID]=$datasetarr;
     }
     $typearr=array(
-    "typeName"=>$variableType,
-    "datasets"=>$datasetstack,
+    "groupName"=>$variableType,
+    "data"=>$datasetstack,
     );
-    $typestack[]=$typearr;
+    $typestack[$variableType]=$typearr;
 }
 
 $grouparr=array(
 	"groupName"=>"Environmental Data",
-	"groupCode"=>"envdata",
-	"dataTypes"=>$typestack
+	"data"=>$typestack
 );
 return $grouparr;
 
 }
+
+
+
+
+function getowned($mysqli, $type){
+    $userID=$_SESSION['userInfo'][0]; 
+    if($type=="datasets"){
+        // find datasets owned by user
+        $ownedItems=array();
+        $sql="SELECT distinct datasetID, datasetName FROM envmondata.dataset JOIN users1.ownership ON envmondata.dataset.datasetID=users1.ownership.ownedItemID WHERE userID=${userID}";
+        $res=$mysqli->query($sql);
+        if(mysqli_num_rows($res)){
+            while($owned=$res->fetch_array()){
+                $itemarr=array(
+	                "groupName"=>$owned['datasetName'],
+	                "groupCategory"=>'envmon'
+                );
+                $ownedItems[$owned['datasetID']]=$itemarr;
+            }
+        }
+        $sql="SELECT distinct datasetID, datasetName FROM biodivdata.dataset JOIN users1.ownership ON biodivdata.dataset.datasetID=users1.ownership.ownedItemID WHERE userID=${userID}";
+        $res=$mysqli->query($sql);
+        if(mysqli_num_rows($res)){
+            while($owned=$res->fetch_array()){
+                $itemarr=array(
+	                "groupName"=>$owned['datasetName'],
+	                "groupCategory"=>'envmon'
+                );
+                $ownedItems[$owned['datasetID']]=$itemarr;
+            }
+        }
+
+        $grouparr=array(
+	        "groupName"=>"Datasets",
+	        "data"=>$ownedItems
+        );
+    }
+
+    if($type=="locations"){
+        // find datasets owned by user
+        $sql="SELECT distinct locationID, locationName FROM envmondata.location JOIN users1.ownership ON envmondata.location.locationID=users1.ownership.ownedItemID WHERE userID=${userID}";
+        $res=$mysqli->query($sql);
+        $ownedItems=array();
+        if(mysqli_num_rows($res)){
+            while($owned=$res->fetch_array()){
+                $itemarr=array(
+	                "groupName"=>$owned['locationName'],
+	                "groupCategory"=>'envmon'
+                );
+                $ownedItems[$owned['locationID']]=$itemarr;
+            }
+        }
+        $grouparr=array(
+	        "groupName"=>"Locations",
+	        "data"=>$ownedItems
+        );
+    }
+    return $grouparr;
+}
+
+
+
+function getkeydatastream($mysqli, $type){
+    // find datastream
+    $keylocs=array();
+    $sql="SELECT envmondata.datastream.locationID,locationName,variableName,envmondata.datastream.datastreamID FROM envmondata.keydatastream JOIN envmondata.datastream ON envmondata.datastream.datastreamID=envmondata.keydatastream.datastreamID JOIN envmondata.location ON envmondata.datastream.locationID=envmondata.location.locationID";
+    $res=$mysqli->query($sql);
+    if(mysqli_num_rows($res)){
+        while($loc=$res->fetch_array()){
+            $keylocs[$loc['datastreamID']]=array(
+	            "locationID"=>$loc['locationID'],
+	            "locationName"=>$loc['locationName'],
+	            "variableName"=>$loc['variableName'],
+            );
+        }
+    }
+    return $keylocs;
+}
+
+
+
+
+
 
 #inital checks on arguments
 #check if dataset is set
@@ -91,37 +175,62 @@ return $grouparr;
 
 #standard menu call
 $output=array();
+
 $monitoring=array();
 $campaign=array();
+
 ###########################################################################
 # connecting to db
 # using mysqli
 
-
 include '/.creds/.credentials.php';
 $mysqli->select_db('envmondata');
 ###########################################################################
-$monitoring[]=getenvdata($mysqli,"monitoring");
-$campaign[]=getenvdata($mysqli,"campaign");
+$monitoring['envdata']=getenvdata($mysqli,"monitoring");
+$campaign['envdata']=getenvdata($mysqli,"campaign");
 
+$keylocations['envdata']=getkeydatastream($mysqli,"monitoring");
 ###########################################################################
 # connecting to db
 # 
 $mysqli->select_db('biodivdata');
 ###########################################################################
 
-$monitoring[]=getbiodiv($mysqli,"monitoring");
-$campaign[]=getbiodiv($mysqli,"campaign");
+$monitoring['biodiv']=getbiodiv($mysqli,"monitoring");
+$campaign['biodiv']=getbiodiv($mysqli,"campaign");
 
-$output[]=array(
+
+if (array_key_exists('userInfo', $_SESSION)){
+    $owned['datasets']=getowned($mysqli, "datasets");
+    $owned['locations']=getowned($mysqli, "locations");
+if ($_SESSION['userInfo']!=null){
+    $output['owned']=array(
+        "groupName"=>"Your datasets/locations",
+       "data"=>$owned
+    );
+}
+}
+
+
+$all['monitoring']=array(
 	"groupName"=>"Monitoring",
 	"data"=>$monitoring
 );
-$output[]=array(
+$all['onceoff']=array(
 	"groupName"=>"Once-off surveys",
 	"data"=>$campaign
 );
 
+$output['all']=array(
+    "groupName"=>"Explore all datasets",
+    "data"=>$all
+);
+
+$key=getkeydatastream($mysqli, "locations");
+    $output['keydatastreams']=array(
+        "groupName"=>"Key monitoring locations",
+       "data"=>$key
+    );
 
 echo json_encode($output);
 

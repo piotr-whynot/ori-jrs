@@ -10,7 +10,7 @@ function loginForm(){
     frm+="<button type='button' onClick=closePopup()>Cancel</button>";
     frm+="<div class='clickable spaced' onClick=resetPasswordForm()> Forgot password?</div>";           
     frm+="</form></div>";
-    popup(300,500, frm);
+    popup(200,500, frm);
 }
 
 function updateUserForm(){
@@ -29,7 +29,7 @@ function updateUserForm(){
     frm+="<div class='clickable spaced' onClick=resetPasswordForm()> Reset password</div> <br>";           
     frm+="<p class='formNotification'>You cannot change e-mail address. If you really want to do this - register with a different e-mail.</p>";
     frm+="</form></div>"
-    popup(350,500, frm);
+    popup(400,500, frm);
     populateUserInfo();
 }
 
@@ -95,7 +95,7 @@ function logoutForm(){
     frm+="<button type='button' onClick=closePopup()>Cancel</button>";
     frm+="</form>"
     frm+="</div>";   
-    popup(150,500, frm);
+    popup(180,500, frm);
 }
 
 

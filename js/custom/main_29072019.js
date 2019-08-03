@@ -32,8 +32,8 @@ function initialize(){
         }else{ //when registered
             if(data[1]=="admin"){
                 $('#loginContainerFooter').html("<span class=clickable onClick=window.location.href='./admin/';>admin pages</span>&nbsp|&nbsp<span class=clickable onClick=logoutForm()>logout</span>&nbsp|&nbsp<span class=clickable onClick=updateUserForm()>your account</span>");
-                ownedItems.push(data[6]);
-                ownedItems.push(data[7]);
+            ownedItems.push([]);
+            ownedItems.push([]);
             }else{
                 $('#loginContainerFooter').html("<span class=clickable onClick=logoutForm()>logout</span>&nbsp|&nbsp<span class=clickable onClick=updateUserForm()>your account</span>");
             ownedItems.push(data[6]);
@@ -44,7 +44,6 @@ function initialize(){
                 updatePasswordForm(tempPassword);
             }
         populateSideMenu();
-        console.log(ownedItems);
     });
 }
 
@@ -55,86 +54,87 @@ function populateSideMenu(){
     console.log(apicall);
     $.get(apicall,
         function(data){
-	    menuarr0=JSON.parse(data);
+	    topmenuarr=JSON.parse(data);
             txt="<ul class='topnav'>";
-            for (g0 in menuarr0){
-                // zeroth level - explore all datasets/yourdatasets/keydatasets
-                console.log(g0);
-                groupName0=menuarr0[g0].groupName; 
-                txt+="<li><div class=menuitem id=topgroup"+g0+">"+groupName0+"</div>";
+            if(ownedItems[0].length>0 || ownedItems[1].length>0){
+                txt+="<li><div class=menuitem id=topgroup1>Your locations/datasets</div>";
                 txt+="<ul>";
-                menuarr1=menuarr0[g0].data;
-                for (g1 in menuarr1){
-                    if (g0=="keydatastreams"){
-                        datastreamID=g1;
-                        variableName=menuarr1[g1].variableName;
-                        locationName=menuarr1[g1].locationName;
-                        txt+="<li><span class=clickable onClick=showMonitoringDatastreamInPopup('"+datastreamID+"','1970-01-01','2019-01-01')>"+variableName+" at "+locationName+" </span></li>";
-                    }else{
-                        // first level - monitoring & once-off - in explore all datasets
-                        // datasets & locations - in your datasets/locations
-                        groupName1=menuarr1[g1].groupName;
-                        txt+="<li><div class=menuitem id=group"+g1+">"+groupName1+"</div>";
-                        txt+="<ul>"; 
-                        menuarr2=menuarr1[g1].data;
-                        for (g2 in menuarr2){
-                            // second level - envdata & biodiv in all dataset, but list of locations in key dataset
-                            if (g0=="owned"){
-                                // fourth level - datasets
-                                groupName=menuarr2[g2].groupName;
-                                gC=menuarr2[g2].groupCategory;
-                                txt+="<li>";
-                                if (g1=='datasets'){
-                                    txt+="<div class=markerHolder id=marker-"+gC+"-"+g2+"-owned"+">&nbsp</div>"
-                                    txt+="<label class=checkboxLabel>";
-                                    txt+="<input type=checkbox id="+gC+"-"+g2+"-owned"+" onClick=showhideDataset(\""+gC+"\",'"+g2+"','owned')>"+groupName;
-                                    txt+="</label>";
-                                    txt+="<div class=extrasHolder id=extras-"+gC+"-"+g2+"-owned"+">";
-                                    txt+="<span class=clickable onClick=describeDataset(\""+gC+"\",'"+g2+"','popup') id=list-"+gC+"-"+g2+"-owned"+">dataset info</span><br>";
-                                    txt+="<span class=clickable onClick=listLocationsInDataset(\""+gC+"\",'"+g2+"','owned') id=list-"+gC+"-"+g2+"-owned"+">list all locations</span>";
-                                    txt+="</div>";
-                                }else{
-                                    txt+="<li><span class=clickable onClick=showLocationInPopup('"+gC+"','"+g2+"')>"+groupName+"</span></li>";
+                if(ownedItems[0].length>0){
+                    txt+="<li><div class=menuitem id=topgroup1>Datasets</div>";
+                    txt+="<ul>";
+                    for (i in ownedItems[0]){
+                            d=ownedItems[0][i];
+                            txt+="<div class=markerHolder id='marker-envmon-"+d+"-'>&nbsp</div>"
+                            txt+="<label class=checkboxLabel>";
+                            txt+="<input type=checkbox id='envmon-"+d+"-' onClick=showhideDataset('envmon','"+d+"','')>"+d;
+                            txt+="</label>";
+                            txt+="<div class=extrasHolder id='extras-envmon-"+d+"-'>";
+                            txt+="<span class=clickable onClick=describeDataset('envmon','"+d+"','popup') id='list-envmon-"+d+"-'>dataset info</span><br>";
+                            txt+="<span class=clickable onClick=listLocationsInDataset('envmon','"+d+"','') id='list-envmon-"+d+"-'>list all locations</span>";
+                            txt+="</div>";
+                            txt+="<li>";
+                           txt+="</li>";
 
-                                }
-                                txt+="</li>";
-                            }else{
-                                groupName2=menuarr2[g2].groupName;
-                                txt+="<li><div class=menuitem id=type"+g2+">"+groupName2+"</div>";
-                                txt+="<ul>";
-                                menuarr3=menuarr2[g2].data;
-                                for (g3 in menuarr3){
-                                    // third level - classes of observations
-                                    groupName3=menuarr3[g3].groupName;
-                                    groupCode=g3.replace(/ /g, "_");
-                                    txt+="<li><div class=menuitem id=type"+g3+">"+groupName3+"</div>";
-                                    txt+="<ul>";
-                                    menuarr4=menuarr3[g3].data;
-                                    for (g4 in menuarr4){
-                                        // fourth level - datasets
-                                        groupName4=menuarr4[g4].groupName;
-                                        txt+="<li>";
-                                        txt+="<div class=markerHolder id=marker-"+g2+"-"+g4+"-"+groupCode+">&nbsp</div>"
-                                        txt+="<label class=checkboxLabel>";
-                                        txt+="<input type=checkbox id="+g2+"-"+g4+"-"+groupCode+" onClick=showhideDataset(\""+g2+"\",'"+g4+"','"+groupCode+"')>"+groupName4;
-                                        txt+="</label>";
-                                        txt+="<div class=extrasHolder id=extras-"+g2+"-"+g4+"-"+groupCode+">";
-                                        txt+="<span class=clickable onClick=describeDataset(\""+g2+"\",'"+g4+"','popup') id=list-"+g2+"-"+g4+"-"+groupCode+">dataset info</span><br>";
-                                        txt+="<span class=clickable onClick=listLocationsInDataset(\""+g2+"\",'"+g4+"','"+groupCode+"') id=list-"+g2+"-"+g4+"-"+groupCode+">list all locations</span>";
-                                        txt+="</div>";
-                                        txt+="</li>";
-                                    }
-                                    txt+="</ul>";
-                                    txt+="</li>";
-                                }
-                                txt+="</ul>";
-                                txt+="</li>";
-                            }// end of else
+//                        txt+="<li><span class=clickable onClick=showMonitoringDatastreamInPopup('"+ownedItems[0][i]+"','1970-01-01','2019-01-01')>"+ownedItems[0][i]+"</span></li>";
+                    }
+                    txt+="</ul>";
+                }
+                if(ownedItems[1].length>0){
+                    txt+="<li><div class=menuitem id=topgroup1>Locations</div>";
+                    txt+="<ul>";
+                    for (i in ownedItems[1]){
+                        txt+="<li><span class=clickable onClick=showLocationInPopup('envmon','"+ownedItems[1][i]+"')>"+ownedItems[1][i]+"</span></li>";
+                    }
+                    txt+="</ul>";
+                }
+                txt+="</ul>";
+                txt+="</li>";
+           }
+            txt+="<li><div class=menuitem id=topgroup0>Key monitoring locations</div>";
+            txt+="<ul>";
+            txt+="<li><span class=clickable onClick=showMonitoringDatastreamInPopup('dwa_mohemb_wdisch','1970-01-01','2019-01-01')>Discharge at Mohembo</span></li>";
+            txt+="<li><span class=clickable onClick=showMonitoringDatastreamInPopup('com_xakana_wlevel','1970-01-01','2019-01-01')>Water level at Xakanare</span></li>";
+            txt+="<li><span class=clickable onClick=showMonitoringDatastreamInPopup('com_xakana_rainf','1970-01-01','2019-01-01')>Rainfall at Xakanare</span></li>";
+            txt+="<li><span class=clickable onClick=showMonitoringDatastreamInPopup('com_little_wlevel','1970-01-01','2019-01-01')>Water level at Vumbura</span></li>";
+            txt+="</ul>";
+            txt+="</li>";
+            txt+="<li><div class=menuitem id=topgroup0>Explore all datasets</div>";
+            txt+="<ul>";
+            for (topg in topmenuarr){
+                topGroupName=topmenuarr[topg].groupName; 
+                txt+="<li><div class=menuitem id=topgroup"+topg+">"+topGroupName+"</div>";
+                txt+="<ul>";
+                menuarr=topmenuarr[topg].data;
+                for (g in menuarr){
+                    groupName=menuarr[g].groupName;
+                    groupCode=menuarr[g].groupCode;
+                    txt+="<li><div class=menuitem id=group"+groupCode+">"+groupName+"</div>";
+                    txt+="<ul>"; 
+                    for (tp in menuarr[g].dataTypes){
+                        typeName=menuarr[g].dataTypes[tp].typeName;
+                        typeCode=typeName.replace(/ /g, "_");
+                        txt+="<li><div class=menuitem id=type"+tp+">"+typeName+"</div>";
+                        txt+="<ul>";
+                        //alert(type);
+                        for (d in menuarr[g].dataTypes[tp].datasets){
+                            datasetName=menuarr[g].dataTypes[tp].datasets[d].datasetName;
+                            // alert(datasetName);
+                            txt+="<li>";
+			                txt+="<div class=markerHolder id=marker-"+groupCode+"-"+d+"-"+typeCode+">&nbsp</div>"
+                            txt+="<label class=checkboxLabel>";
+			                txt+="<input type=checkbox id="+groupCode+"-"+d+"-"+typeCode+" onClick=showhideDataset(\""+groupCode+"\",'"+d+"','"+typeCode+"')>"+datasetName;
+			                txt+="</label>";
+			                txt+="<div class=extrasHolder id=extras-"+groupCode+"-"+d+"-"+typeCode+">";
+			                txt+="<span class=clickable onClick=describeDataset(\""+groupCode+"\",'"+d+"','popup') id=list-"+groupCode+"-"+d+"-"+typeCode+">dataset info</span><br>";
+			                txt+="<span class=clickable onClick=listLocationsInDataset(\""+groupCode+"\",'"+d+"','"+typeCode+"') id=list-"+groupCode+"-"+d+"-"+typeCode+">list all locations</span>";
+			                txt+="</div>";
+			                txt+="</li>";
                         }
                         txt+="</ul>";
                         txt+="</li>";
-
-                    }// end of else 
+                    }
+                    txt+="</ul>";
+                    txt+="</li>";
                 }    
                 txt+="</ul>";
                 txt+="</li>";
@@ -157,7 +157,7 @@ function populateSideMenu(){
 function listLocationsInDataset(group, datasetID, typeCode){
     dataGroup=group;
     typeName=typeCode.replace(/_/g," ");
-    if (typeCode=="owned"){
+    if (typeCode==""){
         if (dataGroup=="biodiv"){
             apicall='./api/api_biodiv.php?datasetID='+datasetID+"";
         }else{
@@ -184,7 +184,7 @@ function listLocationsInDataset(group, datasetID, typeCode){
                 txt+="<td><span class=clickable onClick=downloadAPI('"+dataGroup+"','','"+props['locationID']+"','','','csv')>download csv</span></td></tr>";
 		    }
 		    txt+="</table>";
-		    popup(0.1,0.6,txt);
+		    popup(0.9,0.9,txt);
             $("#shade").hide();
         }
     );
@@ -230,7 +230,7 @@ function describeDataset(group, datasetID, target){
             txt+="<tr><td><td><span class=clickable onClick=downloadAPI('"+dataGroup+"','"+alldata['datasetID']+"','','','','csv')>download entire dataset in csv format</span></tr>";
 		    txt+="</table>";
             if (target=="popup"){
-		        popup(0.2,0.5,txt);
+		        popup(0.9,0.9,txt);
             }else if (target=="return"){
                 $("#shade").hide();
                 console.log(txt);
@@ -250,10 +250,11 @@ function showhideDataset(group, datasetID, typeCode){
 // needs to be richer. For example, should allow displaying all datasets for a given data type with one click
 //
     dataGroup=group;
+//    alert(group+datasetID+typeCode);
 //    alert($('#'+group+"-"+datasetID+"-"+typeCode).prop('checked'));
     if( $('#'+dataGroup+"-"+datasetID+"-"+typeCode).prop('checked')){
         typeName=typeCode.replace(/_/g," ");
-        if (typeCode=="owned"){
+        if (typeCode==""){
             if (dataGroup=="biodiv"){
                 apicall='./api/api_biodiv.php?datasetID='+datasetID+"";
             }else{
@@ -294,7 +295,6 @@ function showhideDataset(group, datasetID, typeCode){
             }
         );
     }else{
-
         // not sure if it wouldnt be better to hide the overlay... but let's remove it for the time being
         $('#marker-'+dataGroup+"-"+datasetID+"-"+typeCode).html("&nbsp");
         $('#extras-'+dataGroup+"-"+datasetID+"-"+typeCode).hide();
@@ -809,7 +809,7 @@ function showMonitoringDatastreamInPopup(ds,firstDate,lastDate){
                 txt+="<tr><td>variable <td>"+dstrm.variableName+" ["+dstrm.variableUnit+"]</tr>";
                 txt+="<tr><td>base time <td>"+dstrm.baseTime+"</tr>";
                 key="datasetID";
-			    txt+="<tr><td><span class=clickable onClick=describeDataset('envmon','"+selfeature[key]+"','datasetinfo') id=list-"+groupCode+"-"+ds+"-"+">dataset info</span><td></tr>";
+			    txt+="<tr><td><span class=clickable onClick=describeDataset('envmon','"+selfeature[key]+"','datasetinfo') id=list-"+groupCode+"-"+d+"-"+typeCode+">dataset info</span><td></tr>";
                 if (ownedItems[0].includes(selfeature.datasetID) || ownedItems[1].includes(selfeature.locationID)){
                     txt+="<tr><td><span class=clickable onClick=editMonitoringRecordsInPopup('"+selfeature.datasetID+"','"+selfeature.locationID+"','"+dstrm.baseTime+"')>edit/add data</span><td></tr>";
                 }

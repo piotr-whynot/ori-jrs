@@ -57,17 +57,8 @@ function loadPopup(data){
         });
         $("#popupBackground").fadeIn("slow");
         $("#popupWindowContents").html(data);
-        //adjusting contents height
-        $("#popupWindow").toggle('slide',{direction: "left" });
-       // $("#popupWindow").show();
+        $("#popupWindow").fadeIn("slow");
         popupStatus = 1;
-        totalH = $('#popupWindowContents')[0].scrollHeight;
-        totalH=Math.min(totalH, $(window).height()*0.8);
-        $("#popupWindowContents").css({
-            "height":totalH,
-        });
-
-
     }else{
         $("#popupWindowContents").html(data);
     }
@@ -78,32 +69,34 @@ function closePopup(){
     //disables popup only if it is opened
     if(popupStatus==1){
         $("#popupBackground").fadeOut("slow");
-        $("#popupWindow").toggle('slide',{direction: "left" });
+        $("#popupWindow").fadeOut("slow");
         popupStatus = 0;
     }
 }
 
+
 function centerPopup(H, W){
-    // H and W are fraction of window size
+    //request data for centering
     if(H>1){
-        // if H and W are given in pixels
         H=Math.min(0.8, H/$(window).height());
         W=Math.min(0.8, W/$(window).width());
     }
-    popupheight=$(window).height();
+    popupheight=$(window).height()*H;
     popupwidth=$(window).width()*W;
     $("#popupWindow").css({
+        "position": "fixed",
         "height":popupheight,
         "width":popupwidth,
+        "top": $(window).height()*(1-H)/2,
+        "left": $(window).width()*(1-W)/2,
     });
-    contentsheight=($(window).height()-20)*H; //first guess, as prescribed
 
     $("#popupWindowContents").css({
-        "height":contentsheight,
+        "height":popupheight-20,
     });
     //only need force for IE6
     $("#popupBackground").css({
         "height": $(window).height()
     });
 }       
-  
+   

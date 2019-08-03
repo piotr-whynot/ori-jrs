@@ -314,8 +314,8 @@ function editMonitoringRecordsInPopup(datasetID, locationID, baseTime){
     // populates fixed elements of the data editing popup
     txt="<div id=records_header></div><div id='records_table' class=centeritem></div>";
     popup(0.95,0.95, txt);
-
-    if (baseTime=="instantaneous"){
+    console.log(baseTime);
+    if (baseTime=="daily"){
 //        txt="<h3>Add/edit measurements in environmental monitoring database</h3>";
         // this is to avoid passing parameters in all functions - makes things a bit easier
         txt="<p>Dataset: <b>"+datasetID+"</b>&nbspLocation: <b>"+locationID+"</b>&nbspBase Time: <b>"+baseTime+"</b></p>";
@@ -347,7 +347,7 @@ function editMonitoringRecordsInPopup(datasetID, locationID, baseTime){
 
 function populateMonitoringRecords(datasetID, locationID, baseTime){
     console.log(datasetID, locationID);
-    if (baseTime=="instantaneous"){
+    if (baseTime=="daily"){
         // Date asssumes that string in locale datetime, and it converts it to UTC datetime
         d= new Date("15 "+$("#datepicker").val()+" UTC");
         m=d.getMonth();
@@ -378,7 +378,7 @@ function populateMonitoringRecords(datasetID, locationID, baseTime){
             var fd= new Date(year+"-"+month+"-01");
             var ld = new Date(fd.getFullYear(), fd.getMonth() + 1, 0);
             txt+="<tr><th>Day";
-            datesrow="<tr><td>start:<br>end:";
+            datesrow="<tr><td>first:<br>last:";
             for (dstrm in datastreams){
                 dstrm=datastreams[dstrm];
                 txt+="<th>"+dstrm.variableName+"<br>["+dstrm.variableUnit+"]";
@@ -496,6 +496,7 @@ function uploadCell(object){
 }
 
 
+
 //************************************************************************************************************
 // biodiv section
 
@@ -538,6 +539,7 @@ function editOccurrences(){
 function removeRow(n){
     $("#row"+n).remove();
 }
+
 
 
 function addRow(){

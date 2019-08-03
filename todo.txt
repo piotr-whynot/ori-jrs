@@ -47,3 +47,10 @@ warning about cookies in openstreetmaps
 
 **************login*******************
 add e-mail syntax check to resetPassword in login.js
+
+**************graphs******************
+highlight most recent year
+make title more informative
+add graph download button
+significant digits in mouseover
+contents of the header

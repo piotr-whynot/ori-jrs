@@ -188,6 +188,7 @@ echo "
 <tr><td>Add/edit measurements<td><a href=\"./?base=envmondata&do=edit&table=measurement\">go</a></tr>
 <tr><th>Site admin<th></tr>
 <tr><td>Users</><td><a href=\"./?base=users&do=edit&table=users\">go</a></tr>
+<tr><td>Key monitoring locations</><td><a href=\"./?base=envmondata&do=edit&table=keydatastream\">go</a></tr>
 </table>
 ";
 }
@@ -700,9 +701,70 @@ if ($base=="envmondata" & $table=="measurement"){
             echo "<div id=form></div>";
             echo "<script>editOnceoffRecords();</script>";
     }
-
-
 } //end envmondata and measurements table
+
+
+#
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# envmondata and key datasetreams table
+#
+
+if ($base=="envmondata" & $table=="keydatastream"){
+    if ($do=="edit"){
+        $query="select datastreamID from envmondata.keydatastream";
+        $result = $mysqli->query($query);
+        $keystreams=array();
+        while ($row = $result->fetch_assoc()){
+            $keystreams[]=$row['datastreamID'];
+        }
+        // shows list of locations
+        echo "<a href=./>back</a>";
+        echo "<h3>Add/remove key monitoring data streams</h3>";
+      echo "<label>Select datastream:</label>";
+        echo "<table width=900px class=twoColour>";
+        echo "<tr><th>Datastream ID<th>Dataset ID<th>Location ID<th>Location Name<th><th>variableName<th></tr>";
+
+        $query="select datastreamID, datasetID, locationName, envmondata.datastream.locationID, variableName from envmondata.datastream left join envmondata.location on envmondata.location.locationID=envmondata.datastream.locationID where envmondata.location.locationType='monitoring'";
+        $result = $mysqli->query($query);
+        while ($row = $result->fetch_assoc()){
+            if (in_Array($row['datastreamID'], $keystreams)){
+                echo "<tr><td>".$row['datastreamID']."<td>".$row['datasetID']."<td>".$row['locationID']."<td>".$row['locationName']."<td>".$row['variableName']."<td>already key&nbsp&nbsp<a href='./?base=envmondata&do=removekeydatastream&table=keydatastream&datastreamID=".$row['datastreamID']."' >remove</a></tr>";
+            }else{
+                echo "<tr><td>".$row['datastreamID']."<td>".$row['datasetID']."<td>".$row['locationID']."<td>".$row['locationName']."<td>".$row['variableName']."<td><a href='./?base=envmondata&do=addkeydatastream&table=keydatastream&datastreamID=".$row['datastreamID']."' >add</a></tr>";
+            }
+        }
+        echo "</table>";
+    }else if ($do=="addkeydatastream"){
+        echo "<a href=./?base=envmondata&do=edit&table=keydatastream>back</a>";
+        $query="insert into envmondata.keydatastream values ('{$datastreamID}')";
+	    $result = $mysqli->query($query);
+	    if($result){
+	        echo "<br>Done";
+	    }else{
+	        echo "<br>Problems";
+	    }
+    }else if ($do=="removekeydatastream"){
+        echo "<a href=./?base=envmondata&do=edit&table=keydatastream>back</a>";
+        $query="delete from envmondata.keydatastream where datastreamID='{$datastreamID}'";
+	    $result = $mysqli->query($query);
+	    if($result){
+	        echo "<br>Done";
+	    }else{
+	        echo "<br>Problems";
+	    }
+    }
+} //end envmondata and keydatastream table
+
+
+
+
+
+
+
+
+
+
 
 
 

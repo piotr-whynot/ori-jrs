@@ -70,6 +70,7 @@ switch($function) {
 	    $outcome="none";
         $emailAddress=stripslashes($data['emailAddress']);
 	    $password=md5(stripslashes($data['password']));
+
 	    $sql= "SELECT * FROM users1.users WHERE emailAddress="."'$emailAddress'"." AND password="."'$password'";
         $res=$mysqli->query($sql); 
         if(mysqli_num_rows($res)){
@@ -83,11 +84,36 @@ switch($function) {
                     $user['lastName'],
                     $user['emailAddress'],
                     $user['organization']);
-                $_SESSION['userInfo']=$userArray;
             }
+            // find datasets owned by user
+            $sql="SELECT distinct datasetID FROM envmondata.dataset JOIN users1.ownership ON envmondata.dataset.datasetID=users1.ownership.ownedItemID WHERE userID=${userID}";
+            $res=$mysqli->query($sql);
+            $ownedItems=array();
+            if(mysqli_num_rows($res)){
+                while($owned=$res->fetch_array()){
+		            array_push($ownedItems, $owned['datasetID']);
+                }
+            }
+            array_push($userArray,$ownedItems);
+
+            // find locations owned by user
+            $ownedItems=array();
+            $sql="SELECT distinct locationID FROM envmondata.location JOIN users1.ownership ON envmondata.location.locationID=users1.ownership.ownedItemID WHERE userID=${userID}";
+            $res=$mysqli->query($sql);
+            $ownedItems=array();
+            if(mysqli_num_rows($res)){
+                while($owned=$res->fetch_array()){
+		            array_push($ownedItems, $owned['locationID']);
+                }
+            }
+            array_push($userArray,$ownedItems);
+
+
+            $_SESSION['userInfo']=$userArray;
             //Update the last time the user successfully logged in
             $curr_timestamp = date('Y-m-d H:i:s');
-            $sql = "UPDATE users1.users SET lastLoggedIn='$curr_timestamp' WHERE userID=$userID";
+            $ip = $_SERVER['REMOTE_ADDR']?:($_SERVER['HTTP_X_FORWARDED_FOR']?:$_SERVER['HTTP_CLIENT_IP']);
+            $sql = "UPDATE users1.users SET lastLoggedIn='${curr_timestamp}', lastIPAddress='${ip}' WHERE userID=${userID}";
             $mysqli->query($sql);
         }else{
             $outcome="Username or Password Incorrect";
@@ -102,7 +128,7 @@ switch($function) {
     case "logout":
         session_unset();
         session_destroy();
-        $result=array(null,null,null,null); 
+        $result=array(null,null,null,null,null,null,null); 
 	    echo json_encode($result);
         break;
 
@@ -113,7 +139,7 @@ switch($function) {
         if(isset($_SESSION['userInfo'])){
             $result=$_SESSION['userInfo'];
 	    }else{
-            $result=array(null,null,null,null); 
+            $result=array(null,null,null,null,null,null,null); 
         }
 	    echo json_encode($result);
         break;
