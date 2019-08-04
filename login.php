@@ -72,6 +72,7 @@ switch($function) {
 	    $password=md5(stripslashes($data['password']));
 
 	    $sql= "SELECT * FROM users1.users WHERE emailAddress="."'$emailAddress'"." AND password="."'$password'";
+//        echo $sql;
         $res=$mysqli->query($sql); 
         if(mysqli_num_rows($res)){
             $login="true";

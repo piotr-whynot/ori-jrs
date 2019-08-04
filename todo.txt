@@ -21,9 +21,7 @@ check how to input superscript in variableName field in datastream
 enum field for locationType
 vocabulary for baseTime
 
-link to add measurements from main page
 issue with figures in monitoring if only one point
-figures - shading for rainy season or for flood season
 
 handle photos for locations
 consolidate what's shown in popup for location and datastream
@@ -49,8 +47,6 @@ warning about cookies in openstreetmaps
 add e-mail syntax check to resetPassword in login.js
 
 **************graphs******************
-highlight most recent year
 make title more informative
-add graph download button
 significant digits in mouseover
 contents of the header

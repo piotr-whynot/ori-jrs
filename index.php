@@ -50,7 +50,7 @@ session_start();
     <div id='popupWindow'><div id=popupWindowClose>&times</div><div id='popupWindowContents'></div></div>
     <div id='sideMenuWindow'></div>
     <div id='sideMenuSymbol'>&#9776</div>
-    <div id="shade"><img src="./img/ajax-loader.gif" class="ajax_loader"></div>
+    <div id="shade"></div>
     <?php include 'footer.php'; ?>
 </body>
 </html>

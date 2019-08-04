@@ -159,3 +159,15 @@ th{
     padding-right: 20px;
     padding-top: 5px;
 }
+th { 
+    background : #AAA;
+}
+
+.twoColour tr:nth-child(odd) { 
+    background : #FFF;
+}
+.twoColour tr:nth-child(even) {
+    background : #DDD;
+}
+
+

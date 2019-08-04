@@ -16,8 +16,8 @@ function initialize(){
 
     }else{
 	// normal init
-        txt="<span id=logo></span><div class=header>Welcome to Okavango Delta Monitoring and Data Sharing place</div>";
-//      popup(0.4,0.9, txt);
+       txt="<span id=logo></span><div class=header>Welcome to Okavango Delta Monitoring and Data Sharing place</div>";
+//       popup(0.4,0.9, txt);
     }
     call="./login.php?action=userInfo";
     $.get(call,
@@ -176,8 +176,9 @@ function listLocationsInDataset(group, datasetID, typeCode){
         function(data){
             alldata=JSON.parse(data);
 		    features=alldata['features'];
-		    txt="<table width=1000>";
-            txt+="<tr><th>Location ID<th>Location name<th>Locality<th>Geomorphological Position<th></tr>";
+            txt="<h4>Listing all locations for "+datasetID+"with data for "+typeName+"</h4>";
+		    txt+="<table class=twoColour width=1000>";
+            txt+="<tr><th>Location ID<th>Location name<th>Locality<th>Geomorphological Position<th><th></tr>";
 		    for (i in features){
 		        props=features[i]['properties'];
                 txt+="<tr><td>"+props['locationID']+"<td>"+props['locationName']+"<td>"+props['locality']+"<td>"+props['geomorphologicalPosition']+"<td><span class=clickable onClick=clickOnMapItem('"+props['locationID']+"','"+dataGroup+"','"+datasetID+"','"+typeCode+"')>view data</span>";
@@ -771,6 +772,7 @@ function showMonitoringDatastreamInPopup(ds,firstDate,lastDate){
 // when one clicks on "view" in leaflet popup. this is for envmon data of monitoring type
 // popup to show stuff with is not leaflet popup, its the "full screen popup"
 // shows time series plots
+    $("#shade").show();
     firstDate=firstDate.replace(/_/g," ");
     lastDate=lastDate.replace(/_/g," ");
 //    console.log(firstDate+lastDate);
@@ -831,6 +833,7 @@ function showMonitoringDatastreamInPopup(ds,firstDate,lastDate){
             showcumsum=true;
         }
         loadPlot(ds, graphType, isFirst, showcumsum);
+
     });
 }
 
