@@ -1,3 +1,12 @@
+:root {
+--colA: #17252A;
+--colB: #2B7A78;
+--colC: #3AAFA9;
+--colD: #DEF2F1;
+--colE: #FEFFFF;
+--colAnchor: #374785;
+--colHover: #374785;
+}
 
 /* Reset */
 header, footer, article, nav, section, aside, time, hgroup {
@@ -6,31 +15,31 @@ header, footer, article, nav, section, aside, time, hgroup {
 
 html, body, header, article, nav, section, aside, time, h1, h2, h3, p, a, ul, li, dl, dd, dt, table, thead, tfoot, tbody, th, tr, td{
     border : 0;
-    font : 12px/18px Verdana, sans-serif;
     margin : 0;
     outline : 0;
     padding : 0;
+    font : 12px/18px Helvetica, sans-serif;
 }
 
 input,textarea{
-    font : 12px/18px Verdana, sans-serif;
+    font : 12px/18px Helvetica, sans-serif;
 }
 
-body{
-    margin-left : 0px;
-}
+
 
 /* BASICS */
 H1, H2, H3 {
-    border-bottom : 1px dotted #B5B3A9;
-    color : #333;
+    border-bottom : 0px dotted #B5B3A9;
+    color : var(--colC);
     font-weight : bold;
     padding : 0 0 0 25px;
-    margin : 20px 0 0 0;
+    margin : 10px 0 0 0;
 }
+
 H1 {
     font-size : 20px;
 }
+
 H2 {
     font-size : 18px;
 }
@@ -52,7 +61,9 @@ H6 {
 }	
 
 #footer {
-    border-top : 1px dotted #B5B3A9;
+    width:80%;
+    margin:auto;
+    border-top : 1px dotted var(--colB);
     clear : both;
     text-align: center;
     line-height: 8px;
@@ -61,17 +72,13 @@ H6 {
 #footer a, #footer p {
     line-height: 9px;
     font-size : 9px;
-    color : #666;
+    color : var(--colAnchor);
 }
 
 #footer a:hover {
-    color : #888;
+    color : var(--colHover);
 }
 
-#map{
-    display: block;
-    z-index: 200;
-}
 
 #shade {
     display: none;
@@ -85,13 +92,6 @@ H6 {
     opacity: 0.3;
 }
 
-#shade img{
-    display: block;
-    margin: auto;
-    width: 100px;
-    padding: 100px 0; 
- }
-
 #loader{
     display: block;
     margin: auto;
@@ -99,30 +99,80 @@ H6 {
     padding: 100px 0; 
  }
 
+.narrowDiv{
+    max-width:750px;
+    width: 90%;
+    margin: auto;
+    overflow: auto;
+    scroll-snap-align: start;
+}
 
-#sideMenuSymbol{
-    font-weight: bold;
-    font-size : 20px;
-    height: 40px;
-    position: absolute;
-    top: 0px;
-    right:0;
-    z-index: 245;
-    cursor:pointer;
-    padding: 10px; 
+.wideDiv{
+    width:100%;
+    margin: auto;
+    scroll-snap-align: start;
+}
+
+.spacer{
+   width: 0%;
+   float: left;
+}
+
+.headerDiv{
+    background: var(--colE);
+    color: var(--colB);
+    border-color: var(--colC);
+    margin:auto;
+    width: 99%;
+    height: 90px;
+    padding: 20px 0 0 0; 
+    border-style: solid;
+    border-width: 3px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.headerText{
+    font-size:22pt;
+    height: 30px;
+    padding: 20px 0 0 0; 
+    line-height: 30px;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+/* this is container where everything sits, apart from footer*/
+#allContents{
+    margin:auto;
+    overflow-y: scroll;
+    scroll-snap-type: y proximity;
 }
 
 
-#sideMenuWindow{
-    background: rgba(200, 200, 200, .7);
-    width: 400px;
-    position: absolute;
-    top: 0px;
-    right:0;
-    overflow:auto;
-    z-index: 240;
-    padding: 10px 0px 10px 20px; 
+/* map size has to be prescribed*/
+#mapContents{
+   height: 100%;
+   width: 100%;
 }
+
+
+#menuContents{
+    padding: 20px 20px 100px 20px; 
+}
+
+#figureContents{
+    padding: 20px 20px 100px 20px; 
+    max-width: 1000px; 
+    margin: auto;
+}
+
+
+
+
+
+/* other stuff 
+*/
+
 
 .clickable {
     font-weight: bold;
@@ -154,11 +204,13 @@ th{
     text-align: center;
     margin:auto;
 }
+
 .spaced{
     padding-left: 20px;
     padding-right: 20px;
     padding-top: 5px;
 }
+
 th { 
     background : #AAA;
 }
@@ -170,4 +222,17 @@ th {
     background : #DDD;
 }
 
+.info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+    float: left;
+} 
 
+#intro{
+    width:100%;
+    text-align: center;
+}

@@ -211,6 +211,12 @@ if ($_SESSION['userInfo']!=null){
 }
 }
 
+$key=getkeydatastream($mysqli, "locations");
+    $output['keydatastreams']=array(
+        "groupName"=>"Key monitoring locations",
+       "data"=>$key
+    );
+
 
 $all['monitoring']=array(
 	"groupName"=>"Monitoring",
@@ -225,12 +231,6 @@ $output['all']=array(
     "groupName"=>"Explore all datasets",
     "data"=>$all
 );
-
-$key=getkeydatastream($mysqli, "locations");
-    $output['keydatastreams']=array(
-        "groupName"=>"Key monitoring locations",
-       "data"=>$key
-    );
 
 echo json_encode($output);
 
