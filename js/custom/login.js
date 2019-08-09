@@ -159,6 +159,7 @@ function login(){
 	        'emailAddress': emailAddress,
 	        'password': password
 	    };
+	    console.log(formData);
 	    $.ajax({
 	        type : 'POST',
             url  : 'login.php?action=login',
@@ -171,6 +172,7 @@ function login(){
 		        responseForm("Logged in", "current");
             }else{
                 $('.warning').html(data[1]);      
+	        console.log(data[2]);
             }
         });
     }else{// end of email and password check                                                                                        

@@ -65,15 +65,19 @@ switch($function) {
 
 //*************************************************************************************************************
     case "login":
-        $data=$_POST["data"];
+	$data=$_POST["data"];
+//	$data= array();
+//        $data['emailAddress']='wolski@csag.uct.ac.za';
+//        $data['password']='elek1995';
         $login="false";
-	    $outcome="none";
+	$outcome="none";
         $emailAddress=stripslashes($data['emailAddress']);
-	    $password=md5(stripslashes($data['password']));
-
-	    $sql= "SELECT * FROM users1.users WHERE emailAddress="."'$emailAddress'"." AND password="."'$password'";
-//        echo $sql;
-        $res=$mysqli->query($sql); 
+        $password=md5(stripslashes($data['password']));
+	$sql1= "SELECT * FROM users1.users WHERE emailAddress="."'$emailAddress'"." AND password="."'$password'";
+	$res=$mysqli->query($sql1);
+	echo $res;
+	echo mysqli_num_rows($res);
+	echo "test";
         if(mysqli_num_rows($res)){
             $login="true";
             $outcome="none";
@@ -119,7 +123,7 @@ switch($function) {
         }else{
             $outcome="Username or Password Incorrect";
 	    }
-	    $result=array($login,$outcome);
+	    $result=array($login,$outcome, $sql1);
         echo json_encode($result);
         break;
 

@@ -203,6 +203,7 @@ function clickOnMapItem(itemId, dataGroup, datasetID, typeCode) {
 
 
 function describeDataset(group, datasetID, target){
+    $("#shade").show();
     dataGroup=group;
     if (dataGroup=="biodiv"){
         apicall="./api/api_biodiv.php?calltype=datasetinfo&datasetID="+datasetID+"";
@@ -210,7 +211,6 @@ function describeDataset(group, datasetID, target){
         apicall="./api/api_envdata.php?calltype=datasetinfo&datasetID="+datasetID+"";
     }
     console.log(apicall);
-    $("#shade").show();
     $.get(apicall, 
         function(data){
             alldata=JSON.parse(data);
@@ -771,6 +771,7 @@ function showMonitoringDatastreamInPopup(ds,firstDate,lastDate){
 // when one clicks on "view" in leaflet popup. this is for envmon data of monitoring type
 // popup to show stuff with is not leaflet popup, its the "full screen popup"
 // shows time series plots
+    $("#shade").show();
     firstDate=firstDate.replace(/_/g," ");
     lastDate=lastDate.replace(/_/g," ");
 //    console.log(firstDate+lastDate);

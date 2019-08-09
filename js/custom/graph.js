@@ -49,7 +49,10 @@ function loadPlot(datastream, graphType, isFirst, showcumsum){
 
             locationName=alldata[0].locationName;
 
-            prepareChart("graph", ds, fy, ly+1, measuringUnit, variableName, locationName, graphType, firstm, gapSize)
+            setTimeout(function(){
+                prepareChart("graph", ds, fy, ly+1, measuringUnit, variableName, locationName, graphType, firstm, gapSize)
+	    }, 1000);
+
             $('#'+graphType).addClass('current');
         }
     );
@@ -163,7 +166,9 @@ function prepareChart(divname, ds, firstyr, lastyr, measuringUnit, variableName,
             $('#graphMenuAux').html(txt);
             chart=createChart(divname, variableName, measuringUnit, locationName, graphType, seriesData);
             $(":checkbox[value="+year2show+"]").prop("checked","true");
-            showhideYear(year2show);
+
+	    showhideYear(year2show);
+            $("#shade").hide();
         }
     );   
 }
