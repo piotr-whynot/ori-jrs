@@ -313,7 +313,9 @@ function formatDate(dte){
 function editMonitoringRecordsInPopup(datasetID, locationID, baseTime){
     // populates fixed elements of the data editing popup
     txt="<div id=records_header></div><div id='records_table' class=centeritem></div>";
-    popup(0.95,0.95, txt);
+    //popup(0.95,0.95, txt);
+    closePopup();
+    showAndScroll(txt,"dataContents","dataWindow");
     console.log(baseTime);
     if (baseTime=="daily"){
 //        txt="<h3>Add/edit measurements in environmental monitoring database</h3>";

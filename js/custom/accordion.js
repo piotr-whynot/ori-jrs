@@ -15,8 +15,10 @@
         var defaults = {
             accordion: false,
             speed: 500,
-            closedSign: '<svg height="16" viewBox="0 0 6 16" width="6"><path fill-rule="evenodd" d="M0 14l6-6-6-6z"></path></svg>',
-            openedSign: '<svg height="16" viewBox="1 0 12 16" width="12"><path fill-rule="evenodd" d="M0 5l6 6 6-6z"></path></svg>'
+            closedSign:  "<img src='img/icon_plus.svg' height=20 width=20>",
+            // '<svg height="16" viewBox="0 0 6 16" width="6"><path fill-rule="evenodd" d="M0 14l6-6-6-6z"></path></svg>',
+            openedSign:  "<img src='img/icon_minus.svg' height=20 width=20>",
+            //'<svg height="16" viewBox="1 0 12 16" width="12"><path fill-rule="evenodd" d="M0 5l6 6 6-6z"></path></svg>'
 //            closedSign: '[+]',
 //            openedSign: '[-]'
         };
@@ -29,7 +31,7 @@
          $this.find("li").each(function() {
              if($(this).find("ul").length != 0){
                  //add the multilevel sign next to the link
-                 $(this).find(".menuitem:first").prepend("<span class=openCloseSign>"+ opts.closedSign +"</span>");
+                 $(this).find(".menulevel:first").prepend("<span class=openCloseSign>"+ opts.closedSign +"</span>");
                  //avoid jumping to the top of the page when the href is an #
 //                 if($(this).find("a:first").attr('href') == "#"){
 //                       $(this).find("a:first").click(function(){return false;});
@@ -43,7 +45,7 @@
              $(this).parents("ul").parent("li").find("span.openCloseSign:first").html(opts.openedSign);
          });
 
-          $this.find("li .menuitem").click(function() {
+          $this.find("li .menulevel").click(function() {
               if($(this).parent().find("ul").length != 0){
                   if(opts.accordion){
                       //Do nothing when the list is open

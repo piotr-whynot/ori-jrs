@@ -1,0 +1,79 @@
+
+.menuitem{
+    cursor: pointer;
+    color: #444444;
+    font-weight: bold;
+}
+
+menuitem:hover {
+    color:#675C7C;
+}
+ 
+.topnav {
+    list-style: none;
+}
+  
+.topnav ul {
+    list-style: none;
+    padding-left: 20px;
+    display: none;
+}
+
+.topnav li .menuitem {
+    font-size: 16px;
+    line-height: 30px;
+    display: inline;
+}
+ 
+
+.topnav ul li .menuitem {
+    font-size: 14px;
+    line-height: 30px;
+    display: inline;
+}
+  
+.topnav ul ul li .menuitem {
+    font-size: 12px;
+}
+
+.topnav ul ul ul li .menuitem {
+    color: #666666;
+    font-size: 12px;
+    line-height: 25px;
+}
+ 
+  
+.openCloseSign{
+    position:relative;
+    padding-right: 15px;
+}
+
+.markerHolder {
+    width: 22px;
+    display: inline-block;
+}        
+
+.extrasHolder {
+    padding-left: 55px;
+}
+.extrasHolder .clickable {
+    color: #666666;
+}
+.extrasHolder .clickable:hover {
+    color: blue;
+}
+
+input.menuCheckbox{
+    width: 15px;
+    cursor:pointer;
+}
+
+.checkboxLabel{
+    color: #666666;
+    width: 280px; 
+    line-height:15px;
+    cursor:pointer;
+    padding-right: 15px;
+    font-weight: bold;
+}
+
