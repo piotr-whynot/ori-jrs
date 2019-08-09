@@ -48,15 +48,7 @@ function loadPlot(datastream, graphType, isFirst, showcumsum){
             lineWidth=2;
 
             locationName=alldata[0].locationName;
-<<<<<<< HEAD
-
-            setTimeout(function(){
-                prepareChart("graph", ds, fy, ly+1, measuringUnit, variableName, locationName, graphType, firstm, gapSize)
-	    }, 1000);
-
-=======
->>>>>>> cb7c0677a8f54aaa8bfb5bbcc1e108623dc84a11
-            $('#'+graphType).addClass('current');
+           $('#'+graphType).addClass('current');
 
             setTimeout(function(){
                 prepareChart("graph", ds, fy, ly+1, measuringUnit, variableName, locationName, graphType, firstm, gapSize)
@@ -173,14 +165,8 @@ function prepareChart(divname, ds, firstyr, lastyr, measuringUnit, variableName,
             $('#graphMenuAux').html(txt);
             chart=createChart(divname, variableName, measuringUnit, locationName, graphType, seriesData);
             $(":checkbox[value="+year2show+"]").prop("checked","true");
-<<<<<<< HEAD
-
 	    showhideYear(year2show);
             $("#shade").hide();
-=======
-            showhideYear(year2show);
-            $('#shade').hide();
->>>>>>> cb7c0677a8f54aaa8bfb5bbcc1e108623dc84a11
         }
     );   
 }

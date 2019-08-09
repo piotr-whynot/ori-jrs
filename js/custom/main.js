@@ -143,13 +143,8 @@ function listLocationsInDataset(group, datasetID, typeCode, target){
 
 
 
-<<<<<<< HEAD
-function describeDataset(group, datasetID, target){
-    $("#shade").show();
-=======
 function describeDataset(group, datasetID, varType, scrollTo){
     console.log("describe dataset");
->>>>>>> cb7c0677a8f54aaa8bfb5bbcc1e108623dc84a11
     dataGroup=group;
     if (dataGroup=="biodiv"){
         apicall="./api/api_biodiv.php?calltype=datasetinfo&datasetID="+datasetID+"";
@@ -738,76 +733,3 @@ function showOnceoffDatastreamInPopup(ds){
    });
 }
 
-
-
-<<<<<<< HEAD
-function showMonitoringDatastreamInPopup(ds,firstDate,lastDate){
-// when one clicks on "view" in leaflet popup. this is for envmon data of monitoring type
-// popup to show stuff with is not leaflet popup, its the "full screen popup"
-// shows time series plots
-    $("#shade").show();
-    firstDate=firstDate.replace(/_/g," ");
-    lastDate=lastDate.replace(/_/g," ");
-//    console.log(firstDate+lastDate);
-    eventapicall="./api/api_envdata.php?calltype=datastream&datastreamID="+ds;
-    console.log(eventapicall);
-    $.get(eventapicall, 
-        function(data){
-            console.log(eventapicall);
-            alldata=JSON.parse(data);
-            selfeature=alldata[0];
-                txt="";
-                txt+="<div id=graphWrapper>";
-                txt+="<div id=graphControls></div>";
-                txt+="<div id=graph></div>";
-                txt+="</div>";
-            txt+="<div class=dataStreamInfo>"
-//            console.log(selfeature.properties);
-            txt+="<table width=400px>";
-            // there should be only one datastream at this stage...
-            for (dstrm in selfeature['datastreams']){
-                key="locationID";
-                txt+="<tr><td>"+key+"<td>"+selfeature[key]+"</tr>";
-                key="Location name";
-                txt+="<tr><td>"+key+"<td>"+selfeature['locationName']+"</tr>";
-                key="Location description";
-                txt+="<tr><td>"+key+"<td>"+selfeature['locality']+"</tr>";
-                key="coordinates";
-                txt+="<tr><td>"+key+"<td>"+selfeature['latitude']+" S<br>"+selfeature['longitude']+" E</tr>";
-                key="First measurement";
-                txt+="<tr><td>"+key+"<td>"+firstDate+"</tr>";
-                key="Most recent measurement";
-                txt+="<tr><td>"+key+"<td>"+lastDate+"</tr>";
-//              console.log(ds);
-                dstrm=selfeature['datastreams'][dstrm];
-//              console.log(ds);
-                txt+="<tr><td>variable <td>"+dstrm.variableName+" ["+dstrm.variableUnit+"]</tr>";
-                txt+="<tr><td>base time <td>"+dstrm.baseTime+"</tr>";
-                key="datasetID";
-			    txt+="<tr><td><span class=clickable onClick=describeDataset('envmon','"+selfeature[key]+"','datasetinfo') id=list-"+groupCode+"-"+ds+"-"+">dataset info</span><td></tr>";
-                if (ownedItems[0].includes(selfeature.datasetID) || ownedItems[1].includes(selfeature.locationID)){
-                    txt+="<tr><td><span class=clickable onClick=editMonitoringRecordsInPopup('"+selfeature.datasetID+"','"+selfeature.locationID+"','"+dstrm.baseTime+"')>edit/add data</span><td></tr>";
-                }
-                txt+="</table>";
-                txt+="<div id='datasetinfo'>";
-                txt+="</div>";
-                txt+="<br>";
-                txt+="</div>";
-            }
-        // this directs output to "full screen popup" 
-        popup(0.9,0.9, txt);
-        
-        graphType="compareyearsnormal";
-//        graphType="timeseries";
-        isFirst=true;
-        showcumsum=false;
-        if(dstrm.variableName=="rainfall" || dstrm.variableName=="Rainfall"){
-            graphType="compareyearscumsum";
-            showcumsum=true;
-        }
-        loadPlot(ds, graphType, isFirst, showcumsum);
-    });
-}
-
-=======
->>>>>>> cb7c0677a8f54aaa8bfb5bbcc1e108623dc84a11
