@@ -215,7 +215,6 @@ function showDataset(locationID, datasetID,dbaseCat,varType, obsType, scrollTo, 
 //    console.log(apicall);
     $("#shade").show();
 
-
     $.get(apicall, 
         function(data){
             alldata=JSON.parse(data);
@@ -321,7 +320,7 @@ function showMap(){
 //    }else{
 //        mapheight=$(window).height()-20;
 //    }
-        map = L.map('mapContents', {center: new L.LatLng(-19.3, 23), zoom: 9, zindex: 30});
+        map = L.map('mapContents', {dragging: false, center: new L.LatLng(-19.3, 23), zoom: 9, zindex: 30});
         map.scrollWheelZoom.disable();
 }
 
