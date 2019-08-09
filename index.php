@@ -19,6 +19,7 @@ session_start();
     <script type="text/javascript" src='./js/exporting.js'></script>
     <script type="text/javascript" src="./js/bootstrap/bootstrap-datetimepicker.min.js"></script>
     <script type="text/javascript" src="./js/bootstrap/bootstrap.min.js"></script>
+    <script type="text/javascript" src="./js/custom/menu.js"></script>
     <script type="text/javascript" src="./js/custom/main.js"></script>
     <script type="text/javascript" src="./js/custom/login.js"></script>
 <!--
@@ -51,9 +52,9 @@ session_start();
     <div id='introWindow' class=narrowDiv><div class='spacer'></div><div id='introHeader' class=headerDiv></div><div id='introContents' class=contentsDiv></div></div>
     <div id='menuWindow' class=narrowDiv><div class='spacer'></div><div id='menuHeader' class=headerDiv></div><div id='menuContents' class=contentsDiv></div></div>
     <div id="mapWindow" class=wideDiv><div id='mapContents'></div></div>
-    <div id="locationWindow" class=wideDiv><div class=spacer></div><div id='locationHeader' class=headerDiv></div><div id='locationContents' class=contentsDiv></div></div>
-    <div id="datasetWindow" class=wideDiv><div class=spacer></div><div id='datasetHeader' class=headerDiv></div><div id='datasetContents' class=contentsDiv></div></div>
     <div id="figureWindow" class=wideDiv><div class=spacer></div><div id='figureHeader' class=headerDiv></div><div id='figureContents' class=contentsDiv></div></div>
+    <div id="locationWindow" class=narrowDiv><div class=spacer></div><div id='locationHeader' class=headerDiv></div><div id='locationContents' class=contentsDiv></div></div>
+    <div id="datasetWindow" class=wideDiv><div class=spacer></div><div id='datasetHeader' class=headerDiv></div><div id='datasetContents' class=contentsDiv></div></div>
     <div id="dataWindow" class=wideDiv><div class=spacer></div><div id='dataHeader' class=headerDiv></div><div id='dataContents' class=contentsDiv></div></div>
     </div>
     <div id="shade"></div>

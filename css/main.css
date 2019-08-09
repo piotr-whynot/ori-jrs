@@ -110,6 +110,7 @@ H6 {
 .wideDiv{
     width:100%;
     margin: auto;
+    overflow: auto;
     scroll-snap-align: start;
 }
 
@@ -161,7 +162,7 @@ H6 {
 }
 
 #figureContents{
-    padding: 20px 20px 100px 20px; 
+    padding: 20px 20px 20px 20px; 
     max-width: 1000px; 
     margin: auto;
 }
