@@ -13,18 +13,12 @@ vocabulary for variableType
 ************general************
 public vs private data
 "favourites"
-zoom on location when picked from list all locations table
 
 ************map page*************
-adjust field lengths in definition of datastream table
-check how to input superscript in variableName field in datastream
-enum field for locationType
-vocabulary for baseTime
 
 issue with figures in monitoring if only one point
 
 handle photos for locations
-consolidate what's shown in popup for location and datastream
 accomodate subsites
 
 *********admin pages*************
@@ -47,6 +41,4 @@ warning about cookies in openstreetmaps
 add e-mail syntax check to resetPassword in login.js
 
 **************graphs******************
-make title more informative
 significant digits in mouseover
-contents of the header

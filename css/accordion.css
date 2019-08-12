@@ -41,9 +41,15 @@
     width: 93%;
     padding-left: 5%;
     font-family: 'Rubik',sans-serif;
+    white-space: nowrap;
+    vertical-align: top;
 }
 
-
+.levLabel{
+  display: inline-block;
+  white-space: normal;
+  vertical-align: top;
+}
 
 .topnav li .menulevel {
     /* this is for menulevel divs in 1st and lower levels*/
@@ -94,10 +100,18 @@
 .checkboxLabel{
     line-height:15px;
     cursor:pointer;
-    padding-right: 15px;
+    white-space: nowrap;
 }
+
 .checkboxLabel input{
-    margin-right: 15px;
+  vertical-align: top;
+}
+
+.checkboxLabel span{
+  display: inline-block;
+  white-space: normal;
+  vertical-align: top;
+  margin-left:20px;
 }
 
 
