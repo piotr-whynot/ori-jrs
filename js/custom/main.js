@@ -457,7 +457,7 @@ function showLocation(locationID, dataGroup, scrollTo, cleanup){
                 txt+="Available variables";
                 txt+="</div>";
                 txt+="<table class='twoColour listTable fullwidthTable'>";
-                txt+="<tr><th>Name</th><th>Unit</th><th>Type</th><th>Time period</th><th></th><th></th></tr>"; 
+                txt+="<tr><th>Name</th><th>Unit</th><th>Type</th><th>First</th><th>Most recent</th><th></th><th></th></tr>"; 
                 for (dstrm in selfeature['datastreams']){
                     dstrm=selfeature['datastreams'][dstrm];
     console.log(selfeature.locationType);
@@ -471,7 +471,7 @@ function showLocation(locationID, dataGroup, scrollTo, cleanup){
                         //console.log(firstDatestr);
                         firstDate=firstDate.replace(/ /g,"_");
                         lastDate=lastDate.replace(/ /g,"_");
-                        txt+="<tr><td>"+dstrm.variableName+"</td><td>["+dstrm.variableUnit+"]</td><td>"+dstrm.baseTime+"</td><td>"+firstDatestr+"-"+lastDatestr+"<td><span onClick=showDatastream('"+dstrm.datastreamID+"','figureWindow') class='clickable rf'>graph</span>&nbsp&nbsp"; 
+                        txt+="<tr><td>"+dstrm.variableName+"</td><td>["+dstrm.variableUnit+"]</td><td>"+dstrm.baseTime+"</td><td>"+firstDatestr+"</td><td>"+lastDatestr+"<td><span onClick=showDatastream('"+dstrm.datastreamID+"','figureWindow') class='clickable rf'>graph</span>&nbsp&nbsp"; 
                         txt+="</td>";
                         txt+="<td><span class=clickable onClick=downloadAPI('envdata','','','','"+dstrm.datastreamID+"','csv')>download</span></td></tr>"; //downloadAPI(dataGroup, datasetID, locationID, baseTime, datastreamID, format)
                     }else{
