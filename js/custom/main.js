@@ -160,7 +160,6 @@ function showAll(datastreamID, locationID, datasetID, obsType, dbaseCat, varType
             console.log("csrolling from all"+scrollTo);
             if (scrollTo){
                 scroll2div(scrollTo);
->>>>>>> bce1cde09d3c5c369d0f661b29e5bce55ff0c537
             }
             $("#shade").hide();
         }
