@@ -264,11 +264,13 @@ function listLocationsInDataset(group, datasetID, typeCode, target){
             }
             txt+="</div>";
 		    txt+="<table class='twoColour fullwidthTable listTable'>";
-            txt+="<tr><th>Location ID<th>Location name<th>Locality<th>Geomorphological Position<th><th></tr>";
+            txt+="<tr><th>Location ID<th>Location name<th>Locality<th>LatLon coordinates<th><th></tr>";
 		    for (i in features){
 		        props=features[i]['properties'];
-                txt+="<tr><td>"+props['locationID']+"<td>"+props['locationName']+"<td>"+props['locality']+"<td>"+props['geomorphologicalPosition']+"<td><span class=clickable onClick=showLocation('"+props['locationID']+"','"+dataGroup+"','locationWindow',true)>select</span>";
-                txt+="<td><span class=clickable onClick=downloadAPI('"+dataGroup+"','','"+props['locationID']+"','','','csv')>download</span></td>";
+		        geom=features[i]['geometry'];
+                coords=geom.coordinates;
+                txt+="<tr><td>"+props['locationID']+"<td>"+props['locationName']+"<td>"+props['locality']+"<td>"+coords[0]+" "+coords[1]+"<td><span class=clickable onClick=showLocation('"+props['locationID']+"','"+dataGroup+"','locationWindow',true)>select</span>";
+                //txt+="<td><span class=clickable onClick=downloadAPI('"+dataGroup+"','','"+props['locationID']+"','','','csv')>download</span></td>";
                 txt+="</tr>";
 		    }
 		    txt+="</table>";
@@ -338,6 +340,7 @@ function showLocationWrapper(feature,layer){
 
 function showLocation(locationID, dataGroup, scrollTo, cleanup){
     console.log("loading location");
+    $('#locationWindow').show();
     if(typeof currentMarker === 'undefined'){
     }else{
         currentMarker.setIcon(smallIcon);
@@ -383,7 +386,6 @@ function showLocation(locationID, dataGroup, scrollTo, cleanup){
             txt+="</table>";
             txt+="</div>";
             $('#locationContents').html(txt);
-            $('#locationWindow').show();
             console.log("csrolling from location "+scrollTo);
             if (cleanup){
                 $('#figureContents').html("");
@@ -473,7 +475,8 @@ function showLocation(locationID, dataGroup, scrollTo, cleanup){
                         lastDate=lastDate.replace(/ /g,"_");
                         txt+="<tr><td>"+dstrm.variableName+"</td><td>["+dstrm.variableUnit+"]</td><td>"+dstrm.baseTime+"</td><td>"+firstDatestr+"</td><td>"+lastDatestr+"<td><span onClick=showDatastream('"+dstrm.datastreamID+"','figureWindow') class='clickable rf'>graph</span>&nbsp&nbsp"; 
                         txt+="</td>";
-                        txt+="<td><span class=clickable onClick=downloadAPI('envdata','','','','"+dstrm.datastreamID+"','csv')>download</span></td></tr>"; //downloadAPI(dataGroup, datasetID, locationID, baseTime, datastreamID, format)
+                        //txt+="<td><span class=clickable onClick=downloadAPI('envdata','','','','"+dstrm.datastreamID+"','csv')>download</span></td></tr>"; //downloadAPI(dataGroup, datasetID, locationID, baseTime, datastreamID, format)
+                        txt+="<td></td></tr>"; 
                     }else{
                         txt+="<tr><td>"+dstrm.variableName+"<td>["+dstrm.variableUnit+"]<td>"+dstrm.baseTime+"<td><span onClick=showOnceoffDatastreamInPopup('"+dstrm.datastreamID+"') class='clickable rf'>view</span>&nbsp&nbsp"; 
                         txt+="</td>";
@@ -487,7 +490,6 @@ function showLocation(locationID, dataGroup, scrollTo, cleanup){
             txt+="</div>";  
             txt+="</div>";
             $('#locationContents').html(txt);
-            $('#locationWindow').show();
             console.log("csrolling from location "+scrollTo);
             if (cleanup){
                 $('#figureContents').html("");
