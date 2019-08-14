@@ -120,17 +120,24 @@ H6 {
 }
 
 .headerDiv{
-    background: var(--colE);
+    background: var(--colD);
     color: var(--colB);
-    border-color: var(--colC);
+    border-color: var(--colD);
     margin:auto;
     width: 99%;
-    height: 90px;
+    min-height: 90px;
     padding: 20px 0 0 0; 
     border-style: solid;
     border-width: 3px;
     text-align: center;
+    font-weight: bold;
     text-transform: uppercase;
+}
+
+.contentsDivnarrow{
+    max-width:750px;
+    width: 90%;
+    margin: auto;
 }
 
 .headerText{
@@ -161,29 +168,150 @@ H6 {
     padding: 20px 20px 100px 20px; 
 }
 
+#datasetContents{
+    padding-bottom: 100px; 
+}
+
+#locationContents{
+    padding-bottom: 100px; 
+}
+
 #figureContents{
-    padding: 20px 20px 20px 20px; 
+    padding: 20px 20px 100px 20px; 
     max-width: 1000px; 
     margin: auto;
 }
 
+.narrowDiv{
+    margin-bottom:10px;
+}
 
 
 
 
-/* other stuff 
-*/
+/*tables*/
+table{
+    font-family: 'Rubik',sans-serif;
+}
+td,th {
+    padding-left:5px;
+    padding-right:5px;
+}
+
+th { 
+    text-transform: uppercase;
+    background: var(--colC);
+    color: var(--colE);
+    line-height: 30px;
+    text-align:left;
+}
+
+.twoColour tr:nth-child(odd) { 
+    background: var(--colD);
+}
+
+.twoColour tr:nth-child(even) {
+    background: var(--colE);
+}
+
+.fullwidthTable{
+    width: 100%;
+    color: var(--colB);
+}
+.narrowTable{
+    width: 50%;
+    color: var(--colB);
+    margin:auto;
+}
+
+.tableTitle{
+    line-height: 30px;
+    padding:20px;
+    margin-bottom:5px;
+    text-align:center;
+    background: var(--colE);
+    color: var(--colC);
+    font-family: 'Rubik',sans-serif;
+    font-size:30px;
+}
+
+.infoLabel{
+    text-transform: uppercase;
+    text-align: right;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 32px;
+    color: var(--colC);
+}
+
+.listTable tr{
+    padding-bottom: 20px;
+}
+
+.downloadLink {
+    margin:auto;
+    margin-bottom: 50px;
+    margin-top: 50px;
+    padding:20px;
+    width: 50%;
+    background: var(--colE);
+    font-size: 20px;
+    text-align:center;
+    border: 2px solid var(--colD);
+}
+
+
+
+
+
+/*scroll indicator*/
+
+.float{
+    position:fixed;
+    right:0;
+    width: 50px;
+    z-index:10500;
+    opacity: 0.3;
+}
+
+#fup{
+    top:0;
+}
+
+#fdown{
+    bottom:0;
+}
+
+.floatImg{
+    float: right;
+    margin-right:10%;
+}
+
+
+
+
+/*random stuff*/
+
 
 
 .clickable {
     font-weight: bold;
-    color: black;
+    color: var(--colAnchor);
     cursor:pointer;
 }
 
 .clickable:hover{
-    color: blue;
+    color: var(--colHover);
 }
+
+
+
+
+
+
+
+/*not sure if these are necessary*/
 
 .label {
     color: gray;
@@ -212,17 +340,6 @@ th{
     padding-top: 5px;
 }
 
-th { 
-    background : #AAA;
-}
-
-.twoColour tr:nth-child(odd) { 
-    background : #FFF;
-}
-.twoColour tr:nth-child(even) {
-    background : #DDD;
-}
-
 .info {
     padding: 6px 8px;
     font: 14px/16px Arial, Helvetica, sans-serif;
@@ -237,3 +354,4 @@ th {
     width:100%;
     text-align: center;
 }
+

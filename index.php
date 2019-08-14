@@ -49,14 +49,16 @@ session_start();
 
 
     <div id='allContents'>
-    <div id='introWindow' class=narrowDiv><div class='spacer'></div><div id='introHeader' class=headerDiv></div><div id='introContents' class=contentsDiv></div></div>
-    <div id='menuWindow' class=narrowDiv><div class='spacer'></div><div id='menuHeader' class=headerDiv></div><div id='menuContents' class=contentsDiv></div></div>
+    <div id='introWindow' class=wideDiv><div class='spacer'></div><div id='introHeader' class=headerDiv></div><div id='introContents' class=contentsDivnarrow></div></div>
+    <div id='menuWindow' class=wideDiv><div class='spacer'></div><div id='menuHeader' class=headerDiv></div><div id='menuContents' class=contentsDivnarrow></div></div>
     <div id="mapWindow" class=wideDiv><div id='mapContents'></div></div>
     <div id="figureWindow" class=wideDiv><div class=spacer></div><div id='figureHeader' class=headerDiv></div><div id='figureContents' class=contentsDiv></div></div>
-    <div id="locationWindow" class=narrowDiv><div class=spacer></div><div id='locationHeader' class=headerDiv></div><div id='locationContents' class=contentsDiv></div></div>
-    <div id="datasetWindow" class=wideDiv><div class=spacer></div><div id='datasetHeader' class=headerDiv></div><div id='datasetContents' class=contentsDiv></div></div>
+    <div id="locationWindow" class=wideDiv><div class=spacer></div><div id='locationHeader' class=headerDiv></div><div id='locationContents' class=contentsDivnarrow></div></div>
+    <div id="datasetWindow" class=wideDiv><div class=spacer></div><div id='datasetHeader' class=headerDiv></div><div id='datasetContents' class=contentsDivnarrow></div></div>
     <div id="dataWindow" class=wideDiv><div class=spacer></div><div id='dataHeader' class=headerDiv></div><div id='dataContents' class=contentsDiv></div></div>
-    </div>
+    <div class=float id="fdown"><div class=floatImg><img src='img/down.svg' width=50px></div></div>
+    <div class=float id="fup"><div class=floatImg><img src='img/up.svg' width=50px></div></div>
+</div>
     <div id="shade"></div>
     <div id='footer'><?php include 'footer.php'; ?></div>
 <!--

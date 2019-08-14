@@ -20,20 +20,24 @@ while($row0 = $result0->fetch_assoc()){
     $popularGroupName=$row0['popularGroupName'];
     $datasetstack=array(); #to store datasets
     $query1="select distinct dataset.datasetID,datasetName,datasetDescription from occurrence join event on occurrence.eventID=event.eventID join dataset on event.datasetID=dataset.datasetID join location on location.locationID=event.locationID where popularGroupName='{$popularGroupName}' and ".$link." location.locationType='monitoring'";
-#echo $query1."</br>";
+//echo $query1."</br>";
     $result1 = $mysqli->query($query1);
     while ($row1= $result1->fetch_assoc()){
         $datasetarr=array(
+            "datastreamID"=>"",
+            "variableName"=>"",
+            "locationID"=>"",
+            "locationName"=>"",
             "datasetID"=>$row1['datasetID'],
             "datasetName"=>$row1['datasetName'],
             "datasetDescription"=>$row1['datasetDescription'],
         );
-        $datasetstack[$datasetID]=$datasetarr;
+        $datasetstack[]=$datasetarr;
     }
     $typearr=array(
-    "categoryID"=>$popularGroupName,
-    "categoryName"=>$popularGroupName,
-    "data"=>$datasetstack,
+        "categoryID"=>$popularGroupName,
+        "categoryName"=>$popularGroupName,
+        "data"=>$datasetstack,
     );
     $typestack[]=$typearr;
 }
@@ -76,7 +80,7 @@ while($row0 = $result0->fetch_assoc()){
             "datasetName"=>$row1['datasetName'],
             "datasetDescription"=>$row1['datasetDescription'],
         );
-    $datasetstack[]=$datasetarr;
+        $datasetstack[]=$datasetarr;
     }
     $typearr=array(
     "categoryID"=>$variableType,
@@ -227,7 +231,7 @@ $all[]=array(
 );
 $all[]=array(
     "categoryID"=>"onceoff",
-	"categoryName"=>"Once-off surveys",
+	"categoryName"=>"Once-off and short-term campaigns",
 	"data"=>$campaign
 );
 

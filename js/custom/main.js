@@ -15,6 +15,7 @@ var largeIcon = new L.Icon({
 
 function initialize(){
     //just some housekeeping to adjust sizes of divs to the current screen
+    console.log("initialize");
     wh=$(window).height();
     ww=$(window).width();
     $("#allContents").css({
@@ -22,7 +23,7 @@ function initialize(){
         "width":ww-20,
     });
     $(".spacer").css({
-        "height":wh-25,
+        "height":wh-30,
     });
     $("#mapWindow").css({
         "height":wh-25,
@@ -31,6 +32,7 @@ function initialize(){
 
     populateHeaders();
     initializeMap();
+
 
     //check if flat call
     init="normal";
@@ -46,9 +48,32 @@ function initialize(){
     }
 
 
+    // scroll indicators
+    $('#allContents').scroll(function() {
+        var sTop = $('#allContents').scrollTop();
+        var sBot = -$('#allContents').scrollTop() - $('#allContents').height()+$('#allContents')[0].scrollHeight;
+        if ( sTop > 50 ) { 
+            $('#fup').fadeIn(1000);
+        }else{
+            $('#fup').hide();
+        }
+        if ( sBot > 50 ) { 
+            $('#fdown').fadeIn(1000);
+        }else{
+            $('#fdown').hide();
+        }
+
+    });
+
+
+
+
+
+
     call="./login.php?action=userInfo";
     $.get(call,
         function(data){
+        console.log(data);
 	    data=JSON.parse(data);
         ownedItems= new Array();
 	    if (data[0]==null){ //when not registered;
@@ -67,20 +92,24 @@ function initialize(){
 	    if (init=="updatePassword"){
                 updatePasswordForm(tempPassword);
             }
+
         populateMenu();
+
+
     });
 }
 
 
 function populateHeaders(){
+    console.log("page headers");
     txt="<div id=intro>Welcome to Okavango Delta Monitoring and Data Sharing<br><img src=img/UB-logo.png></div>";
     $('#introContents').html(txt);
     $('#introHeader').html("<span class=headerText>Okavango monitoring and data sharing</span>");
-    $('#menuHeader').html("<span class=headerText>Data sources</span>");
-    $('#datasetHeader').html("<span class=headerText>Dataset</span>");
-    $('#locationHeader').html("<span class=headerText>Location</span>");
-    $('#figureHeader').html("<span class=headerText>Graphs</span>");
-    $('#dataHeader').html("<span class=headerText>Data editor</span>");
+    $('#menuHeader').html("<span class=headerText>Data Sources</span>");
+    $('#datasetHeader').html("<span class=headerText>Dataset Info</span>");
+    $('#locationHeader').html("<span class=headerText>Location Info</span>");
+    $('#figureHeader').html("<span class=headerText>Graphs and Data</span>");
+    $('#dataHeader').html("<span class=headerText>Data Editor</span>");
     $('#figureWindow').hide();
     $('#locationWindow').hide();
     $('#datasetWindow').hide();
@@ -98,90 +127,46 @@ function clickOnMapItem(itemId, dataGroup, datasetID, typeCode) {
 
 
 
-
-function listLocationsInDataset(group, datasetID, typeCode, target){
-    dataGroup=group;
-    typeName=typeCode.replace(/_/g," ");
-    if (typeCode=="owned"){
-        if (dataGroup=="biodiv"){
-            apicall='./api/api_biodiv.php?datasetID='+datasetID+"";
-        }else{
-            apicall='./api/api_envdata.php?datasetID='+datasetID+"";
-        }
-    }else{
-        if (dataGroup=="biodiv"){
-            apicall='./api/api_biodiv.php?datasetID='+datasetID+"&popularGroup="+typeName+"";
-        }else{
-            apicall='./api/api_envdata.php?datasetID='+datasetID+"&variableType="+typeName+"";
-        } 
-    }
-    $("#shade").show();
-    console.log(apicall);
-    $.get(apicall, 
+function showAll(datastreamID, locationID, datasetID, obsType, dbaseCat, varType){
+    showDataset(locationID, datasetID,dbaseCat,varType, obsType, false, 
         function(data){
-            alldata=JSON.parse(data);
-		    features=alldata['features'];
-            if (typeCode>''){
-                txt="<h4>Listing all locations for "+datasetID+"with data for "+typeName+"</h4>";
+            scrollTo='mapWindow';
+            $('#datasetWindow').show();
+            if (datastreamID>""){
+                // datastream to show
+                $('#locationWindow').show();
+                $('#figureWindow').show();
+                showDatastream(datastreamID, null);
+                scrollTo='figureContents';
             }else{
-                txt="<h4>Listing all locations for "+datasetID+"</h4>";
+                $('#figureContents').html("");
+                $('#figureWindow').hide();
+                $('#dataContents').html("");
+                $('#dataWindow').hide();
             }
-		    txt+="<table class=twoColour width=1000>";
-            txt+="<tr><th>Location ID<th>Location name<th>Locality<th>Geomorphological Position<th><th></tr>";
-		    for (i in features){
-		        props=features[i]['properties'];
-                txt+="<tr><td>"+props['locationID']+"<td>"+props['locationName']+"<td>"+props['locality']+"<td>"+props['geomorphologicalPosition']+"<td><span class=clickable onClick=showLocation('"+props['locationID']+"','"+dataGroup+"','locationWindow')>show this location</span>";
-                txt+="<td><span class=clickable onClick=downloadAPI('"+dataGroup+"','','"+props['locationID']+"','','','csv')>download csv</span></td></tr>";
-		    }
-		    txt+="</table>";
-		    $("#"+target).html(txt);
-        }
-    );
-}
-
-
-
-
-
-function describeDataset(group, datasetID, varType, scrollTo){
-    console.log("describe dataset");
-    dataGroup=group;
-    if (dataGroup=="biodiv"){
-        apicall="./api/api_biodiv.php?calltype=datasetinfo&datasetID="+datasetID+"";
-    }else{
-        apicall="./api/api_envdata.php?calltype=datasetinfo&datasetID="+datasetID+"";
-    }
-    console.log(apicall);
-    $.get(apicall, 
-        function(data){
-            alldata=JSON.parse(data);
-		    txt="<h1>Dataset info:</h1>";
-		    txt="<table width=100%>";
-            txt+="<tr><td>dataset ID:<td>"+alldata['datasetID']+"</tr>";
-            txt+="<tr><td>dataset name:<td>"+alldata['datasetName']+"</tr>";
-            txt+="<tr><td>description:<td>"+alldata['datasetDescription']+"</tr>";
-            txt+="<tr><td>institution holding data:<td>"+alldata['institutionCode']+"</tr>";
-            txt+="<tr><td>institution owning data:<td>"+alldata['ownerInstitutionCode']+"</tr>";
-		    if (alldata['publications']){
-                txt+="<tr><td>relevant publications:<td>"+alldata['publications']+"</tr>";
-		    }
-		    if (alldata['datasetRemarks']){
-                txt+="<tr><td>remarks:<td>"+alldata['datasetRemarks']+"</tr>";
-		    }
-            txt+="<tr><td><td><span class=clickable onClick=downloadAPI('"+dataGroup+"','"+alldata['datasetID']+"','','','','csv')>download entire dataset in csv format</span></tr>";
-		    txt+="</table>";
-            txt+="<div id=locationTable></div>";
-            $("#datasetContents").html(txt);
-
-            listLocationsInDataset(group, datasetID, varType, 'locationTable')
-
-            if(scrollTo){
-                scroll2div(scrollTo);    
+            if (locationID>""){
+                $('#locationWindow').show();
+                // location to show
+                console.log(locationID);
+                showLocation(locationID, dataGroup, null, false);
+            }else{
+                $('#locationContents').html("");
+                $('#locationWindow').hide();
+                $('#figureContents').html("");
+                $('#figureWindow').hide();
+                $('#dataContents').html("");
+                $('#dataWindow').hide();
+            }
+            console.log("csrolling from all"+scrollTo);
+            if (scrollTo){
+                scroll2div(scrollTo);
+>>>>>>> bce1cde09d3c5c369d0f661b29e5bce55ff0c537
             }
             $("#shade").hide();
         }
     );
 }
+
 
 
 
@@ -198,6 +183,7 @@ function showDataset(locationID, datasetID,dbaseCat,varType, obsType, scrollTo, 
     describeDataset(dataGroup, datasetID, varType, null);
 
     typeName=varType.replace(/_/g," ");
+    console.log(dbaseCat, varType, obsType); 
     if (varType==""){
         if (dataGroup=="biodiv"){
             apicall='./api/api_biodiv.php?datasetID='+datasetID+"";
@@ -211,7 +197,7 @@ function showDataset(locationID, datasetID,dbaseCat,varType, obsType, scrollTo, 
             apicall='./api/api_envdata.php?datasetID='+datasetID+"&variableType="+typeName+"";
         }
     }
-//    console.log(apicall);
+    console.log(apicall);
     $("#shade").show();
 
     $.get(apicall, 
@@ -250,39 +236,91 @@ function showDataset(locationID, datasetID,dbaseCat,varType, obsType, scrollTo, 
 
 
 
-function showAll(datastreamID, locationID, datasetID, dbaseCat, varType, obsType){
-    showDataset(locationID, datasetID,dbaseCat,varType, obsType, false, 
+function listLocationsInDataset(group, datasetID, typeCode, target){
+    dataGroup=group;
+    typeName=typeCode.replace(/_/g," ");
+    if (typeCode=="owned"){
+        if (dataGroup=="biodiv"){
+            apicall='./api/api_biodiv.php?datasetID='+datasetID+"";
+        }else{
+            apicall='./api/api_envdata.php?datasetID='+datasetID+"";
+        }
+    }else{
+        if (dataGroup=="biodiv"){
+            apicall='./api/api_biodiv.php?datasetID='+datasetID+"&popularGroup="+typeName+"";
+        }else{
+            apicall='./api/api_envdata.php?datasetID='+datasetID+"&variableType="+typeName+"";
+        } 
+    }
+    $("#shade").show();
+    console.log(apicall);
+    $.get(apicall, 
         function(data){
-            scrollTo='mapWindow';
-            $('#datasetWindow').show();
-            if (datastreamID>""){
-                // datastream to show
-                $('#locationWindow').show();
-                $('#figureWindow').show();
-                showDatastream(datastreamID, null);
-                scrollTo='figureContents';
-            }else{
-                $('#figureContents').html("");
-                $('#figureWindow').hide();
-                $('#dataContents').html("");
-                $('#dataWindow').hide();
+            alldata=JSON.parse(data);
+		    features=alldata['features'];
+            txt="<div class=tableTitle>";
+            txt+="Listing all locations in this dataset";
+            if (typeCode>''){
+                txt+="\n that report "+typeName+" data";
             }
-            if (locationID>""){
-                $('#locationWindow').show();
-                // location to show
-                console.log(locationID);
-                showLocation(locationID, dataGroup, null);
-            }else{
-                $('#locationContents').html("");
-                $('#locationWindow').hide();
-                $('#figureContents').html("");
-                $('#figureWindow').hide();
-                $('#dataContents').html("");
-                $('#dataWindow').hide();
-            }
-            console.log("csrolling from all"+scrollTo);
-            if (scrollTo){
-                scroll2div(scrollTo);
+            txt+="</div>";
+		    txt+="<table class='twoColour fullwidthTable listTable'>";
+            txt+="<tr><th>Location ID<th>Location name<th>Locality<th>Geomorphological Position<th><th></tr>";
+		    for (i in features){
+		        props=features[i]['properties'];
+                txt+="<tr><td>"+props['locationID']+"<td>"+props['locationName']+"<td>"+props['locality']+"<td>"+props['geomorphologicalPosition']+"<td><span class=clickable onClick=showLocation('"+props['locationID']+"','"+dataGroup+"','locationWindow',true)>select</span>";
+                txt+="<td><span class=clickable onClick=downloadAPI('"+dataGroup+"','','"+props['locationID']+"','','','csv')>download</span></td>";
+                txt+="</tr>";
+		    }
+		    txt+="</table>";
+		    $("#"+target).html(txt);
+        }
+    );
+}
+
+
+
+
+
+function describeDataset(group, datasetID, varType, scrollTo){
+    console.log("describe dataset");
+    dataGroup=group;
+    if (dataGroup=="biodiv"){
+        apicall="./api/api_biodiv.php?calltype=datasetinfo&datasetID="+datasetID+"";
+    }else{
+        apicall="./api/api_envdata.php?calltype=datasetinfo&datasetID="+datasetID+"";
+    }
+    console.log(apicall);
+    $("#shade").show();
+    $.get(apicall, 
+        function(data){
+            alldata=JSON.parse(data);
+            txt="<div class=infotableDiv id=locinfoDiv>";
+            txt+="<div class=tableTitle>";
+		    txt+=alldata['datasetName'];
+            txt+="</div>";
+		    txt+="<table class='fullwidthTable infoTable'>";
+            txt+="<tr><td class=infoLabel width=50%>dataset ID:<td width=50%>"+alldata['datasetID']+"</tr>";
+            txt+="<tr><td class=infoLabel>dataset name:<td>"+alldata['datasetName']+"</tr>";
+            txt+="<tr><td class=infoLabel>description:<td>"+alldata['datasetDescription']+"</tr>";
+            txt+="<tr><td class=infoLabel>institution holding data:<td>"+alldata['institutionCode']+"</tr>";
+            txt+="<tr><td class=infoLabel>institution owning data:<td>"+alldata['ownerInstitutionCode']+"</tr>";
+		    if (alldata['publications']){
+                txt+="<tr><td class=infoLabel>relevant publications:<td>"+alldata['publications']+"</tr>";
+		    }
+		    if (alldata['datasetRemarks']){
+                txt+="<tr><td class=infoLabel>remarks:<td>"+alldata['datasetRemarks']+"</tr>";
+		    }
+		    txt+="</table>";
+            txt+="</div>";
+            txt+="<div class=downloadLink><span class=clickable onClick=downloadAPI('"+dataGroup+"','"+alldata['datasetID']+"','','','','csv')>download entire dataset</span></div>";
+            txt+="<div class=listtableDiv id=loclistDiv></div>";
+            $("#datasetContents").html(txt);
+
+            listLocationsInDataset(group, datasetID, varType, 'loclistDiv')
+
+            if(scrollTo){
+                scroll2div(scrollTo);    
             }
             $("#shade").hide();
         }
@@ -293,116 +331,71 @@ function showAll(datastreamID, locationID, datasetID, dbaseCat, varType, obsType
 
 
 
-function initializeMap(){
-//main function for initializing map interface
-    showMap();
-    loadBaseMap(); // this is switched off for debugging
-}
-
-
-
-function loadBaseMap(){
-// loads openstreetmap. For the time being the only option for background. Perhaps one day will implement google satellite overlay... 
-    var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-    var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
-    osm=new L.TileLayer(osmUrl, {minZoom: 7, maxZoom: 15, attribution: osmAttrib});    
-    osm.addTo(map);
-}
-
-
-
-function showMap(){
-// shows empty map canvas
-// map is a global variable here
-//    if($(window).height()*0.9<400){
-//        mapheight=400;
-//    }else{
-//        mapheight=$(window).height()-20;
-//    }
-        map = L.map('mapContents', {dragging: false, center: new L.LatLng(-19.3, 23), zoom: 9, zindex: 30});
-        map.scrollWheelZoom.disable();
-}
-
-
-
-function onEachFeature(feature,layer){
-// what happens when one hovers over marker in map, or clicks on it
-    // this function needs to be here to enable closing or not closing popup dependent on context
-    // this is leaflet popup
-    function closePopup(){
-        layer.closePopup();
-    }
-
-    layer.bindPopup("<img src=img/ajax-loader.gif>");
-    // this attaches apicall and dataGroup to properties of the feature for later use in populating popup
-    // apicall and dataGroup are not passsed directly, they are defined here using js variable scope,
-    // they need to be embedded in layer properties because they will disappear if another layer is opened
-    layer.feature.properties.apicall = apicall;
-    layer.feature.properties.dataGroup = dataGroup;
-    layer.on('click', function (e) {
-	    console.log(feature);
-	    console.log(layer);
-      showLocationWrapper(feature,layer); 
-      layer.removeEventListener('mouseout', closePopup);
-    });
-    layer.on('mouseover', function (e) {
-      txt=feature.properties.locationName;
-      layer.bindPopup(txt, {maxWidth: "auto"}).openPopup();
-      layer.addEventListener('mouseout', closePopup);
-    });
-    layer._leaflet_id = feature.properties['locationID'];
-    allMarkers[feature.properties['locationID']]=layer;
-}
-
-
-
 function showLocationWrapper(feature,layer){
-    showLocation(feature.properties.locationID, feature.properties.dataGroup, 'locationWindow');
+    showLocation(feature.properties.locationID, feature.properties.dataGroup, 'locationWindow', true);
 }
 
 
 
-
-
-
-
-function showLocation(locationID, dataGroup, scrollTo){
-console.log("loading location");
+function showLocation(locationID, dataGroup, scrollTo, cleanup){
+    console.log("loading location");
+    if(typeof currentMarker === 'undefined'){
+    }else{
+        currentMarker.setIcon(smallIcon);
+        currentMarker.setZIndexOffset(-1000);
+        delete currentMarker;
+    }
     currentMarker=allMarkers[locationID];
     currentMarker.setIcon(largeIcon);
+    currentMarker.setZIndexOffset(1000);
     centerLeafletMapOnMarker(currentMarker);
-//responds to owned items in menu, similar to populateSecondPopup
+
     if (dataGroup=="biodiv") {
         //  biodiv - this is still verbatim from populateSecondPopup, needs to be adapated
-        featureapicall=apicall0+"&calltype=event&locationID="+feature.properties.locationID;
-//        console.log("apicall:");
-//        console.log(featureapicall);
+        featureapicall="./api/api_biodiv.php?calltype=event&locationID="+locationID;
         $.get(featureapicall, 
         function(data){
             alldata=JSON.parse(data);
             selfeature=alldata[0];
-            txt="<div class=popupLocInfo>"
-            txt+="<h1>Location:</h1>";
-            txt+="<table width=400px>";
+            txt="<div class=infotableDiv id=locinfoDiv>";
+            txt+="<div class=tableTitle>";
+            txt+=selfeature['locationName'];
+            txt+="</div>";
+            txt+="<table class='infoTable fullwidthTable'>";
 	    // this displays all properties coming from api
             for (key in selfeature){
                 if ( key != "events"){
-                    txt+="<tr><td>"+key+":<td>"+selfeature[key]+"</tr>";
+                    txt+="<tr><td class=infoLabel width=50%>"+key+":<td width=50%>"+selfeature[key]+"</tr>";
                 }
             }
             datasetID=selfeature['datasetID'];
             txt+="</table>";
-            txt+="<h1>Sampling events:</h1>";
-            txt+="<table width=400px>";
+            txt+="</div>";
+            txt+="<div id=loclistTable class=listtableDiv>";
+            txt+="<div class=tableTitle>"
+            txt+="Sampling events";
+            txt+="</div>";
+            txt+="<table class='twoColour listTable fullwidthTable'>";
+            txt+="<tr><th>Event date</th><th>protocol</th><th>recorded by</th><th></th><th></th></tr>"; 
             for (ev in selfeature['events']){
                 ev=selfeature['events'][ev];
-                txt+="<tr><td>date: <td>"+ev.eventDate+"<td><span onClick=showEventInPopup('"+ev.eventID+"') class='clickable rf'>view</span></tr>";  
-                txt+="<tr><td>protocol:<td>"+ev.samplingProtocol+"</tr>";
-                txt+="<tr><td>recorded by:<td>"+ev.recordedBy+"</tr>";
+                txt+="<tr><td>"+ev.eventDate+"<td>"+ev.samplingProtocol+"<td>"+ev.recordedBy+"<td><span onClick=showBiodivEvent('"+ev.eventID+"','figureWindow') class='clickable rf'>view data</span></tr>";  
             }
             txt+="</table>";
             txt+="</div>";
-            layer.bindPopup(txt, {maxWidth: "auto"}).openPopup();
+            $('#locationContents').html(txt);
+            $('#locationWindow').show();
+            console.log("csrolling from location "+scrollTo);
+            if (cleanup){
+                $('#figureContents').html("");
+                $('#dataContents').html("");
+                $('#figureWindow').hide();
+                $('#dataWindow').hide();
+            }
+            if (scrollTo){
+                console.log("csrolling from location "+scrollTo);
+                scroll2div(scrollTo);
+            }
         });
     }else{
         // this is when dataGroup=='envdata';
@@ -414,23 +407,28 @@ console.log("loading location");
             alldata=JSON.parse(data);
             selfeature=alldata[0];
             console.log(selfeature);
-            txt="<div class=popupDataStreamInfo>"
             // Location info
-            txt+="<h1>Location info:</h1>";
-            txt+="<table width=300px>";
+            txt="<div id=locinfoDiv class=infotableDiv>";
+            txt+="<div class=tableTitle>";
+            txt+=selfeature['locationName'];
+            txt+="</div>";
+            txt+="<table class='infoTable fullwidthTable'>";
             for (key in selfeature){
                 if ( key != "datastreams"){
-                    txt+="<tr><td>"+key+"<td>"+selfeature[key]+"</tr>";
+                    txt+="<tr><td class=infoLabel width=50%>"+key+":<td width=50%>"+selfeature[key]+"</tr>";
                 }
             }
             datasetID=selfeature['datasetID'];
             txt+="</table><br>";
+            txt+="</div>";
             // base times or events
-            if (selfeature.locationType=="monitoring"){
-            }else{
+            if (selfeature.locationType!="monitoring"){
                 //onceoff
-                txt+="<h1>Measurement events:</h1>";
-                // this will need to be dependent on access rights
+                txt+="<div id=eventlistDiv class=listtableDiv>";
+                txt+="<div class=tableTitle>";
+                txt+="Measurement dates";
+                txt+="</div>";
+                txt+="<table class='twoColour listTable fullwidthTable'>";
                 eventDates=new Array();
                 for (dstrm in selfeature['datastreams']){
                     data=selfeature['datastreams'][dstrm].data;
@@ -440,54 +438,64 @@ console.log("loading location");
                         }
                     }
                 }
-                txt+="<table width=580px>";  
+                txt+="<tr><th>Date<th>Data</tr>";
                 for (i in eventDates){
                     txt+="<tr><td>"+eventDates[i];
-                    // this will need to be dependent on access rights
-                    if (ownedItems[0].includes(selfeature.datasetID) || ownedItems[1].includes(selfeature.locationID)){
-                        txt+="<td><span class=clickable onClick=editOnceoffRecordsInPopup('"+selfeature.datasetID+"','"+selfeature.locationID+"','"+encodeURIComponent(eventDates[i])+"')>edit/add data</span>";
-                        txt+="</td>";
-                    }
-                    txt+="<td><span class=clickable onClick=downloadAPI('envdata','','"+selfeature.locationID+"','','','csv')>download csv</span></td></tr>";
-                    console.log("editOnceoffRecordsInPopup('"+selfeature.datasetID+"','"+selfeature.locationID+"','"+eventDates[i]+"')");
+//                    if (ownedItems[0].includes(selfeature.datasetID) || ownedItems[1].includes(selfeature.locationID)){
+//                        txt+="<td><span class=clickable onClick=editOnceoffRecordsInPopup('"+selfeature.datasetID+"','"+selfeature.locationID+"','"+encodeURIComponent(eventDates[i])+"')>edit/add data</span>";
+//                        txt+="</td>";
+//                    }
+                    datestr=eventDates[i].replace(/ /g,"_");
+                    console.log(datestr);
+                    txt+="<td><span class=clickable onClick=showEnvmonEvent('"+selfeature.locationID+"','"+datestr+"','')>view all data\n at this location</span></td></tr>";
                 }
                 txt+="</table>";
-            }
-
-            //variables
-            txt+="<h1>Available variables:</h1>";
-            
-            txt+="<div style='height:200px; overflow-y:auto; width:600px;'>";  
-            txt+="<table width=580px>";  
-            txt+="<tr><th>Name</th><th>Unit</th><th>Type</th><th>Time period</th><th></th><th></th></tr>"; 
-            for (dstrm in selfeature['datastreams']){
-                dstrm=selfeature['datastreams'][dstrm];
-console.log(selfeature.locationType);
-                if (selfeature.locationType=="monitoring"){
-                    firstDate=dstrm.firstMeasurementDate;
-                    lastDate=dstrm.lastMeasurementDate;
-                    var fD = new Date(firstDate);
-                    var lD = new Date(lastDate);
-                    firstDatestr=fD.getFullYear()+"/"+fD.getMonth()+"/"+fD.getDate()
-                    lastDatestr=lD.getFullYear()+"/"+lD.getMonth()+"/"+lD.getDate()
-                    //console.log(firstDatestr);
-                    firstDate=firstDate.replace(/ /g,"_");
-                    lastDate=lastDate.replace(/ /g,"_");
-                    txt+="<tr><td>"+dstrm.variableName+"</td><td>["+dstrm.variableUnit+"]</td><td>"+dstrm.baseTime+"</td><td>"+firstDatestr+"-"+lastDatestr+"<td><span onClick=showDatastream('"+dstrm.datastreamID+"','figureWindow') class='clickable rf'>view graphs</span>&nbsp&nbsp"; 
-                    txt+="</td>";
-                    txt+="<td><span class=clickable onClick=downloadAPI('envdata','','','','"+dstrm.datastreamID+"','csv')>download csv</span></td></tr>"; //downloadAPI(dataGroup, datasetID, locationID, baseTime, datastreamID, format)
-                }else{
-                    txt+="<tr><td>"+dstrm.variableName+"<td>["+dstrm.variableUnit+"]<td>"+dstrm.baseTime+"<td><span onClick=showOnceoffDatastreamInPopup('"+dstrm.datastreamID+"') class='clickable rf'>view</span>&nbsp&nbsp"; 
-                    txt+="</td>";
-                    txt+="<td><span class=clickable onClick=downloadAPI('envdata','','','','"+dstrm.datastreamID+"','csv')>download csv</span></td></tr>";
-                } 
-            }
+                txt+="</div>";
+            }else{
+                //variables in monitoring
+                txt+="<div id=loclistDiv class=infotableDiv>";
+                txt+="<div class=tableTitle>";
+                txt+="Available variables";
+                txt+="</div>";
+                txt+="<table class='twoColour listTable fullwidthTable'>";
+                txt+="<tr><th>Name</th><th>Unit</th><th>Type</th><th>First</th><th>Most recent</th><th></th><th></th></tr>"; 
+                for (dstrm in selfeature['datastreams']){
+                    dstrm=selfeature['datastreams'][dstrm];
+    console.log(selfeature.locationType);
+                    if (selfeature.locationType=="monitoring"){
+                        firstDate=dstrm.firstMeasurementDate;
+                        lastDate=dstrm.lastMeasurementDate;
+                        var fD = new Date(firstDate);
+                        var lD = new Date(lastDate);
+                        firstDatestr=fD.getFullYear()+"/"+fD.getMonth()+"/"+fD.getDate()
+                        lastDatestr=lD.getFullYear()+"/"+lD.getMonth()+"/"+lD.getDate()
+                        //console.log(firstDatestr);
+                        firstDate=firstDate.replace(/ /g,"_");
+                        lastDate=lastDate.replace(/ /g,"_");
+                        txt+="<tr><td>"+dstrm.variableName+"</td><td>["+dstrm.variableUnit+"]</td><td>"+dstrm.baseTime+"</td><td>"+firstDatestr+"</td><td>"+lastDatestr+"<td><span onClick=showDatastream('"+dstrm.datastreamID+"','figureWindow') class='clickable rf'>graph</span>&nbsp&nbsp"; 
+                        txt+="</td>";
+                        txt+="<td><span class=clickable onClick=downloadAPI('envdata','','','','"+dstrm.datastreamID+"','csv')>download</span></td></tr>"; //downloadAPI(dataGroup, datasetID, locationID, baseTime, datastreamID, format)
+                    }else{
+                        txt+="<tr><td>"+dstrm.variableName+"<td>["+dstrm.variableUnit+"]<td>"+dstrm.baseTime+"<td><span onClick=showOnceoffDatastreamInPopup('"+dstrm.datastreamID+"') class='clickable rf'>view</span>&nbsp&nbsp"; 
+                        txt+="</td>";
+                       // txt+="<td><span class=clickable onClick=downloadAPI('envdata','','','','"+dstrm.datastreamID+"','csv')>download</span></td>";
+                        txt+="</tr>";
+                    } 
+                }
             txt+="</table>";
+            txt+="</div>";
+            }
             txt+="</div>";  
             txt+="</div>";
             $('#locationContents').html(txt);
             $('#locationWindow').show();
             console.log("csrolling from location "+scrollTo);
+            if (cleanup){
+                $('#figureContents').html("");
+                $('#dataContents').html("");
+                $('#figureWindow').hide();
+                $('#dataWindow').hide();
+            }
             if (scrollTo){
                 console.log("csrolling from location "+scrollTo);
                 scroll2div(scrollTo);
@@ -543,6 +551,178 @@ function showDatastream(datastreamID, scrollTo){
         });
 }
 
+
+
+function showBiodivEvent(ev, scrollTo){
+    eventapicall="./api/api_biodiv.php?calltype=data&eventID="+ev;
+    console.log(eventapicall);
+    $('#figureWindow').show();
+    $.get(eventapicall, 
+        function(data){
+            console.log(eventapicall);
+            alldata=JSON.parse(data);
+            selfeature=alldata[0];
+            console.log(selfeature);
+            ev=selfeature['events'][0];
+            //for (ev in selfeature['events']){
+            txt="<div id=locinfoDiv class=infotableDiv>";
+            txt+="<div class=tableTitle>";
+            txt+="Sampling on "+ev.eventDate+" at "+selfeature.locationID;
+            txt+="</div>";
+            txt+="<table class='infoTable fullwidthTable'>";
+            txt+="<tr><td class=infoLabel width=50%>date:<td width=50%>"+ev.eventDate+"</tr>";  
+            txt+="<tr><td class=infoLabel>protocol<td>"+ev.samplingProtocol+"</tr>";
+            txt+="<tr><td class=infoLabel>sampling size:<td>"+ev.sampleSizeValue+" "+ev.sampleSizeUnit+"</tr>";
+            txt+="<tr><td class=infoLabel>remarks:<td>"+ev.eventRemarks+"</tr>";
+            txt+="<tr><td class=infoLabel>recorded by: <td>"+ev.recordedBy+"</tr>";
+            txt+="</table>";
+            txt+="</div>";
+
+            txt+="<div id=loclistDiv class=listtableDiv>";
+            txt+="<div class=tableTitle>";
+            txt+="Occurrence records";
+            txt+="</div>";
+            txt+="<table class='twoColour listTable narrowTable'>";
+            txt+="<tr><th>Name</th><th>Unit</th><th>Value</th></tr>";
+            mftxt="" 
+            for (oc in ev.occurrenceData){
+                oc=ev.occurrenceData[oc];
+                txt+="<tr><td>"+oc.scientificName+"<td>"+oc.organismQuantityType+"<td>"+oc.organismQuantity+"</tr>";
+                for (mf in oc.measurementOrFact){
+                    mf=oc.measurementOrFact[mf];
+                    mftxt+="<tr><td>"+oc.scientificName+"<td>"+mf.measurementType+": <td>"+mf.measurementValue+" "+mf.measurementUnit+"</tr>";
+                }
+            }
+            txt+="</table>";
+            txt+="</div>";
+
+            if (mftxt>""){
+            txt+="<div id=loclistDiv class=listtableDiv>";
+            txt+="<div class=tableTitle>";
+            txt+="Other measurements";
+            txt+="</div>";
+            txt+="<table class='twoColour listTable narrowTable'>";
+            txt+="<tr><th>Name<th>Measurement<th>value</tr>";
+            txt+=mftxt;
+            txt+="</table>";
+            txt+="</div>";
+            }
+
+        // this directs output to "full screen popup" 
+        $('#figureContents').html(txt);
+        if (scrollTo){
+            console.log("csrolling from location "+scrollTo);
+            scroll2div(scrollTo);
+        }
+   });
+}
+
+
+
+
+
+
+
+function showEnvmonEvent(locationID, evDate){
+    evDate=evDate.replace(/_/g," ");
+    console.log(evDate);
+    featureapicall="./api/api_envdata.php?calltype=data&locationID="+locationID;
+    console.log(featureapicall);
+    $('#figureWindow').show();
+    $.get(featureapicall, 
+        function(data){
+            console.log(featureapicall);
+            alldata=JSON.parse(data);
+            selfeature=alldata[0];
+            console.log(selfeature);
+
+            txt="<div id=loclistDiv class=listtableDiv>";
+            txt+="<div class=tableTitle>";
+            txt+="Measurements <br>at "+locationID+" <br>on "+evDate;
+            txt+="</div>";
+            txt+="<table class='twoColour listTable narrowTable'>";
+            txt+="<tr><th>Variable name</th><th>Unit</th><th>Value</th></tr>";
+ 
+            for (dstrm in selfeature['datastreams']){
+                dstrmdata=selfeature['datastreams'][dstrm]
+                data=dstrmdata.data;
+                for (rec in data){
+                    if (data[rec][0]==evDate){
+            txt+="<tr><td>"+dstrmdata.variableName+"<td>"+dstrmdata.variableUnit+"<td>"+data[rec][1]+"</tr>";
+                    }
+                }
+            }
+            txt+="</table>";
+            txt+="</div>";
+            $('#figureContents').html(txt);
+            scroll2div('figureWindow');
+        }
+    );
+}
+
+
+
+function initializeMap(){
+//main function for initializing map interface
+    console.log("map");
+    showMap();
+    loadBaseMap(); // this is switched off for debugging
+}
+
+
+
+function loadBaseMap(){
+// loads openstreetmap. For the time being the only option for background. Perhaps one day will implement google satellite overlay... 
+    var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
+    osm=new L.TileLayer(osmUrl, {minZoom: 7, maxZoom: 15, attribution: osmAttrib});    
+    osm.addTo(map);
+}
+
+
+
+function showMap(){
+// shows empty map canvas
+// map is a global variable here
+//    if($(window).height()*0.9<400){
+//        mapheight=400;
+//    }else{
+//        mapheight=$(window).height()-20;
+//    }
+        map = L.map('mapContents', {dragging: true, center: new L.LatLng(-19.3, 23), zoom: 9, zindex: 30});
+        map.scrollWheelZoom.disable();
+}
+
+
+
+function onEachFeature(feature,layer){
+// what happens when one hovers over marker in map, or clicks on it
+    // this function needs to be here to enable closing or not closing popup dependent on context
+    // this is leaflet popup
+    function closePopup(){
+        layer.closePopup();
+    }
+
+    layer.bindPopup("<img src=img/ajax-loader.gif>");
+    // this attaches apicall and dataGroup to properties of the feature for later use in populating popup
+    // apicall and dataGroup are not passsed directly, they are defined here using js variable scope,
+    // they need to be embedded in layer properties because they will disappear if another layer is opened
+    layer.feature.properties.apicall = apicall;
+    layer.feature.properties.dataGroup = dataGroup;
+    layer.on('click', function (e) {
+	    console.log(feature);
+	    console.log(layer);
+      showLocationWrapper(feature,layer); 
+      layer.removeEventListener('mouseout', closePopup);
+    });
+    layer.on('mouseover', function (e) {
+      txt=feature.properties.locationName;
+      layer.bindPopup(txt, {maxWidth: "auto"}).openPopup();
+      layer.addEventListener('mouseout', closePopup);
+    });
+    layer._leaflet_id = feature.properties['locationID'];
+    allMarkers[feature.properties['locationID']]=layer;
+}
 
 
 
@@ -639,48 +819,17 @@ function downloadAPI_final(_base, _datasetID, _locationID, _baseTime, _datastrea
 }
 
 
-function showEventInPopup(ev){
-// when one clicks on "view" in leaflet popup. this is for biodiv data
-// popup to show stuff with is not leaflet popup, its the "full screen popup"
-    eventapicall="./api/api_biodiv.php?calltype=data&eventID="+ev;
-    console.log(eventapicall);
-    $.get(eventapicall, 
-        function(data){
-            console.log(eventapicall);
-            alldata=JSON.parse(data);
-            selfeature=alldata[0];
-            console.log(selfeature);
-            txt="<div class=eventInfo>"
-                txt+="<h1>Location:"+"</h1>";
-                txt+="<table>";
-                txt+="<tr><td>"+selfeature.locationID+"</tr>";
-                txt+="</table>";
-                txt+="<h1>Sampling events:"+"</h1>";
-                for (ev in selfeature['events']){
-                    ev=selfeature['events'][ev];
-                    txt+="<h2>date:"+ev.eventDate+"</h2>";  
-                    txt+="<table>";
-                    txt+="<tr><td>protocol:<td>"+ev.samplingProtocol+"</tr>";
-                    txt+="<tr><td>sampling size:<td>"+ev.sampleSizeValue+" "+ev.sampleSizeUnit+"</tr>";
-                    txt+="<tr><td>remarks:<td>"+ev.eventRemarks+"</tr>";
-                    txt+="<tr><td>recorded by: <td>"+ev.recordedBy+"</tr>";
-                    txt+="</table>";
-                    txt+="<h3>Occurrence records</h3>";
-                    for (oc in ev.occurrenceData){
-                        oc=ev.occurrenceData[oc];
-                        txt+="<table width=600px>";
-                        txt+="<tr><td width=200px>"+oc.scientificName+":<td width=200px>"+oc.organismQuantityType+":<td width=200px>"+oc.organismQuantity+"</tr>";
-                        for (mf in oc.measurementOrFact){
-                            mf=oc.measurementOrFact[mf];
-                            txt+="<tr><td><td>"+mf.measurementType+": <td>"+mf.measurementValue+" "+mf.measurementUnit+"</tr>";
-                        }
-                        txt+="</table>";
-                    }
-                }
-        // this directs output to "full screen popup" 
-        popup(0.9,0.9, txt);
-   });
-}
+
+
+
+
+
+
+
+
+
+
+
 
 
 

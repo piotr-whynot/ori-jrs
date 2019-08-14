@@ -1,4 +1,5 @@
 function populateMenu(){ 
+    console.log("menu");
     //calls this, but that php should be merged with other api functions into a single function
     apicall="./api/api_menu.php";
 //    console.log(apicall);
@@ -13,7 +14,7 @@ function populateMenu(){
                 catName0=menuArr0[i].categoryName; 
                 menuArr1=menuArr0[i].data;
                 txt+="<li>";
-                txt+="<span class=menulevel id="+catID0+">"+catName0+"</span>";
+                txt+="<span class=menulevel id="+catID0+"><span class=levLabel>"+catName0+"</span></span>";
                 txt+="<ul>";
                 for (ii in menuArr1){
                     if (typeof menuArr1[ii].datasetID != "undefined"){
@@ -28,13 +29,13 @@ function populateMenu(){
                         txt+="<label class=checkboxLabel>";
                         if(datastreamID != '') {
                             //pointing to datastream
-                            txt+="<input type=radio name=datasetselect onClick=showAll('"+datastreamID+"','"+locationID+"','"+datasetID+"','','','')>"+variableName+" at "+locationName+"";
+                            txt+="<input type=radio class=radio-custom name=datasetselect onClick=showAll('"+datastreamID+"','"+locationID+"','"+datasetID+"','','','')><span>"+variableName+" at "+locationName+"</span>";
                         }else if(locationID != '') {
                             //pointing to location
-                            txt+="<input type=radio name=datasetselect onClick=showAll('','"+locationID+"','"+datasetID+"','','','')>"+locationName+" in "+datasetID+"";
+                            txt+="<input type=radio class=radio-custom name=datasetselect onClick=showAll('','"+locationID+"','"+datasetID+"','','','')>"+locationName+" in "+datasetID+"";
                         }else{
                             //pointing to dataset
-                            txt+="<input type=radio name=datasetselect onClick=showAll('','','"+datasetID+"','','','')>"+datasetName+"";
+                            txt+="<input type=radio class=radio-custom name=datasetselect onClick=showAll('','','"+datasetID+"','','','')>"+datasetName+"";
                         }
                         txt+="</label>";
                         txt+="</div>";
@@ -59,7 +60,7 @@ function populateMenu(){
                             txt+="<ul>"; 
                             for (iiii in menuArr3){
                                 // fourth level
-                                catID3=menuArr3[iiii].categoryID;
+                                catID3=menuArr3[iiii].categoryID.replace(/ /g,"_");
                                 catName3=menuArr3[iiii].categoryName;
                                 menuArr4=menuArr3[iiii].data;
                                 txt+="<li>";
@@ -72,7 +73,7 @@ function populateMenu(){
                                     txt+="<li>";
                                     txt+="<div class=menuitem>";
                                     txt+="<label class=checkboxLabel>";
-                                    txt+="<input type=radio name=datasetselect onClick=showAll('','','"+datasetID+"','','','')>"+datasetName+"";
+                                    txt+="<input type=radio class=radio-custom name=datasetselect onClick=showAll('','','"+datasetID+"','"+catID1+"','"+catID2+"','"+catID3+"')><span>"+datasetName+"</span>";
                                     txt+="</label>";
                                     txt+="</div>";
                                     txt+="</li>";
