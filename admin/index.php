@@ -180,12 +180,15 @@ echo "
 <tr><th>biodiversity database<th></tr>
 <tr><td>Management of database structure, adding/editing datasets and locations<td><a href=\"./?base=biodivdata&do=edit&table=dataset\">go</a></tr>
 <tr><td>Add/edit events and occurrences<td><a href=\"./?base=biodivdata&do=edit&table=occurrence\">go</a></tr>
-<!--<tr><td>Add/edit measurements/facts<td><a href=\"./?base=biodivdata&do=edit&table=measurementorfact\">go</a></tr>
+<!--
+<tr><td>Add/edit measurements/facts<td><a href=\"./?base=biodivdata&do=edit&table=measurementorfact\">go</a></tr>
 -->
 <tr><td>Checklist</><td><a href=\"./?base=biodivdata&do=edit&table=checklist\">edit</a></tr>
 <tr><th>environmental database<th></tr>
 <tr><td>Management of database structure, adding/editing datasets and locations and datastreams<td><a href=\"./?base=envmondata&do=edit&table=dataset\">go</a></tr>
+<!--
 <tr><td>Add/edit measurements<td><a href=\"./?base=envmondata&do=edit&table=measurement\">go</a></tr>
+-->
 <tr><th>Site admin<th></tr>
 <tr><td>Users</><td><a href=\"./?base=users&do=edit&table=users\">go</a></tr>
 <tr><td>Key monitoring locations</><td><a href=\"./?base=envmondata&do=edit&table=keydatastream\">go</a></tr>
@@ -342,7 +345,7 @@ if ($base=="envmondata" & $table=="location"){
         $decimalLongitude=$row['decimalLongitude'];
         $coordinateUncertaintyInMeters=$row['coordinateUncertaintyInMeters'];
         $geodeticDatum=$row['geodeticDatum'];
-        $elevation=$row['elevation'];
+        $elevation=$row['verbatimElevation'];
         $elevationUncertaintyInMeters=$row['elevationUncertaintyInMeters'];
         $locationType=$row['locationType'];
         $parentLocationID=$row['parentLocationID'];

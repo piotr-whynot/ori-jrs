@@ -5,7 +5,7 @@ function loadPlot(datastream, graphType, isFirst, showcumsum){
     $('#graph').html("<div id=loader><img src='./img/ajax-loader.gif' class='ajax_loader'></div>");
     ds=datastream; // this has to be like this because datastream may change dynamically, or so I think;-)
     eventapicall="./api/api_envdata.php?calltype=datastream&datastreamID="+ds;
-    //console.log(eventapicall);
+    console.log(eventapicall);
     if (isFirst){
     //isFirst indicates whether this is a first call to loadPlot for a particular datastream. 
     // if yes - graph controlbox is populated depending on showcumsum

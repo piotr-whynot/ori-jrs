@@ -32,10 +32,10 @@ function populateMenu(){
                             txt+="<input type=radio class=radio-custom name=datasetselect onClick=showAll('"+datastreamID+"','"+locationID+"','"+datasetID+"','','','')><span>"+variableName+" at "+locationName+"</span>";
                         }else if(locationID != '') {
                             //pointing to location
-                            txt+="<input type=radio class=radio-custom name=datasetselect onClick=showAll('','"+locationID+"','"+datasetID+"','','','')>"+locationName+" in "+datasetID+"";
+                            txt+="<input type=radio class=radio-custom name=datasetselect onClick=showAll('','"+locationID+"','"+datasetID+"','','','')><span>"+locationName+" in "+datasetID+"</span>";
                         }else{
                             //pointing to dataset
-                            txt+="<input type=radio class=radio-custom name=datasetselect onClick=showAll('','','"+datasetID+"','','','')>"+datasetName+"";
+                            txt+="<input type=radio class=radio-custom name=datasetselect onClick=showAll('','','"+datasetID+"','','','')><span>"+datasetName+"</span>";
                         }
                         txt+="</label>";
                         txt+="</div>";

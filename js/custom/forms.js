@@ -233,6 +233,7 @@ function editOnceoffRecordsInPopup(datasetID, locationID, datetime){
     });
 }
 
+
 function populateOnceoffRecords(datasetID, locationID){
     datetime=$("#dateSelect option:selected").text();
     console.log(datetime);
@@ -310,42 +311,6 @@ function formatDate(dte){
 // envmon monitoring section
 //
 
-function editMonitoringRecordsInPopup(datasetID, locationID, baseTime){
-    // populates fixed elements of the data editing popup
-    txt="<div id=records_header></div><div id='records_table' class=centeritem></div>";
-    //popup(0.95,0.95, txt);
-    closePopup();
-    showAndScroll(txt,"dataContents","dataWindow");
-    console.log(baseTime);
-    if (baseTime=="daily"){
-//        txt="<h3>Add/edit measurements in environmental monitoring database</h3>";
-        // this is to avoid passing parameters in all functions - makes things a bit easier
-        txt="<p>Dataset: <b>"+datasetID+"</b>&nbspLocation: <b>"+locationID+"</b>&nbspBase Time: <b>"+baseTime+"</b></p>";
-        txt+="<input type=text size=12 id=datepicker onChange=populateMonitoringRecords('"+datasetID+"','"+locationID+"','"+baseTime+"')>";
- 
-        months = new Array("January", "February","March","April","May","June","July","August","September","October","November","December");
-        d= new Date();
-        curm=d.getMonth();
-        console.log(curm);
-        cury=d.getFullYear();
-        curm=curm+1;
-        curdatestr=months[curm-1]+" "+cury;
-
-        // this will need to be repeated for different basetimes
-        $("#records_header").html(txt);
-
-        $("#datepicker").datetimepicker({
-            format: "MM yyyy",
-            startView: 'year',
-            minView: 'year',
-            autoclose: 1
-       });
-
-   }
-   $("#datepicker").val(curdatestr);
-   populateMonitoringRecords(datasetID, locationID, baseTime);
-}
-
 
 function populateMonitoringRecords(datasetID, locationID, baseTime){
     console.log(datasetID, locationID);
@@ -363,18 +328,16 @@ function populateMonitoringRecords(datasetID, locationID, baseTime){
         fdstr=date2str(fd);
         ldstr=date2str(ld);
         console.log(fdstr, ldstr);
-        $('#records_table').html("<center style='font-size:14px; color:lightgrey;'><img src='../img/ajax-loader.gif'><br><b>Loading...</b></center>");
-        
 	// reading all datastreams for location
         console.log(suff+"/api/api_envdata.php?calltype=datastream&datasetID="+datasetID+"&locationID="+locationID);
         $.get(suff+"/api/api_envdata.php?calltype=datastream&datasetID="+datasetID+"&locationID="+locationID,
         function(data0){
-	    console.log(data0);
+	    //console.log(data0);
             data0=JSON.parse(data0);
             datastreams=data0[0].datastreams;
             txt='';
             w=0.9*$(window).width();
-            txt+="<br><div style='width: "+w+"px; overflow: auto'><table class=twoColour style='table-layout: fixed;'>";
+            txt+="<table class='narrowTable dataTable'>";
             // populating table header rows
             // first and last record to be shown in current table
             var fd= new Date(year+"-"+month+"-01");
@@ -401,9 +364,9 @@ function populateMonitoringRecords(datasetID, locationID, baseTime){
                 timestamp=Math.round(curdate.getTime() / 1000);
                 m=curdate.getMonth()+1
                 dstr=curdate.getFullYear()+"-"+m+"-"+curdate.getDate();
-                console.log(curdate, timestamp);
+//                console.log(curdate, timestamp);
                 txt+="<tr>";
-                txt+="<td>"+dstr;
+                txt+="<td class=Cell>"+dstr;
                 for (dstrm in datastreams){
                     dstrm=datastreams[dstrm];
                     txt+="<td class=Cell><input type=text size=6 name="+dstrm.datastreamID+"~~"+timestamp+"~~measurementValue onChange='return chkDigits(this);' onkeypress='GetChar(event, this);' >";
@@ -412,6 +375,7 @@ function populateMonitoringRecords(datasetID, locationID, baseTime){
                 curday=curday+1;
                 var curdate = new Date(curdate.getFullYear(), curdate.getMonth(), curday);
             }
+            txt+="</table>";
             $("#records_table").html(txt);
 
             //populate cells with actual data
@@ -439,6 +403,59 @@ function populateMonitoringRecords(datasetID, locationID, baseTime){
         });
     }// end if baseTime==daily
 }
+
+
+function editMonitoringRecords(datasetID, locationID, baseTime){
+ 
+    apicall=suff+"/api/api_envdata.php?calltype=location&locationID="+locationID;
+    console.log(apicall);
+
+    $.get(apicall, function(data){
+    console.log(data);
+        alldata=JSON.parse(data);
+        locationName=alldata.features[0].properties.locationName;        
+        datasetID=alldata.features[0].properties.datasetID;        
+        // populates fixed elements of the data editing popup
+        txt="<div class=infotableDiv id=recordsinfoDiv>";
+        txt+="<div class=tableTitle>";
+        txt+=locationName;
+        txt+="</div>";
+        txt+="<table class='fullwidthTable infoTable'>";
+        txt+="<tr><td class=infoLabel width=50%>dataset ID:<td width=50%>"+datasetID+"</tr>";
+        txt+="<tr><td class=infoLabel>Location ID:<td>"+locationID+"</tr>";
+        txt+="<tr><td class=infoLabel>Base time:<td>"+baseTime+"</tr>";
+        txt+="</table>";
+        txt+="</div>";
+
+        txt+="<div class=auxDiv>Select date:<input type=text id=datepicker onChange=populateMonitoringRecords('"+datasetID+"','"+locationID+"','"+baseTime+"')></div>"; 
+        txt+="<div class=listtableDiv id=records_table></div>";
+        showAndScroll(txt,"dataContents","dataWindow");
+        console.log(baseTime);
+        if (baseTime=="daily"){
+            months = new Array("January", "February","March","April","May","June","July","August","September","October","November","December");
+            d= new Date();
+            curm=d.getMonth();
+            console.log(curm);
+            cury=d.getFullYear();
+            curm=curm+1;
+            curdatestr=months[curm-1]+" "+cury;
+
+            // this will need to be repeated for different basetimes
+
+            $("#datepicker").datetimepicker({
+                format: "MM yyyy",
+                startView: 'year',
+                minView: 'year',
+                autoclose: 1
+           });
+
+       }
+       $("#datepicker").val(curdatestr);
+       populateMonitoringRecords(datasetID, locationID, baseTime);
+   });
+}
+
+
 
 function date2str(dte){
     var dte= new Date(dte);
