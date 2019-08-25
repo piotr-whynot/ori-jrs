@@ -5,7 +5,7 @@
 --colD: #DEF2F1;
 --colE: #FEFFFF;
 --colAnchor: #374785;
---colHover: #374785;
+--colHover: #17252A;
 }
 
 /* Reset */
@@ -218,10 +218,20 @@ th {
     width: 100%;
     color: var(--colB);
 }
+
 .narrowTable{
     width: 50%;
     color: var(--colB);
     margin:auto;
+}
+
+
+.dataTable {
+    width: auto;
+}
+
+.dataTable th {
+    width: 100px;
 }
 
 .tableTitle{
@@ -249,13 +259,14 @@ th {
     padding-bottom: 20px;
 }
 
-.downloadLink {
+.auxDiv {
     margin:auto;
     margin-bottom: 50px;
     margin-top: 50px;
     padding:20px;
     width: 50%;
     background: var(--colE);
+    color: var(--colC);
     font-size: 20px;
     text-align:center;
     border: 2px solid var(--colD);
@@ -267,12 +278,19 @@ th {
 
 /*scroll indicator*/
 
-.float{
+.floatRight{
     position:fixed;
     right:0;
     width: 50px;
     z-index:10500;
     opacity: 0.3;
+}
+
+#floatNav{
+    top:110px;
+    padding:10px;
+    margin-right:10px;
+    opacity: 0.5;
 }
 
 #fup{

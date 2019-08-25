@@ -228,7 +228,16 @@ if ($calltype=="datasetinfo"){
                     "locationID"=>$row12['locationID'],
                     "locationName"=>$row12['locationName'],
                     "locality"=>$row12['locality'],
+                    "decimalLatitude"=>$row12['decimalLatitude'],
+                    "decimalLongitude"=>$row12['decimalLongitude'],
+                    "coordinateUncertaintyInMeters"=>$row12['coordinateUncertaintyInMeters'],
+                    "geodeticDatum"=>$row12['geodeticDatum'],
+                    "locationRemarks"=>$row12['locationRemarks'],
+                    "verbatimElevation"=>$row12['verbatimElevation'],
+                    "elevationUncertaintyInMeters"=>$row12['elevationUncertaintyInMeters'],
+                    "locationRemarks"=>$row12['locationRemarks'],
                     "locationType"=>$row12['locationType'],
+                    "locationOwner"=>$row12['locationOwner'],
                     "geomorphologicalPosition"=>$row12['geomorphologicalPosition'],
                 );
                 $feature=array(
@@ -301,14 +310,21 @@ if ($calltype=="datasetinfo"){
             $row12= $result12->fetch_assoc();
             if ($format=="json"){
                 $locationproperties=array(
-                "datasetID"=>$row12['datasetID'],
-                "longitude"=>$row12['decimalLongitude'],
-                "latitude"=>$row12['decimalLatitude'],
-                "locationID"=>$row12['locationID'],
-                "locationName"=>$row12['locationName'],
-                "locality"=>$row12['locality'],
-                "locationType"=>$row12['locationType'],
-                "geomorphologicalPosition"=>$row12['geomorphologicalPosition'],
+                    "datasetID"=>$row12['datasetID'],
+                    "locationID"=>$row12['locationID'],
+                    "locationName"=>$row12['locationName'],
+                    "locality"=>$row12['locality'],
+                    "decimalLatitude"=>$row12['decimalLatitude'],
+                    "decimalLongitude"=>$row12['decimalLongitude'],
+                    "coordinateUncertaintyInMeters"=>$row12['coordinateUncertaintyInMeters'],
+                    "geodeticDatum"=>$row12['geodeticDatum'],
+                    "locationRemarks"=>$row12['locationRemarks'],
+                    "verbatimElevation"=>$row12['verbatimElevation'],
+                    "elevationUncertaintyInMeters"=>$row12['elevationUncertaintyInMeters'],
+                    "locationRemarks"=>$row12['locationRemarks'],
+                    "locationType"=>$row12['locationType'],
+                    "locationOwner"=>$row12['locationOwner'],
+                    "geomorphologicalPosition"=>$row12['geomorphologicalPosition'],
                 );
             }else{
                 ##storing for csv format

@@ -79,10 +79,10 @@ if ($base=="env" & $table=="measurement"){
         $result1=$mysqli->query($query);
         if($result1){
         }else{
-            echo $query."Error!! Data not saved on update";
+            echo $query."Error!! Data not saved on update".$datestr;
         }
     }else{
-        echo "Date selected is not in the database";
+        echo "Date selected is not in the database".$datestr;
         $query = "INSERT INTO envmondata.measurement (datastreamID,measurementDateTime,measurementValue) VALUES('{$datastreamID}','{$datestr}',{$newval})";
         $result2=$mysqli->query($query);
         if($result2){

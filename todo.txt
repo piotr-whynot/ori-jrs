@@ -1,4 +1,6 @@
-add redirect to admin pages in main.js
+
+************main.js************
+add functionality to edit location data by location owner
 
 
 ************database************

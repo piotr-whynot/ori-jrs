@@ -38,8 +38,7 @@ th {
 }
 
 .Cell {
-    border-right: solid 1px #33FFFF;
-    border-bottom: solid 1px #33FFFF;
+    border: solid 1px #33FFFF;
     background : #FFF;
 }
 
@@ -54,4 +53,17 @@ th {
 .centeritem{
     text-align: center;
     margin: auto;
+}
+
+#datepicker{
+    border : 0px solid #CCC;
+    color : var(--colAnchor);
+    font-size : 20px;
+    font-weight:bold;
+    padding-left: 25px;
+}
+
+#datepicker:hover{
+    color : var(--colHover);
+    cursor: pointer;    
 }

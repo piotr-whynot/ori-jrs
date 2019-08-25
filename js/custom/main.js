@@ -1,5 +1,4 @@
 // global variables
-var ownedItems=new Array();
 var map;
 var suff="/biodiv";
 var currentLayer;
@@ -11,6 +10,8 @@ var smallIcon = new L.Icon({
 var largeIcon = new L.Icon({
      iconUrl:"img/marker0.svg" 
 });
+
+
 
 
 function initialize(){
@@ -31,6 +32,7 @@ function initialize(){
 
 
     populateHeaders();
+    populateFloatNav();
     initializeMap();
 
 
@@ -65,17 +67,13 @@ function initialize(){
 
     });
 
-
-
-
-
-
     call="./login.php?action=userInfo";
     $.get(call,
         function(data){
         console.log(data);
 	    data=JSON.parse(data);
         ownedItems= new Array();
+        userType= data[1];
 	    if (data[0]==null){ //when not registered;
             $('#loginContainerFooter').html("<span class=clickable onClick=loginForm()>login</span>&nbsp|&nbsp<span class=clickable onClick=registerForm()>register</span>");
             ownedItems.push([]);
@@ -93,10 +91,29 @@ function initialize(){
                 updatePasswordForm(tempPassword);
             }
 
+
         populateMenu();
 
 
     });
+}
+
+
+
+function populateFloatNav(){
+    console.log("floatNav");
+    txt="<span class='clickable nav current' data-id=introWindow>Intro</span><br>";
+    txt+="<span class='clickable nav'  data-id=menuWindow>Select</span><br>";
+    txt+="<span class='clickable nav' data-id=mapWindow>Map</span><br>";
+    txt+="<span class='clickable nav' data-id=datasetWindow>Dataset</span><br>";
+    txt+="<span class='clickable nav' data-id=locationWindow>Location</span><br>";
+    txt+="<span class='clickable nav' data-id=figureWindow>Graph</span><br>";
+    $('#floatNav').html(txt);
+
+    $(".nav").on("click", function(){
+        target=$(this).data('id');
+        scroll2div(target);
+    });  
 }
 
 
@@ -110,11 +127,17 @@ function populateHeaders(){
     $('#locationHeader').html("<span class=headerText>Location Info</span>");
     $('#figureHeader').html("<span class=headerText>Graphs and Data</span>");
     $('#dataHeader').html("<span class=headerText>Data Editor</span>");
-    $('#figureWindow').hide();
-    $('#locationWindow').hide();
-    $('#datasetWindow').hide();
+    $('#datasetContents').html("Select dataset first");
+    $('#locationContents').html("Select location first");
+    $('#figureContents').html("Select variable first");
+    //$('#figureWindow').hide();
+    //$('#locationWindow').hide();
+    //$('#datasetWindow').hide();
     $('#dataWindow').hide();
 }
+
+
+
 
 
 
@@ -139,8 +162,8 @@ function showAll(datastreamID, locationID, datasetID, obsType, dbaseCat, varType
                 showDatastream(datastreamID, null);
                 scrollTo='figureContents';
             }else{
-                $('#figureContents').html("");
-                $('#figureWindow').hide();
+                $('#figureContents').html("Select location and variable first");
+               // $('#figureWindow').hide();
                 $('#dataContents').html("");
                 $('#dataWindow').hide();
             }
@@ -150,10 +173,11 @@ function showAll(datastreamID, locationID, datasetID, obsType, dbaseCat, varType
                 console.log(locationID);
                 showLocation(locationID, dataGroup, null, false);
             }else{
-                $('#locationContents').html("");
-                $('#locationWindow').hide();
-                $('#figureContents').html("");
-                $('#figureWindow').hide();
+                $('#locationContents').html("Select location first");
+                //$('#locationWindow').hide();
+                //$('#figureContents').html("");
+                $('#figureContents').html("Select location and variable first");
+                //$('#figureWindow').hide();
                 $('#dataContents').html("");
                 $('#dataWindow').hide();
             }
@@ -219,6 +243,7 @@ function showDataset(locationID, datasetID,dbaseCat,varType, obsType, scrollTo, 
                 datasetInfoBox(dbaseCat, datasetID, "create");
             }
             geoJSONLayer.addTo(map);
+            map.fitBounds(geoJSONLayer.getBounds());
             currentLayer=geoJSONLayer;
 
             if (locationID>''){
@@ -232,6 +257,8 @@ function showDataset(locationID, datasetID,dbaseCat,varType, obsType, scrollTo, 
         }
     );
 }
+
+
 
 
 
@@ -252,7 +279,9 @@ function listLocationsInDataset(group, datasetID, typeCode, target){
         } 
     }
     $("#shade").show();
-    console.log(apicall);
+//    console.log("listing locations");
+//    console.log(apicall);
+//    console.log(target);
     $.get(apicall, 
         function(data){
             alldata=JSON.parse(data);
@@ -269,8 +298,7 @@ function listLocationsInDataset(group, datasetID, typeCode, target){
 		        props=features[i]['properties'];
 		        geom=features[i]['geometry'];
                 coords=geom.coordinates;
-                txt+="<tr><td>"+props['locationID']+"<td>"+props['locationName']+"<td>"+props['locality']+"<td>"+coords[0]+" "+coords[1]+"<td><span class=clickable onClick=showLocation('"+props['locationID']+"','"+dataGroup+"','locationWindow',true)>select</span>";
-                //txt+="<td><span class=clickable onClick=downloadAPI('"+dataGroup+"','','"+props['locationID']+"','','','csv')>download</span></td>";
+                txt+="<tr><td>"+props['locationID']+"<td>"+props['locationName']+"<td>"+props['locality']+"<td>"+coords[0]+" "+coords[1]+"<td><span class=clickable onClick=showLocation('"+props['locationID']+"','"+dataGroup+"','locationWindow',true)>select</span><td>";
                 txt+="</tr>";
 		    }
 		    txt+="</table>";
@@ -284,19 +312,19 @@ function listLocationsInDataset(group, datasetID, typeCode, target){
 
 
 function describeDataset(group, datasetID, varType, scrollTo){
-    console.log("describe dataset");
+    //console.log("describe dataset");
     dataGroup=group;
     if (dataGroup=="biodiv"){
         apicall="./api/api_biodiv.php?calltype=datasetinfo&datasetID="+datasetID+"";
     }else{
         apicall="./api/api_envdata.php?calltype=datasetinfo&datasetID="+datasetID+"";
     }
-    console.log(apicall);
+    //console.log(apicall);
     $("#shade").show();
     $.get(apicall, 
         function(data){
             alldata=JSON.parse(data);
-            txt="<div class=infotableDiv id=locinfoDiv>";
+            txt="<div class=infotableDiv id=dsetinfoDiv>";
             txt+="<div class=tableTitle>";
 		    txt+=alldata['datasetName'];
             txt+="</div>";
@@ -312,13 +340,16 @@ function describeDataset(group, datasetID, varType, scrollTo){
 		    if (alldata['datasetRemarks']){
                 txt+="<tr><td class=infoLabel>remarks:<td>"+alldata['datasetRemarks']+"</tr>";
 		    }
+            if (ownedItems[0].includes(datasetID) || userType=="admin"){
+                txt+="<tr><td class=infoLabel><span class=clickable onClick=editDataset('"+dataGroup+"','"+alldata['datasetID']+"')>edit dataset info</span><td></tr>";
+            }
 		    txt+="</table>";
             txt+="</div>";
-            txt+="<div class=downloadLink><span class=clickable onClick=downloadAPI('"+dataGroup+"','"+alldata['datasetID']+"','','','','csv')>download entire dataset</span></div>";
-            txt+="<div class=listtableDiv id=loclistDiv></div>";
+            txt+="<div class=auxDiv><span class=clickable onClick=downloadAPI('"+dataGroup+"','"+alldata['datasetID']+"','','','','csv')>download entire dataset</span></div>";
+            txt+="<div class=listtableDiv id=dsetlistDiv></div>";
             $("#datasetContents").html(txt);
 
-            listLocationsInDataset(group, datasetID, varType, 'loclistDiv')
+            listLocationsInDataset(group, datasetID, varType, 'dsetlistDiv')
 
             if(scrollTo){
                 scroll2div(scrollTo);    
@@ -388,9 +419,9 @@ function showLocation(locationID, dataGroup, scrollTo, cleanup){
             $('#locationContents').html(txt);
             console.log("csrolling from location "+scrollTo);
             if (cleanup){
-                $('#figureContents').html("");
+                $('#figureContents').html("Select loctation and variable first");
                 $('#dataContents').html("");
-                $('#figureWindow').hide();
+                //$('#figureWindow').hide();
                 $('#dataWindow').hide();
             }
             if (scrollTo){
@@ -400,28 +431,39 @@ function showLocation(locationID, dataGroup, scrollTo, cleanup){
         });
     }else{
         // this is when dataGroup=='envdata';
-        featureapicall="./api/api_envdata.php?calltype=data&locationID="+locationID;
+        featureapicall="./api/api_envdata.php?calltype=datastream&locationID="+locationID;
         //console.log(featureapicall);
         $.get(featureapicall, 
         function(data){
             console.log(featureapicall);
             alldata=JSON.parse(data);
+            console.log(alldata);
+            //selfeature=alldata.features[0].properties;
             selfeature=alldata[0];
-            console.log(selfeature);
             // Location info
             txt="<div id=locinfoDiv class=infotableDiv>";
             txt+="<div class=tableTitle>";
             txt+=selfeature['locationName'];
             txt+="</div>";
             txt+="<table class='infoTable fullwidthTable'>";
-            for (key in selfeature){
-                if ( key != "datastreams"){
-                    txt+="<tr><td class=infoLabel width=50%>"+key+":<td width=50%>"+selfeature[key]+"</tr>";
-                }
+            txt+="<tr><td class=infoLabel width=50%>dataset ID:<td width=50%>"+selfeature['datasetID']+"</tr>";
+            txt+="<tr><td class=infoLabel>Location Name:<td>"+selfeature['locationName']+"</tr>";
+            txt+="<tr><td class=infoLabel>Location type:<td>"+selfeature['locationType']+"</tr>";
+            txt+="<tr><td class=infoLabel>locality:<td>"+selfeature['locality']+"</tr>";
+            txt+="<tr><td class=infoLabel>latitude:<td>"+selfeature['decimalLatitude']+"</tr>";
+            txt+="<tr><td class=infoLabel>longitude:<td>"+selfeature['decimalLongitude']+"</tr>";
+            txt+="<tr><td class=infoLabel>coordinate uncertainty [m]:<td>"+selfeature['coordinateUncertaintyInMeters']+"</tr>";
+            txt+="<tr><td class=infoLabel>elevation [m a.m.s.l]:<td>"+selfeature['verbatimElevation']+"</tr>";
+            txt+="<tr><td class=infoLabel>elevation uncertainty [m]:<td>"+selfeature['elevationUncertaintyInMeters']+"</tr>";
+            txt+="<tr><td class=infoLabel>location owner:<td>"+selfeature['locationOwner']+"</tr>";
+            txt+="<tr><td class=infoLabel>geomorphological position:<td>"+selfeature['geomorphologicalPosition']+"</tr>";
+            txt+="<tr><td class=infoLabel>location remarks:<td>"+selfeature['locationRemarks']+"</tr>";
+            if (ownedItems[0].includes(datasetID) || ownedItems[1].includes(locationID) || userType=="admin"){
+                txt+="<tr><td class=infoLabel><span class=clickable onClick=editLocation('"+dataGroup+"','"+props['locationID']+"')>edit location info</span><td></tr>";
             }
-            datasetID=selfeature['datasetID'];
             txt+="</table><br>";
             txt+="</div>";
+            datasetID=selfeature['datasetID'];
             // base times or events
             if (selfeature.locationType!="monitoring"){
                 //onceoff
@@ -474,9 +516,14 @@ function showLocation(locationID, dataGroup, scrollTo, cleanup){
                         firstDate=firstDate.replace(/ /g,"_");
                         lastDate=lastDate.replace(/ /g,"_");
                         txt+="<tr><td>"+dstrm.variableName+"</td><td>["+dstrm.variableUnit+"]</td><td>"+dstrm.baseTime+"</td><td>"+firstDatestr+"</td><td>"+lastDatestr+"<td><span onClick=showDatastream('"+dstrm.datastreamID+"','figureWindow') class='clickable rf'>graph</span>&nbsp&nbsp"; 
-                        txt+="</td>";
+                        txt+="<td>";
+
+                        if (ownedItems[0].includes(datasetID) || ownedItems[1].includes(selfeature.locationID) || userType=="admin"){
+                            txt+="<span class=clickable onClick=\"editMonitoringRecords('"+dataGroup+"','"+selfeature.locationID+"','"+dstrm.baseTime+"'); showDatastream('"+dstrm.datastreamID+"',null)\">edit/add data</span>";
+                        }
+
                         //txt+="<td><span class=clickable onClick=downloadAPI('envdata','','','','"+dstrm.datastreamID+"','csv')>download</span></td></tr>"; //downloadAPI(dataGroup, datasetID, locationID, baseTime, datastreamID, format)
-                        txt+="<td></td></tr>"; 
+                        txt+="</td></tr>"; 
                     }else{
                         txt+="<tr><td>"+dstrm.variableName+"<td>["+dstrm.variableUnit+"]<td>"+dstrm.baseTime+"<td><span onClick=showOnceoffDatastreamInPopup('"+dstrm.datastreamID+"') class='clickable rf'>view</span>&nbsp&nbsp"; 
                         txt+="</td>";
@@ -492,9 +539,9 @@ function showLocation(locationID, dataGroup, scrollTo, cleanup){
             $('#locationContents').html(txt);
             console.log("csrolling from location "+scrollTo);
             if (cleanup){
-                $('#figureContents').html("");
+                $('#figureContents').html("Select location and variable first");
                 $('#dataContents').html("");
-                $('#figureWindow').hide();
+                //$('#figureWindow').hide();
                 $('#dataWindow').hide();
             }
             if (scrollTo){
@@ -667,7 +714,7 @@ function initializeMap(){
 //main function for initializing map interface
     console.log("map");
     showMap();
-    loadBaseMap(); // this is switched off for debugging
+//    loadBaseMap(); // this is switched off for debugging
 }
 
 
@@ -770,8 +817,6 @@ function datasetInfoBox(group, datasetID, whattodo){
 
 
 
-
-
 function scroll2div(_div2scroll){
     console.log(_div2scroll);
     $('#'+_div2scroll).get(0).scrollIntoView({
@@ -818,15 +863,6 @@ function downloadAPI_final(_base, _datasetID, _locationID, _baseTime, _datastrea
     }
     console.log(apicall);
 }
-
-
-
-
-
-
-
-
-
 
 
 
