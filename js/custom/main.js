@@ -20,14 +20,18 @@ function initialize(){
     wh=$(window).height();
     ww=$(window).width();
     $("#allContents").css({
-        "height":wh-25,
-        "width":ww-20,
+        "height":wh*0.96,
+        "width":ww,
+    });
+    $("#footer").css({
+        "height": wh*0.04-1,
+        "width": ww-10,
     });
     $(".spacer").css({
-        "height":wh-30,
+        "height":wh*0.96,
     });
     $("#mapWindow").css({
-        "height":wh-25,
+        "height":wh*0.96,
     });
 
 
@@ -64,6 +68,8 @@ function initialize(){
         }else{
             $('#fdown').hide();
         }
+
+        $('#floatNav').stop(true, true).show().fadeOut(6000);
 
     });
 
@@ -102,15 +108,17 @@ function initialize(){
 
 function populateFloatNav(){
     console.log("floatNav");
-    txt="<span class='clickable nav current' data-id=introWindow>Intro</span><br>";
-    txt+="<span class='clickable nav'  data-id=menuWindow>Select</span><br>";
-    txt+="<span class='clickable nav' data-id=mapWindow>Map</span><br>";
-    txt+="<span class='clickable nav' data-id=datasetWindow>Dataset</span><br>";
-    txt+="<span class='clickable nav' data-id=locationWindow>Location</span><br>";
-    txt+="<span class='clickable nav' data-id=figureWindow>Graph</span><br>";
+    txt="<div class='clickable qnav current' data-id=introWindow>Intro</div>";
+    txt+="<div class='clickable qnav'  data-id=menuWindow>Data sources</div>";
+    txt+="<div class='clickable qnav' data-id=mapWindow>Map</div>";
+    txt+="<div class='clickable qnav' data-id=datasetWindow>Dataset Info</div>";
+    txt+="<div class='clickable qnav' data-id=locationWindow>Location Info</div>";
+    txt+="<div class='clickable qnav' data-id=figureWindow>Graph</div>";
     $('#floatNav').html(txt);
+    $('#floatNav').hide();
 
-    $(".nav").on("click", function(){
+
+    $(".qnav").on("click", function(){
         target=$(this).data('id');
         scroll2div(target);
     });  
@@ -127,12 +135,9 @@ function populateHeaders(){
     $('#locationHeader').html("<span class=headerText>Location Info</span>");
     $('#figureHeader').html("<span class=headerText>Graphs and Data</span>");
     $('#dataHeader').html("<span class=headerText>Data Editor</span>");
-    $('#datasetContents').html("Select dataset first");
-    $('#locationContents').html("Select location first");
-    $('#figureContents').html("Select variable first");
-    //$('#figureWindow').hide();
-    //$('#locationWindow').hide();
-    //$('#datasetWindow').hide();
+    $('#datasetContents').html("<p>Select dataset first</p>");
+    $('#locationContents').html("<p>Select location first</p>");
+    $('#figureContents').html("<p>Select variable first</p>");
     $('#dataWindow').hide();
 }
 
@@ -154,34 +159,22 @@ function showAll(datastreamID, locationID, datasetID, obsType, dbaseCat, varType
     showDataset(locationID, datasetID,dbaseCat,varType, obsType, false, 
         function(data){
             scrollTo='mapWindow';
-            $('#datasetWindow').show();
             if (datastreamID>""){
-                // datastream to show
-                $('#locationWindow').show();
-                $('#figureWindow').show();
-                showDatastream(datastreamID, null);
-                scrollTo='figureContents';
+                showDatastream(datastreamID, false);
+                scrollTo='figureWindow';
             }else{
                 $('#figureContents').html("Select location and variable first");
-               // $('#figureWindow').hide();
-                $('#dataContents').html("");
-                $('#dataWindow').hide();
             }
             if (locationID>""){
-                $('#locationWindow').show();
                 // location to show
-                console.log(locationID);
-                showLocation(locationID, dataGroup, null, false);
+                showLocation(locationID, dataGroup, false, false);
             }else{
                 $('#locationContents').html("Select location first");
-                //$('#locationWindow').hide();
-                //$('#figureContents').html("");
                 $('#figureContents').html("Select location and variable first");
-                //$('#figureWindow').hide();
-                $('#dataContents').html("");
-                $('#dataWindow').hide();
             }
-            console.log("csrolling from all"+scrollTo);
+            $('#dataContents').html("");
+            $('#dataWindow').hide();
+            console.log("scrolling from all "+scrollTo);
             if (scrollTo){
                 scroll2div(scrollTo);
             }
@@ -249,8 +242,8 @@ function showDataset(locationID, datasetID,dbaseCat,varType, obsType, scrollTo, 
             if (locationID>''){
             }
 
-            console.log("csrolling from dataset "+scrollTo);
             if (scrollTo){
+                console.log("scrolling from dataset "+scrollTo);
                 scroll2div(scrollTo);
             }
             callback(true);
@@ -371,7 +364,6 @@ function showLocationWrapper(feature,layer){
 
 function showLocation(locationID, dataGroup, scrollTo, cleanup){
     console.log("loading location");
-    $('#locationWindow').show();
     if(typeof currentMarker === 'undefined'){
     }else{
         currentMarker.setIcon(smallIcon);
@@ -421,7 +413,6 @@ function showLocation(locationID, dataGroup, scrollTo, cleanup){
             if (cleanup){
                 $('#figureContents').html("Select loctation and variable first");
                 $('#dataContents').html("");
-                //$('#figureWindow').hide();
                 $('#dataWindow').hide();
             }
             if (scrollTo){
@@ -431,7 +422,7 @@ function showLocation(locationID, dataGroup, scrollTo, cleanup){
         });
     }else{
         // this is when dataGroup=='envdata';
-        featureapicall="./api/api_envdata.php?calltype=datastream&locationID="+locationID;
+        featureapicall="./api/api_envdata.php?calltype=data&locationID="+locationID;
         //console.log(featureapicall);
         $.get(featureapicall, 
         function(data){
@@ -481,16 +472,16 @@ function showLocation(locationID, dataGroup, scrollTo, cleanup){
                         }
                     }
                 }
-                txt+="<tr><th>Date<th>Data</tr>";
+                txt+="<tr><th>Date<th>Data<th></tr>";
                 for (i in eventDates){
                     txt+="<tr><td>"+eventDates[i];
-//                    if (ownedItems[0].includes(selfeature.datasetID) || ownedItems[1].includes(selfeature.locationID)){
-//                        txt+="<td><span class=clickable onClick=editOnceoffRecordsInPopup('"+selfeature.datasetID+"','"+selfeature.locationID+"','"+encodeURIComponent(eventDates[i])+"')>edit/add data</span>";
-//                        txt+="</td>";
-//                    }
                     datestr=eventDates[i].replace(/ /g,"_");
                     console.log(datestr);
-                    txt+="<td><span class=clickable onClick=showEnvmonEvent('"+selfeature.locationID+"','"+datestr+"','')>view all data\n at this location</span></td></tr>";
+                    txt+="<td><span class=clickable onClick=showEnvmonEvent('"+selfeature.locationID+"','"+datestr+"','figureWindow')>view all data\n at this location</span><td>";
+                    if (ownedItems[0].includes(selfeature.datasetID) || ownedItems[1].includes(selfeature.locationID) || userType=="admin"){
+                        txt+="<span class=clickable onClick=\"showEnvmonEvent('"+selfeature.locationID+"','"+datestr+"',null); editOnceoffRecords('"+selfeature.datasetID+"','"+selfeature.locationID+"','"+encodeURIComponent(eventDates[i])+"'); \">edit/add data</span>";
+                    }
+                    txt+="</tr>";
                 }
                 txt+="</table>";
                 txt+="</div>";
@@ -515,7 +506,7 @@ function showLocation(locationID, dataGroup, scrollTo, cleanup){
                         //console.log(firstDatestr);
                         firstDate=firstDate.replace(/ /g,"_");
                         lastDate=lastDate.replace(/ /g,"_");
-                        txt+="<tr><td>"+dstrm.variableName+"</td><td>["+dstrm.variableUnit+"]</td><td>"+dstrm.baseTime+"</td><td>"+firstDatestr+"</td><td>"+lastDatestr+"<td><span onClick=showDatastream('"+dstrm.datastreamID+"','figureWindow') class='clickable rf'>graph</span>&nbsp&nbsp"; 
+                        txt+="<tr><td>"+dstrm.variableName+"</td><td>["+dstrm.variableUnit+"]</td><td>"+dstrm.baseTime+"</td><td>"+firstDatestr+"</td><td>"+lastDatestr+"<td><span class='clickable rf' onClick=\"showDatastream('"+dstrm.datastreamID+"','figureWindow');\" >graph</span>&nbsp&nbsp"; 
                         txt+="<td>";
 
                         if (ownedItems[0].includes(datasetID) || ownedItems[1].includes(selfeature.locationID) || userType=="admin"){
@@ -537,15 +528,13 @@ function showLocation(locationID, dataGroup, scrollTo, cleanup){
             txt+="</div>";  
             txt+="</div>";
             $('#locationContents').html(txt);
-            console.log("csrolling from location "+scrollTo);
             if (cleanup){
                 $('#figureContents').html("Select location and variable first");
                 $('#dataContents').html("");
-                //$('#figureWindow').hide();
                 $('#dataWindow').hide();
             }
             if (scrollTo){
-                console.log("csrolling from location "+scrollTo);
+                console.log("scrolling from location "+scrollTo);
                 scroll2div(scrollTo);
             }
         });
@@ -560,8 +549,8 @@ function showDatastream(datastreamID, scrollTo){
 // when one clicks on "view" in leaflet popup. this is for envmon data of monitoring type
 // popup to show stuff with is not leaflet popup, its the "full screen popup"
 // shows time series plots
+    console.log("datastream");
     $("#shade").show();
-    $('#figureWindow').show();
     eventapicall="./api/api_envdata.php?calltype=datastream&datastreamID="+datastreamID;
     console.log(eventapicall);
     $.get(eventapicall, 
@@ -573,30 +562,31 @@ function showDatastream(datastreamID, scrollTo){
                 txt+="<div id=graphControls></div>";
                 txt+="<div id=graph></div>";
                 txt+="</div>";
-            txt+="<div class=dataStreamInfo>"
 //            console.log(selfeature.properties);
-            txt+="<table width=400px>";
             // there should be only one datastream at this stage...
-            for (dstrm in selfeature['datastreams']){
-            }
+            dstrm=selfeature['datastreams'];
+
             $('#figureContents').html(txt);
 
             graphType="compareyearsnormal";
             graphType="timeseries";
             isFirst=true;
             showcumsum=false;
-            if(dstrm.variableName=="rainfall" || dstrm.variableName=="Rainfall"){
+            console.log(dstrm[0]);
+
+            if(dstrm[0].variableName=="rainfall" || dstrm[0].variableName=="Rainfall"){
                 graphType="compareyearscumsum";
                 showcumsum=true;
             }
 
             console.log(datastreamID+" "+graphType+" "+isFirst+" "+showcumsum);
             loadPlot(datastreamID, graphType, isFirst, showcumsum);
-            console.log("csrolling from datastream"+scrollTo);
-            if(scrollTo){
-                scroll2div(scrollTo);    
-            }
-        });
+        }
+    );
+    if(scrollTo){
+        console.log("scrolling from datastream "+scrollTo);
+        scroll2div(scrollTo);    
+    }
 }
 
 
@@ -604,7 +594,6 @@ function showDatastream(datastreamID, scrollTo){
 function showBiodivEvent(ev, scrollTo){
     eventapicall="./api/api_biodiv.php?calltype=data&eventID="+ev;
     console.log(eventapicall);
-    $('#figureWindow').show();
     $.get(eventapicall, 
         function(data){
             console.log(eventapicall);
@@ -672,12 +661,11 @@ function showBiodivEvent(ev, scrollTo){
 
 
 
-function showEnvmonEvent(locationID, evDate){
+function showEnvmonEvent(locationID, evDate, scrollTo){
     evDate=evDate.replace(/_/g," ");
     console.log(evDate);
     featureapicall="./api/api_envdata.php?calltype=data&locationID="+locationID;
     console.log(featureapicall);
-    $('#figureWindow').show();
     $.get(featureapicall, 
         function(data){
             console.log(featureapicall);
@@ -704,7 +692,9 @@ function showEnvmonEvent(locationID, evDate){
             txt+="</table>";
             txt+="</div>";
             $('#figureContents').html(txt);
-            scroll2div('figureWindow');
+            if (scrollTo){
+                scroll2div('figureWindow');
+            }
         }
     );
 }
@@ -826,11 +816,6 @@ function scroll2div(_div2scroll){
     });
 }
 
-function showAndScroll(_txt,_div2show,_div2scroll){
-    $('#'+_div2show).html(_txt);
-    $('#'+_div2scroll).show();
-    scroll2div(_div2scroll);
-}
 
 
 
