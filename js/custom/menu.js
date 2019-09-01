@@ -59,27 +59,16 @@ function populateMenu(){
                             txt+="<div class=menulevel id="+catID2+">"+catName2+"</div>";
                             txt+="<ul>"; 
                             for (iiii in menuArr3){
-                                // fourth level
-                                catID3=menuArr3[iiii].categoryID.replace(/ /g,"_");
-                                catName3=menuArr3[iiii].categoryName;
-                                menuArr4=menuArr3[iiii].data;
-                                txt+="<li>";
-                                txt+="<div class=menulevel id="+catID3+">"+catName3+"</div>";
-                                txt+="<ul>"; 
-                                for (iiiii in menuArr4){
                                     // second level
-                                    datasetName=menuArr4[iiiii].datasetName;
-                                    datasetID=menuArr4[iiiii].datasetID;
+                                    datasetName=menuArr3[iiii].datasetName;
+                                    datasetID=menuArr3[iiii].datasetID;
                                     txt+="<li>";
                                     txt+="<div class=menuitem>";
                                     txt+="<label class=checkboxLabel>";
-                                    txt+="<input type=radio class=radio-custom name=datasetselect onClick=showAll('','','"+datasetID+"','"+catID1+"','"+catID2+"','"+catID3+"')><span>"+datasetName+"</span>";
+                                    txt+="<input type=radio class=radio-custom name=datasetselect onClick=showAll('','','"+datasetID+"','"+catID1+"','"+catID2+"','')><span>"+datasetName+"</span>";
                                     txt+="</label>";
                                     txt+="</div>";
                                     txt+="</li>";
-                                }
-                                txt+="</ul>"; 
-                                txt+="</li>";
                             } 
                             txt+="</ul>"; 
                             txt+="</li>";

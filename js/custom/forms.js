@@ -149,9 +149,9 @@ function submitForm(argstring, returnstr){
 function editAnyInPopup(database, datasetID, locationID, locationType, baseTime, datetime){
     if (database=='env'){
         if (locationType=='monitoring'){
-            editMonitoringRecordsInPopup(datasetID, locationID, baseTime);
+            editMonitoringRecords(datasetID, locationID, baseTime);
         }else{
-            editOnceoffRecordsInPopup(datasetID, locationID, datetime);
+            editOnceoffRecords(datasetID, locationID, datetime);
         }
     }
 }
@@ -163,22 +163,29 @@ function editAnyInPopup(database, datasetID, locationID, locationType, baseTime,
 //
 
 
-function editOnceoffRecordsInPopup(datasetID, locationID, datetime){
-    // add divs to popup
-    txt="<div id=records_header></div><div id=records_date></div><div id=records_table class=centeritem></div>";
-    popup(0.95,0.95, txt);
-    // header
+function editOnceoffRecords(datasetID, locationID, datetime){
     datetime=decodeURIComponent(datetime);
-    txt="<p>Dataset: <b>"+datasetID+"</b>&nbspLocation: <b>"+locationID+"</b>&nbspDate: <b>"+datetime+"</b></p>";
-    $("#records_header").html(txt);
-    console.log(window.location.href);
 
     // create table with all datastreams in columns
-    console.log(suff+"/api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID)
-     $.get(suff+"/api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID,
+    apicall=suff+"/api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID
+
+    $.get(apicall,
     function(data0){
-        data0=JSON.parse(data0);
-        datastreams=data0[0].datastreams;
+        console.log(apicall);
+        alldata=JSON.parse(data0);
+        datastreams=alldata[0].datastreams;
+        locationName=alldata[0].locationName;
+        datasetID=alldata[0].datasetID;
+        txt="<div class=infotableDiv id=recordsinfoDiv>";
+        txt+="<div class=tableTitle>";
+        txt+=locationName;
+        txt+="</div>";
+        txt+="<table class='fullwidthTable infoTable'>";
+        txt+="<tr><td class=infoLabel width=50%>dataset ID:<td width=50%>"+datasetID+"</tr>";
+        txt+="<tr><td class=infoLabel>Location ID:<td>"+locationID+"</tr>";
+        txt+="</table>";
+        txt+="</div>";
+
         // getting all dates for which data are available in any datastream for given locationID and datasetID
         dates=new Array();
         for (dstrm in datastreams){
@@ -193,7 +200,8 @@ function editOnceoffRecordsInPopup(datasetID, locationID, datetime){
         dates=dates.sort();
 
         // creating a select box with all dates;
-        txt="Select date: ";
+        txt+="<div class=auxDiv>";
+        txt+="Select date: ";
         txt+='<select id=dateSelect>';
         for (i in dates){
             txt+="<option value="+i+">"+dates[i]+"</option>";
@@ -204,7 +212,10 @@ function editOnceoffRecordsInPopup(datasetID, locationID, datetime){
         txt+='</select>';
         // datetime picker. Located in empty span so that it shows in neat position
         txt+="<span id=datepicker></span>";
-        $("#records_date").html(txt);
+        txt+="</div>";
+
+        txt+="<div class=listtableDiv id=records_table></div>";
+        showAndScroll(txt,"dataContents","dataWindow");
 
         // this happens only once when loading
         populateOnceoffRecords(datasetID, locationID);
@@ -237,7 +248,6 @@ function editOnceoffRecordsInPopup(datasetID, locationID, datetime){
 function populateOnceoffRecords(datasetID, locationID){
     datetime=$("#dateSelect option:selected").text();
     console.log(datetime);
-    console.log(suff+"/api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID);
     $.get(suff+"/api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID,
     function(data0){
         data0=JSON.parse(data0);
@@ -246,25 +256,30 @@ function populateOnceoffRecords(datasetID, locationID){
         // unix timestamp
         timestamp=Math.round(d.getTime() / 1000); 
         txt='';
-        txt+="<table width=900px>";
-        txt+="<tr><th>variable name<th>Unit<th>Value<th>QC code<th>Censored code</tr>";
+        txt+="<table class='narrowTable dataTable'>"
+        txt+="<tr><th>variable name<th>Unit<th>Value";
+        //txt+="<th>QC code<th>Censored code";
+        txt+="</tr>";
         for (dstrm in datastreams){
             dstrm=datastreams[dstrm];
             txt+="<tr><td>"+dstrm.variableName+"<td>["+dstrm.variableUnit+"]";
             txt+="<td class=Cell><input type=text name="+dstrm.datastreamID+"~~"+timestamp+"~~measurementValue onChange='return chkDigits(this);' onkeypress='GetChar(event, this);'>";
-            txt+="<td class=Cell><input type=text name="+dstrm.datastreamID+"~~"+timestamp+"~~qcCode onChange='return chkDigits(this);' onkeypress='GetChar(event, this);'>";
-            txt+="<td class=Cell><input type=text name="+dstrm.datastreamID+"~~"+timestamp+"~~censoredCode onChange='return chkDigits(this);' onkeypress='GetChar(event, this);'>";
+//            txt+="<td class=Cell><input type=text name="+dstrm.datastreamID+"~~"+timestamp+"~~qcCode onChange='return chkDigits(this);' onkeypress='GetChar(event, this);'>";
+//            txt+="<td class=Cell><input type=text name="+dstrm.datastreamID+"~~"+timestamp+"~~censoredCode onChange='return chkDigits(this);' onkeypress='GetChar(event, this);'>";
         }
         txt+="</table>";
 
         $("#records_table").html(txt);
         if(datetime){
             // populate table - get data for given month
-            console.log(suff+"/api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID+"&datetime="+datetime);
-            $.get(suff+"/api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID+"&datetime="+datetime,
+            apicall=suff+"/api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID+"&datetime="+datetime;
+            console.log(apicall);
+            $.get(apicall,
             function(data){
                 data=JSON.parse(data);
-                if (data.length>0){
+                console.log(data);
+                console.log(data[0].datastreams);
+                if (data[0].datastreams.length>0){
                     datastreams=data[0].datastreams;
                     for (dstrm in datastreams){
                         dstrm=datastreams[dstrm];
@@ -275,10 +290,10 @@ function populateOnceoffRecords(datasetID, locationID){
                             timestamp=Math.round(d.getTime() / 1000); 
                             cellID=dstrm.datastreamID+"~~"+timestamp+"~~measurementValue";
                             $("input[name='"+cellID+"']").val(record[1]);
-                            cellID=dstrm.datastreamID+"~~"+timestamp+"~~qcCode";
-                            $("input[name='"+cellID+"']").val(record[2]);
-                            cellID=dstrm.datastreamID+"~~"+timestamp+"~~censoredCode";
-                            $("input[name='"+cellID+"']").val(record[3]);
+                            //cellID=dstrm.datastreamID+"~~"+timestamp+"~~qcCode";
+                            //$("input[name='"+cellID+"']").val(record[2]);
+                            //cellID=dstrm.datastreamID+"~~"+timestamp+"~~censoredCode";
+                            //$("input[name='"+cellID+"']").val(record[3]);
                         }
                     }
                 }
@@ -286,6 +301,7 @@ function populateOnceoffRecords(datasetID, locationID){
         }
     });
 }
+
 
 function formatDate(dte){
     var dte= new Date(dte);
@@ -406,10 +422,8 @@ function populateMonitoringRecords(datasetID, locationID, baseTime){
 
 
 function editMonitoringRecords(datasetID, locationID, baseTime){
- 
     apicall=suff+"/api/api_envdata.php?calltype=location&locationID="+locationID;
     console.log(apicall);
-
     $.get(apicall, function(data){
     console.log(data);
         alldata=JSON.parse(data);

@@ -9,22 +9,13 @@
 }
 
 /* Reset */
-header, footer, article, nav, section, aside, time, hgroup {
-    display : block;
-}
-
-html, body, header, article, nav, section, aside, time, h1, h2, h3, p, a, ul, li, dl, dd, dt, table, thead, tfoot, tbody, th, tr, td{
+html, body, ul, li, table, thead, tfoot, tbody, th, tr, td, p{
     border : 0;
     margin : 0;
     outline : 0;
     padding : 0;
-    font : 12px/18px Helvetica, sans-serif;
+    font : 2vh/3vh 'Rubik', sans-serif;
 }
-
-input,textarea{
-    font : 12px/18px Helvetica, sans-serif;
-}
-
 
 
 /* BASICS */
@@ -47,32 +38,23 @@ H3 {
     font-size : 18px;
     margin : 20px 0 10px 0;
 }
-H4 {
-    font-size : 15px;
-    margin : 20px 0 5px 0;
-}
 
-H5{
-    font-size : 11px;
-}	
-
-H6 {
-    font-size : 11px;
-}	
 
 #footer {
-    width:80%;
+    display : block;
     margin:auto;
     border-top : 1px dotted var(--colB);
     clear : both;
     text-align: center;
-    line-height: 8px;
+    overflow-y: scroll;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
-#footer a, #footer p {
-    line-height: 9px;
-    font-size : 9px;
-    color : var(--colAnchor);
+#footer p {
+    color : var(--colB);
+    font-size : 1.2vh;
+    line-height:1.7vh;
 }
 
 #footer a:hover {
@@ -95,8 +77,8 @@ H6 {
 #loader{
     display: block;
     margin: auto;
-    width: 100px;
-    padding: 100px 0; 
+    width: 5%;
+    padding: 5% 0; 
  }
 
 .narrowDiv{
@@ -124,11 +106,10 @@ H6 {
     color: var(--colB);
     border-color: var(--colD);
     margin:auto;
-    width: 99%;
-    min-height: 90px;
+    min-height: 10%;
     padding: 20px 0 0 0; 
     border-style: solid;
-    border-width: 3px;
+    border-width: 0.5vh;
     text-align: center;
     font-weight: bold;
     text-transform: uppercase;
@@ -141,13 +122,15 @@ H6 {
 }
 
 .headerText{
-    font-size:22pt;
-    height: 30px;
+    font-size:3vh;
     padding: 20px 0 0 0; 
-    line-height: 30px;
+    line-height: 5vh;
     vertical-align: middle;
     display: inline-block;
 }
+
+
+
 
 /* this is container where everything sits, apart from footer*/
 #allContents{
@@ -185,6 +168,7 @@ H6 {
 .narrowDiv{
     margin-bottom:10px;
 }
+
 
 
 
@@ -274,45 +258,7 @@ th {
 
 
 
-
-
-/*scroll indicator*/
-
-.floatRight{
-    position:fixed;
-    right:0;
-    width: 50px;
-    z-index:10500;
-    opacity: 0.3;
-}
-
-#floatNav{
-    top:110px;
-    padding:10px;
-    margin-right:10px;
-    opacity: 0.5;
-}
-
-#fup{
-    top:0;
-}
-
-#fdown{
-    bottom:0;
-}
-
-.floatImg{
-    float: right;
-    margin-right:10%;
-}
-
-
-
-
 /*random stuff*/
-
-
-
 .clickable {
     font-weight: bold;
     color: var(--colAnchor);
@@ -322,6 +268,55 @@ th {
 .clickable:hover{
     color: var(--colHover);
 }
+
+
+
+
+
+
+
+/*scroll indicator*/
+
+.floatRight{
+    position:fixed;
+    right:0;
+    width: 10%;
+    z-index:10500;
+    opacity: 0.3;
+}
+
+#fup{
+    top:0;
+}
+
+#fdown{
+    bottom:5%;
+}
+
+.floatImg{
+    float: right;
+    margin-right:10%;
+}
+
+#floatNav{
+    top:10%;
+    padding:1%;
+    margin-right:2%;
+    opacity: 0.5;
+    text-align:center;
+    background: var(--colD);
+}
+
+.qnav{
+    font-size:1.8vh;
+    line-height:1.9vh;
+    padding: 3% 0 0 0; 
+    margin-top:30%;
+    font-family: 'Rubik',sans-serif;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
 
 
 
@@ -357,16 +352,6 @@ th{
     padding-right: 20px;
     padding-top: 5px;
 }
-
-.info {
-    padding: 6px 8px;
-    font: 14px/16px Arial, Helvetica, sans-serif;
-    background: white;
-    background: rgba(255,255,255,0.8);
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
-    border-radius: 5px;
-    float: left;
-} 
 
 #intro{
     width:100%;
