@@ -28,7 +28,7 @@ function getbiodiv($mysqli, $what){
         $datasetstack[]=$datasetarr;
     }
     $grouparr=array(
-	    "categoryID"=>"biodiv",
+	    "categoryID"=>"biodivdata",
 	    "categoryName"=>"Biodiversity Data",
 	    "data"=>$datasetstack
     );
@@ -61,7 +61,7 @@ function getenvdata($mysqli, $what){
     }
 
     $grouparr=array(
-	    "categoryID"=>"envmon",
+	    "categoryID"=>"envmondata",
 	    "categoryName"=>"Environmental Data",
 	    "data"=>$datasetstack
     );
@@ -85,7 +85,7 @@ function getowned($mysqli){
 	                "locationName"=>"",
 	                "datasetName"=>$owned['datasetName'],
 	                "datasetID"=>$owned['datasetID'],
-	                "databaseCategory"=>'envmon'
+	                "dataBase"=>'envmondata'
                 );
                 $ownedItems[]=$itemarr;
             }
@@ -101,7 +101,7 @@ function getowned($mysqli){
 	                "locationName"=>"",
 	                "datasetID"=>$owned['datasetID'],
 	                "datasetName"=>$owned['datasetName'],
-	                "databaseCategory"=>'biodiv'
+	                "dataBase"=>'biodivdata'
                 );
                 $ownedItems[]=$itemarr;
             }
@@ -118,7 +118,7 @@ function getowned($mysqli){
 	                "locationID"=>$owned['locationID'],
 	                "locationName"=>$owned['locationName'],
 	                "datasetID"=>$owned['datasetID'],
-	                "databaseCategory"=>'biodiv'
+	                "dataBase"=>'biodivdata'
                 );
                 $ownedItems[]=$itemarr;
             }
@@ -141,7 +141,7 @@ function getkeydatastream($mysqli, $type){
 	            "locationID"=>$loc['locationID'],
 	            "locationName"=>$loc['locationName'],
 	            "datasetID"=>$loc['datasetID'],
-	            "databaseCategory"=>'envmon'
+	            "dataBase"=>'envmondata'
             );
         }
     }

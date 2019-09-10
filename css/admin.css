@@ -1,9 +1,13 @@
-body{
-/*    margin-left:30px;*/
+#adminContainer{
+    margin-left:30px;*/
 }
+
+label p{
+   font: 14px/16px 'Arial',sans-serif;
+}
+
 .warning {
     color:red;
-    font-weight:bold;
 }
 
 input[type=text] {
@@ -19,34 +23,22 @@ input[disabled] {
 }
 
 .nonempty, input[type=text].nonempty, textarea.nonempty, select option .nonempty{
-    background:#eeeeee;
+    background: #fcf3cf;
 }
 
 input.text {
     height:8px;
 }
 
-th { 
-    background : #AAA;
-}
-
-.twoColour tr:nth-child(odd) { 
-    background : #FFF;
-}
-.twoColour tr:nth-child(even) {
-    background : #DDD;
-}
 
 .Cell {
-    border: solid 1px #33FFFF;
-    background : #FFF;
+    border: solid 1px var(--colD);
+    background : var(--colE);
 }
 
 
 .Cell input{
-    border : 0px solid #CCC;
-    font-size : 11px;
-    padding : 4px 5px;
+    border : 0px solid #FFF;
     margin : 0 0px 0 0px;
 }
 

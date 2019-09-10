@@ -14,29 +14,41 @@ html, body, ul, li, table, thead, tfoot, tbody, th, tr, td, p{
     margin : 0;
     outline : 0;
     padding : 0;
-    font : 2vh/3vh 'Rubik', sans-serif;
+    color : var(--colC);
+}
+
+html, body, ul, li, p{
+    font : 18px/24px 'Arial',sans-serif;
+}
+
+table{
+    font : 80%/100% 'Arial',sans-serif;
+    border-collapse: collapse;
 }
 
 
 /* BASICS */
 H1, H2, H3 {
+    font-family: 'Rubik', sans-serif;
     border-bottom : 0px dotted #B5B3A9;
     color : var(--colC);
-    font-weight : bold;
+    font-weight : normal;
     padding : 0 0 0 25px;
-    margin : 10px 0 0 0;
 }
 
 H1 {
-    font-size : 20px;
+    font-size : 200%;
+    margin : 30px 0 10px 0;
 }
 
 H2 {
-    font-size : 18px;
+    font-size : 150%;
+    margin : 30px 0 10px 0;
 }
+
 H3 {
-    font-size : 18px;
-    margin : 20px 0 10px 0;
+    font-size : 110%;
+    margin : 30px 0 10px 0;
 }
 
 
@@ -53,8 +65,7 @@ H3 {
 
 #footer p {
     color : var(--colB);
-    font-size : 1.2vh;
-    line-height:1.7vh;
+    font : 70%/100% 'Arial', sans-serif;
 }
 
 #footer a:hover {
@@ -70,7 +81,7 @@ H3 {
     top:0px;
     left:0px;
     z-index: 11000;
-    background: white;
+    background: black;
     opacity: 0.3;
 }
 
@@ -104,14 +115,10 @@ H3 {
 .headerDiv{
     background: var(--colD);
     color: var(--colB);
-    border-color: var(--colD);
     margin:auto;
     min-height: 10%;
-    padding: 20px 0 0 0; 
-    border-style: solid;
-    border-width: 0.5vh;
+    padding: 20px 0 20px 0; 
     text-align: center;
-    font-weight: bold;
     text-transform: uppercase;
 }
 
@@ -122,9 +129,7 @@ H3 {
 }
 
 .headerText{
-    font-size:3vh;
-    padding: 20px 0 0 0; 
-    line-height: 5vh;
+    font : 180%/200% 'Rubik', sans-serif;
     vertical-align: middle;
     display: inline-block;
 }
@@ -165,6 +170,12 @@ H3 {
     margin: auto;
 }
 
+#dataContents{
+    padding: 20px 20px 100px 20px; 
+    max-width: 1000px; 
+    margin: auto;
+}
+
 .narrowDiv{
     margin-bottom:10px;
 }
@@ -174,20 +185,18 @@ H3 {
 
 
 /*tables*/
-table{
-    font-family: 'Rubik',sans-serif;
-}
+
 td,th {
-    padding-left:5px;
-    padding-right:5px;
+    padding:5px;
+    margin:0px;
 }
 
 th { 
     text-transform: uppercase;
     background: var(--colC);
     color: var(--colE);
-    line-height: 30px;
     text-align:left;
+    font-family: 'Rubik',sans-serif;
 }
 
 .twoColour tr:nth-child(odd) { 
@@ -219,23 +228,16 @@ th {
 }
 
 .tableTitle{
-    line-height: 30px;
-    padding:20px;
+    font: 120%/150% 'Rubik',sans-serif;
     margin-bottom:5px;
     text-align:center;
     background: var(--colE);
-    color: var(--colC);
-    font-family: 'Rubik',sans-serif;
-    font-size:30px;
+    color: var(--colA);
 }
 
 .infoLabel{
     text-transform: uppercase;
     text-align: right;
-    letter-spacing: 0.05em;
-    font-weight: 600;
-    font-size: 13px;
-    line-height: 32px;
     color: var(--colC);
 }
 
@@ -280,17 +282,26 @@ th {
 .floatRight{
     position:fixed;
     right:0;
-    width: 10%;
     z-index:10500;
-    opacity: 0.3;
 }
+
+.floatLeft{
+    position:fixed;
+    left:0;
+    z-index:10500;
+}
+
 
 #fup{
     top:0;
+    opacity: 0.3;
+    width: 10%;
 }
 
 #fdown{
     bottom:5%;
+    opacity: 0.3;
+    width: 10%;
 }
 
 .floatImg{
@@ -305,14 +316,33 @@ th {
     opacity: 0.5;
     text-align:center;
     background: var(--colD);
+    width: 10%;
+    width:70px;
 }
 
-.qnav{
-    font-size:1.8vh;
-    line-height:1.9vh;
+
+#floatHelp{
+    font-size:25px;
+    width:30px;
+    height:30px;
+    line-height:30px;
+    color: orange;
+    text-align:center;
+    margin-left:5px;
+    cursor: pointer;
+    border-radius: 18px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: orange;
+    bottom:5%;
+    opacity: 1;
+} 
+
+.qnavItem{
+    font-size:80%;
+    line-height:100%;
     padding: 3% 0 0 0; 
     margin-top:30%;
-    font-family: 'Rubik',sans-serif;
     font-weight: normal;
     text-transform: uppercase;
 }
@@ -326,35 +356,32 @@ th {
 
 /*not sure if these are necessary*/
 
-.label {
-    color: gray;
-}
-
-label{
-    color:gray;
-}
-
-.span800{
-   width: 300px;
-}
-
-th{
-    font-weight:bold;
-}
-
 .centered{
     text-align: center;
     margin:auto;
 }
 
-.spaced{
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 5px;
+
+/* these are copied from bootstrap.css and are necessary for datetimepicker to run properly*/
+
+[class^="icon-"],
+[class*=" icon-"] {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  *margin-right: .3em;
+  line-height: 14px;
+  vertical-align: text-top;
+  background-image: url("../img/glyphicons-halflings.png");
+  background-position: 14px 14px;
+  background-repeat: no-repeat;
+  margin-top: 1px;
 }
 
-#intro{
-    width:100%;
-    text-align: center;
+.icon-arrow-left {
+  background-position: -240px -96px;
 }
 
+.icon-arrow-right {
+  background-position: -264px -96px;
+}

@@ -18,20 +18,20 @@ session_start();
     <script type="text/javascript" src='./js/highstock-7.1.2.js'></script>
     <script type="text/javascript" src='./js/exporting.js'></script>
     <script type="text/javascript" src="./js/bootstrap/bootstrap-datetimepicker.min.js"></script>
-    <script type="text/javascript" src="./js/bootstrap/bootstrap.min.js"></script>
     <script type="text/javascript" src="./js/custom/menu.js"></script>
     <script type="text/javascript" src="./js/custom/main.js"></script>
     <script type="text/javascript" src="./js/custom/login.js"></script>
 <!--
+    <script type="text/javascript" src="./js/bootstrap/bootstrap.min.js"></script>
     note: loading highstock above, although graph.js uses highcharts 
     <link rel="stylesheet" href="./css/bootstrap.css">
     <script type="text/javascript" src='./js/Highstock-1.3.9/highstock.js'></script>
     <script type="text/javascript" src='./js/highcharts-5.0.12.js'></script>
     <script type="text/javascript" src='./js/highcharts-7.1.2.js'></script>
     <script type="text/javascript" src='./js/highcharts-more-7.1.2.js'></script>
+    <link rel="stylesheet" href="./css/bootstrap.css"> #removed bootstrap.css because it was messing up with styles for the entire page. Only 3 items from bootstrap.css were necessary for datetimepicker, and these were put into the main.css
 -->
     <link rel="stylesheet" href="./css/bootstrap-datetimepicker.css">
-    <link rel="stylesheet" href="./css/bootstrap.css">
     <link rel="stylesheet" href='./css/popup.css'>
     <link rel="stylesheet" href='./css/main.css'>
     <link rel="stylesheet" href='./css/admin.css'>
@@ -60,6 +60,7 @@ session_start();
     <div class=floatRight id="fdown"><div class=floatImg><img src='img/down.svg' width=50px></div></div>
     <div class=floatRight id="fup"><div class=floatImg><img src='img/up.svg' width=50px></div></div>
     <div class=floatRight id="floatNav"></div>
+    <div class='floatLeft' id="floatHelp">?</div>
 </div>
     <div id="shade"></div>
     <div id='footer'><?php include 'footer.php'; ?></div>

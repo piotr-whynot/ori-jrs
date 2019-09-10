@@ -1,4 +1,3 @@
-
 //************************************************************************************************************
 // submit forms section
 //
@@ -36,13 +35,21 @@ function validateForm(ado, argstring, returnstr) {
                 queue.push({file: 'checkID.php', data: {item: this.name, check: 'mustexist', base: 'envmondata', value:this.value }});
             }
 
+            if ($(this).hasClass("mustexistorempty")){
+                if(this.value>""){
+                    queue.push({file: 'checkID.php', data: {item: this.name, check: 'mustexist', base: 'envmondata', value:this.value }});
+                }
+            }
+
             if ($(this).hasClass("unique") && ado=='add'){
                 queue.push({file: 'checkID.php', data: {item: this.name, check: 'unique', base: 'envmondata', value:this.value }});
             }
+
             if ($(this).hasClass("unique") && this.name=='emailAddress' && ado=="edit"){
-		userID=$("input[name=userID]").val();
+   		        userID=$("input[name=userID]").val();
                 queue.push({file: 'checkEmail.php', data: {item: this.name, check: 'unique', value:this.value, userID: userID}});
             }
+
             if ($(this).hasClass("unique") && this.name=='emailAddress' && ado=="add"){
                 queue.push({file: 'checkEmail.php', data: {item: this.name, check: 'unique', value:this.value}});
             }
