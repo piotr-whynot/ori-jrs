@@ -84,18 +84,18 @@ if ($base=="envmondata" & $table=="location"){
     $errorflag=false;
     $mysqli->select_db('envmondata');
     // these are for numeric fields that may be null
-    if ($_POST['altitude']==''){ $altitude=NULL;}else{$altitude=$_POST['altitude'];}
-    if ($_POST['altitudeUncertaintyInMeters']==''){ $altitudeUncertaintyInMeters=NULL;}else{$altitudeUncertaintyInMeters=$_POST['altitude'];}
+    if ($_POST['verbatimElevation']==''){ $verbatimElevation=NULL;}else{$verbatimElevation=$_POST['verbatimElevation'];}
+    if ($_POST['elevationUncertaintyInMeters']==''){ $elevationUncertaintyInMeters=NULL;}else{$elevationUncertaintyInMeters=$_POST['elevationUncertaintyInMeters'];}
     if ($_POST['childLocationValue']==''){ $childLocationValue=NULL;}else{$childLocationValue=$_POST['childLocationValue'];}
 
     if ($do=="add"){
         //using prepared statements - apparently v.secure way of interacting with database
         $stmt = $mysqli->prepare("insert into envmondata.location values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-        $stmt->bind_param("ssssdddsddssdssssss", $_POST['locationID'], $_POST['datasetID'], $_POST['locationName'], $_POST['locality'],$_POST['decimalLongitude'],$_POST['decimalLatitude'],$_POST['coordinateUncertaintyInMeters'],$_POST['geodeticDatum'],$altitude,$altitudeUncertaintyInMeters,$_POST['locationType'],$_POST['parentLocationID'],$childLocationValue,$_POST['childLocationUnit'],$_POST['geomorphologicalPosition'],$_POST['countryCode'],$_POST['locationOwner'],$_POST['locationRemarks'], $_POST['associatedMedia']);
+        $stmt->bind_param("ssssdddsddssdssssss", $_POST['locationID'], $_POST['datasetID'], $_POST['locationName'], $_POST['locality'],$_POST['decimalLongitude'],$_POST['decimalLatitude'],$_POST['coordinateUncertaintyInMeters'],$_POST['geodeticDatum'],$verbatimElevation,$elevationUncertaintyInMeters,$_POST['locationType'],$_POST['parentLocationID'],$childLocationValue,$_POST['childLocationUnit'],$_POST['geomorphologicalPosition'],$_POST['countryCode'],$_POST['locationOwner'],$_POST['locationRemarks'], $_POST['associatedMedia']);
     }else if ($do=="edit"){
-        $stmt = $mysqli->prepare("update envmondata.location set  datasetID=?, locationName=?, locality=?,  decimalLongitude=?, decimalLatitude=?, coordinateUncertaintyInMeters=?, geodeticDatum=?, altitude=?, altitudeUncertaintyInMeters=?, locationType=?, parentLocationID=?, childLocationValue=?, childLocationUnit=?, geomorphologicalPosition=?, countryCode=?, locationOwner=?, locationRemarks=?, associatedMedia=? where locationID=?");
+        $stmt = $mysqli->prepare("update envmondata.location set  datasetID=?, locationName=?, locality=?,  decimalLongitude=?, decimalLatitude=?, coordinateUncertaintyInMeters=?, geodeticDatum=?, verbatimElevation=?, elevationUncertaintyInMeters=?, locationType=?, parentLocationID=?, childLocationValue=?, childLocationUnit=?, geomorphologicalPosition=?, countryCode=?, locationOwner=?, locationRemarks=?, associatedMedia=? where locationID=?");
 
-        $stmt->bind_param("sssdddsddssdsssssss", $_POST['datasetID'], $_POST['locationName'], $_POST['locality'],$_POST['decimalLatitude'],$_POST['decimalLongitude'],$_POST['coordinateUncertaintyInMeters'],$_POST['geodeticDatum'],$altitude,$altitudeUncertaintyInMeters,$_POST['locationType'],$_POST['parentLocationID'],$childLocationValue,$_POST['childLocationUnit'],$_POST['geomorphologicalPosition'],$_POST['countryCode'],$_POST['locationOwner'],$_POST['locationRemarks'],$_POST['associatedMedia'], $_POST['locationID']);
+        $stmt->bind_param("sssdddsddssdsssssss", $_POST['datasetID'], $_POST['locationName'], $_POST['locality'],$_POST['decimalLatitude'],$_POST['decimalLongitude'],$_POST['coordinateUncertaintyInMeters'],$_POST['geodeticDatum'],$verbatimElevation,$elevationUncertaintyInMeters,$_POST['locationType'],$_POST['parentLocationID'],$childLocationValue,$_POST['childLocationUnit'],$_POST['geomorphologicalPosition'],$_POST['countryCode'],$_POST['locationOwner'],$_POST['locationRemarks'],$_POST['associatedMedia'], $_POST['locationID']);
     }
     if (!$stmt->execute()) {
         $errorflag=true;
@@ -173,17 +173,17 @@ if ($base=="biodivdata" & $table=="location"){
     $errorflag=false;
     $mysqli->select_db('biodivdata');
     // these are for numeric fields that may be null
-    if ($_POST['altitude']==''){ $altitude=NULL;} else {$altitude=$_POST['altitude'];}
-    if ($_POST['altitudeUncertaintyInMeters']==''){ $altitudeUncertaintyInMeters=NULL;} else {$altitudeUncertaintyInMeters=$_POST['altitudeUncertaintyInMeters'];}
+    if ($_POST['verbatimElevation']==''){ $vebatimElevation=NULL;} else {$verbatimElevation=$_POST['verbatimElevation'];}
+    if ($_POST['elevationUncertaintyInMeters']==''){ $elevationUncertaintyInMeters=NULL;} else {$elevationUncertaintyInMeters=$_POST['elevationUncertaintyInMeters'];}
 
     if ($do=="add"){
         //using prepared statements - apparently v.secure way of interacting with database
         $stmt = $mysqli->prepare("insert into biodivdata.location values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-        $stmt->bind_param("ssssdddsddsssssss", $_POST['locationID'], $_POST['datasetID'], $_POST['locationName'], $_POST['locality'],$_POST['decimalLatitude'],$_POST['decimalLongitude'],$_POST['coordinateUncertaintyInMeters'],$_POST['geodeticDatum'],$altitude,$altitudeUncertaintyInMeters,$_POST['locationType'],$_POST['geomorphologicalPosition'],$_POST['countryCode'],$_POST['footprintWKT'],$_POST['footprintSRS'],$_POST['locationRemarks'],$_POST['associatedMedia']);
+        $stmt->bind_param("ssssdddsddsssssss", $_POST['locationID'], $_POST['datasetID'], $_POST['locationName'], $_POST['locality'],$_POST['decimalLatitude'],$_POST['decimalLongitude'],$_POST['coordinateUncertaintyInMeters'],$_POST['geodeticDatum'],$verbatimElevation,$elevationUncertaintyInMeters,$_POST['locationType'],$_POST['geomorphologicalPosition'],$_POST['countryCode'],$_POST['footprintWKT'],$_POST['footprintSRS'],$_POST['locationRemarks'],$_POST['associatedMedia']);
     }else if ($do=="edit"){
-        $stmt = $mysqli->prepare("update biodivdata.location set  datasetID=?, locationName=?, locality=?,  decimalLatitude=?, decimalLongitude=?, coordinateUncertaintyInMeters=?, geodeticDatum=?, altitude=?, altitudeUncertaintyInMeters=?, locationType=?, geomorphologicalPosition=?, countryCode=?, footprintWKT=?, footprintSRS=?, locationRemarks=?, associatedMedia=? where locationID=?");
+        $stmt = $mysqli->prepare("update biodivdata.location set  datasetID=?, locationName=?, locality=?,  decimalLatitude=?, decimalLongitude=?, coordinateUncertaintyInMeters=?, geodeticDatum=?, verbatimElevation=?, elevationUncertaintyInMeters=?, locationType=?, geomorphologicalPosition=?, countryCode=?, footprintWKT=?, footprintSRS=?, locationRemarks=?, associatedMedia=? where locationID=?");
 
-        $stmt->bind_param("sssdddsddssssssss", $_POST['datasetID'], $_POST['locationName'], $_POST['locality'],$_POST['decimalLatitude'],$_POST['decimalLongitude'],$_POST['coordinateUncertaintyInMeters'],$_POST['geodeticDatum'],$altitude,$altitudeUncertaintyInMeters,$_POST['locationType'],$_POST['geomorphologicalPosition'],$_POST['countryCode'],$_POST['footprintWKT'],$_POST['footprintSRS'],$_POST['locationRemarks'],$_POST['associatedMedia'], $_POST['locationID']);
+        $stmt->bind_param("sssdddsddssssssss", $_POST['datasetID'], $_POST['locationName'], $_POST['locality'],$_POST['decimalLatitude'],$_POST['decimalLongitude'],$_POST['coordinateUncertaintyInMeters'],$_POST['geodeticDatum'],$verbatimElevation,$elevationUncertaintyInMeters,$_POST['locationType'],$_POST['geomorphologicalPosition'],$_POST['countryCode'],$_POST['footprintWKT'],$_POST['footprintSRS'],$_POST['locationRemarks'],$_POST['associatedMedia'], $_POST['locationID']);
     }
     if (!$stmt->execute()) {
         $errorflag=true;
@@ -204,11 +204,11 @@ if ($base=="biodivdata" & $table=="checklist"){
     if ($do=="add"){
         //using prepared statements - apparently v.secure way of interacting with database
         $stmt = $mysqli->prepare("insert into biodivdata.checklist values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-        $stmt->bind_param("ssssdddsddsssssss", $_POST['locationID'], $_POST['datasetID'], $_POST['locationName'], $_POST['locality'],$_POST['decimalLatitude'],$_POST['decimalLongitude'],$_POST['coordinateUncertaintyInMeters'],$_POST['geodeticDatum'],$altitude,$altitudeUncertaintyInMeters,$_POST['locationType'],$_POST['geomorphologicalPosition'],$_POST['countryCode'],$_POST['footprintWKT'],$_POST['footprintSRS'],$_POST['locationRemarks'],$_POST['associatedMedia']);
+        $stmt->bind_param("ssssdddsddsssssss", $_POST['locationID'], $_POST['datasetID'], $_POST['locationName'], $_POST['locality'],$_POST['decimalLatitude'],$_POST['decimalLongitude'],$_POST['coordinateUncertaintyInMeters'],$_POST['geodeticDatum'],$verbatimElevation,$elevationUncertaintyInMeters,$_POST['locationType'],$_POST['geomorphologicalPosition'],$_POST['countryCode'],$_POST['footprintWKT'],$_POST['footprintSRS'],$_POST['locationRemarks'],$_POST['associatedMedia']);
     }else if ($do=="edit"){
-        $stmt = $mysqli->prepare("update biodivdata.location set  datasetID=?, locationName=?, locality=?,  decimalLatitude=?, decimalLongitude=?, coordinateUncertaintyInMeters=?, geodeticDatum=?, altitude=?, altitudeUncertaintyInMeters=?, locationType=?, geomorphologicalPosition=?, countryCode=?, footprintWKT=?, footprintSRS=?, locationRemarks=?, associatedMedia=? where locationID=?");
+        $stmt = $mysqli->prepare("update biodivdata.location set  datasetID=?, locationName=?, locality=?,  decimalLatitude=?, decimalLongitude=?, coordinateUncertaintyInMeters=?, geodeticDatum=?, verbatimElevation=?, elevationUncertaintyInMeters=?, locationType=?, geomorphologicalPosition=?, countryCode=?, footprintWKT=?, footprintSRS=?, locationRemarks=?, associatedMedia=? where locationID=?");
 
-        $stmt->bind_param("sssdddsddssssssss", $_POST['datasetID'], $_POST['locationName'], $_POST['locality'],$_POST['decimalLatitude'],$_POST['decimalLongitude'],$_POST['coordinateUncertaintyInMeters'],$_POST['geodeticDatum'],$altitude,$altitudeUncertaintyInMeters,$_POST['locationType'],$_POST['geomorphologicalPosition'],$_POST['countryCode'],$_POST['footprintWKT'],$_POST['footprintSRS'],$_POST['locationRemarks'],$_POST['associatedMedia'], $_POST['locationID']);
+        $stmt->bind_param("sssdddsddssssssss", $_POST['datasetID'], $_POST['locationName'], $_POST['locality'],$_POST['decimalLatitude'],$_POST['decimalLongitude'],$_POST['coordinateUncertaintyInMeters'],$_POST['geodeticDatum'],$verbatimElevation,$elevationUncertaintyInMeters,$_POST['locationType'],$_POST['geomorphologicalPosition'],$_POST['countryCode'],$_POST['footprintWKT'],$_POST['footprintSRS'],$_POST['locationRemarks'],$_POST['associatedMedia'], $_POST['locationID']);
     }
     if (!$stmt->execute()) {
         $errorflag=true;
@@ -258,6 +258,7 @@ if ($base=="users" & $table=="users"){
     $stmt->close();
     $url="./?base=users&do=edit&table=users";
 }
+
 if ($errorflag) {
 echo "Some errors occurred";
 }

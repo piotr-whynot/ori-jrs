@@ -1,6 +1,6 @@
 
 function textinPopup(H,W,ID){ 
-    $.get("/ori/common/popup.php?f=textinPopup&ID="+ID,
+    $.get("./popup.php?f=textinPopup&ID="+ID,
     function(data){
         popup(H,W,data);
     });

@@ -1,11 +1,7 @@
 /* GRAPHS */
 
 #graphWrapper{
-    width:95%;
-    height:400px;
-    padding: 20px;
     margin:auto;
-    font-family: 'Rubik',sans-serif;
 }
 
 #graph{
@@ -21,7 +17,6 @@
     width: 20%;
     height: 400px;
     background: white;
-    padding: 0px;
 }
 
 #graphMenuAux{
@@ -35,24 +30,22 @@
 
 
 .graphMenuItem{
+    font-family: 'Rubik',sans-serif;
     margin: auto;
     display: block;
-    background: white;
-    color: #666666;
-    padding: 5px;
+    background: var(--colD);
+    color: var(--colC);
+    padding: 10px;
     margin-bottom: 5px;
-    font-size: 1.8vh;
-    font-weight: bold;
+    font-size: 1.6vh;
     text-align: center;
     vertical-align: middle;
     cursor:pointer;
-    border-radius: 10px;
-    border: 0.1em solid #888888; 
 }
 
 .graphMenuItem.current{
-    background: #BBBBBB;
-    color: purple;
+    background: var(--colC);
+    color: var(--colE);
 }
 
 .graphMenuItem:hover{

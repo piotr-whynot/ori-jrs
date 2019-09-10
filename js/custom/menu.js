@@ -24,18 +24,19 @@ function populateMenu(){
                         datasetName=menuArr1[ii].datasetName;
                         locationID=menuArr1[ii].locationID;
                         locationName=menuArr1[ii].locationName;
+                        dataBase=menuArr1[ii].dataBase;
                         txt+="<li>";
                         txt+="<div class=menuitem>";
                         txt+="<label class=checkboxLabel>";
                         if(datastreamID != '') {
                             //pointing to datastream
-                            txt+="<input type=radio class=radio-custom name=datasetselect onClick=showAll('"+datastreamID+"','"+locationID+"','"+datasetID+"','','','')><span>"+variableName+" at "+locationName+"</span>";
+                            txt+="<input type=radio class=radio-custom name=datasetselect onClick=showAll('"+datastreamID+"','"+locationID+"','"+datasetID+"','','"+dataBase+"','')><span>"+variableName+" at "+locationName+"</span>";
                         }else if(locationID != '') {
                             //pointing to location
-                            txt+="<input type=radio class=radio-custom name=datasetselect onClick=showAll('','"+locationID+"','"+datasetID+"','','','')><span>"+locationName+" in "+datasetID+"</span>";
+                            txt+="<input type=radio class=radio-custom name=datasetselect onClick=showAll('','"+locationID+"','"+datasetID+"','','"+dataBase+"','')><span>"+locationName+" in "+datasetID+"</span>";
                         }else{
                             //pointing to dataset
-                            txt+="<input type=radio class=radio-custom name=datasetselect onClick=showAll('','','"+datasetID+"','','','')><span>"+datasetName+"</span>";
+                            txt+="<input type=radio class=radio-custom name=datasetselect onClick=showAll('','','"+datasetID+"','','"+dataBase+"','')><span>"+datasetName+"</span>";
                         }
                         txt+="</label>";
                         txt+="</div>";
@@ -43,7 +44,7 @@ function populateMenu(){
                     }else{
                         // first level - monitoring & once-off - in explore all datasets
                         // datasets & locations - in your datasets/locations
-                        catID1=menuArr1[ii].categoryID;
+                        catID1=menuArr1[ii].categoryID; //this is monitoring or once-off
                         catName1=menuArr1[ii].categoryName;
                         menuArr2=menuArr1[ii].data;
                         txt+="<li>"
@@ -52,16 +53,17 @@ function populateMenu(){
                         for (iii in menuArr2){
                             // second level - envdata & biodiv in all dataset, but list of locations in key dataset
                             // third level
-                            catID2=menuArr2[iii].categoryID;
+                            catID2=menuArr2[iii].categoryID; //this is biodiv or envmon
                             catName2=menuArr2[iii].categoryName;
                             menuArr3=menuArr2[iii].data;
                             txt+="<li>";
                             txt+="<div class=menulevel id="+catID2+">"+catName2+"</div>";
                             txt+="<ul>"; 
                             for (iiii in menuArr3){
-                                    // second level
+                                    // third and final level
                                     datasetName=menuArr3[iiii].datasetName;
                                     datasetID=menuArr3[iiii].datasetID;
+                                    dataBase=menuArr3[iiii].dataBase;
                                     txt+="<li>";
                                     txt+="<div class=menuitem>";
                                     txt+="<label class=checkboxLabel>";

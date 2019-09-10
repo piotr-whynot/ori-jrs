@@ -2,12 +2,23 @@
 /***Sign in menu**/
 
 .loginContainer {
-  padding: 16px;
+  padding: 5%;
   margin:auto;
   text-align:center;
   width:90%;
 }
 
+.loginContainer input[type=text],input[type=password],input[type=email] {
+   color: var(--colC);
+   border-color: var(--colD);
+   border-width: 0px;
+   width:100%;
+   margin-bottom:10px;
+   height: 30px;
+   border-bottom-width: 3px;
+   border-bottom-style: dotted;
+   font-size: 20px;
+}
 
 #formTable{
     text-align: center;
@@ -17,36 +28,28 @@
 .formLabel{
     text-align: center;
     margin: auto;
-    font-size:16px;
-    font-weight:bold;
+    font-size:2.5vh;
     padding-bottom:20px;
-    color:#555555;
-}
-
-#signin_menu{
-  float: right;
-  margin-right: 5px;
-  background: gray;
-  padding: 5px;
+    color: var(--colC);
 }
 
 #errors{
- color: red;
- text-align: center;
+    color: red;
+    text-align: center;
 }
 
 .formNotification{
-   color: blue;
+   color: var(--colA);
 }
 
 button {
-    background-color: gray;
-    color: white;
+    background-color: var(--colC);
+    color: var(--colE);
     padding: 5px 5px;
-	    /*margin: 8px 0;*/
     border: none;
     cursor: pointer;
     margin: 20px;
+    width: 70px;
 }
 
 button:hover {
