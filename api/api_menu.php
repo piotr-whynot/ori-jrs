@@ -9,8 +9,6 @@ function getbiodiv($mysqli, $what){
     if ($what=="monitoring"){
         $link="";
     }
-
-
     $datasetstack=array(); #to store datasets
     $query1="select distinct dataset.datasetID,datasetName,datasetDescription from occurrence join event on occurrence.eventID=event.eventID join dataset on event.datasetID=dataset.datasetID join location on location.locationID=event.locationID where ".$link." location.locationType='monitoring'";
 //echo $query1."</br>";

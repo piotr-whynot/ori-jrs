@@ -11,7 +11,7 @@ var largeIcon = new L.Icon({
      iconUrl:"img/marker0.svg" 
 });
 
-
+var taxonData=new Array();
 
 
 function initialize(){
@@ -392,7 +392,7 @@ function showLocation(locationID, dataGroup, scrollTo, cleanup){
             txt+=selfeature['locationName'];
             txt+="</div>";
             txt+="<table class='infoTable fullwidthTable'>";
-	    // this displays all properties coming from api
+        // this displays all properties coming from api
             for (key in selfeature){
                 if ( key != "events"){
                     txt+="<tr><td class=infoLabel width=50%>"+key+":<td width=50%>"+selfeature[key]+"</tr>";
@@ -401,6 +401,9 @@ function showLocation(locationID, dataGroup, scrollTo, cleanup){
             datasetID=selfeature['datasetID'];
             txt+="</table>";
             txt+="</div>";
+            if (selfeature.locationType=="monitoring"){
+                txt+="<div class=auxDiv><span class=clickable onClick=showBiodivTimeseries('"+locationID+"','figureWindow')>show time series</span></div>";
+            }
             txt+="<div id=loclistTable class=listtableDiv>";
             txt+="<div class=tableTitle>"
             txt+="Sampling events";
@@ -413,6 +416,8 @@ function showLocation(locationID, dataGroup, scrollTo, cleanup){
             }
             txt+="</table>";
             txt+="</div>";
+
+
             $('#locationContents').html(txt);
             if (cleanup){
                 $('#figureContents').html("Select loctation and variable first");
@@ -534,7 +539,6 @@ function showLocation(locationID, dataGroup, scrollTo, cleanup){
             if (cleanup){
                 $('#figureContents').html("Select location and variable first");
                 $('#dataContents').html("");
-                //$('#dataWindow').hide();
             }
             if (scrollTo){
                 //console.log("scrolling from location "+scrollTo);
@@ -546,6 +550,20 @@ function showLocation(locationID, dataGroup, scrollTo, cleanup){
 }
 
 
+
+function showBiodivTimeseries(locationID, scrollTo){
+    $("#shade").show();
+    txt="";
+    txt+="<div id=graphWrapper>";
+    txt+="<div id=graphControls></div>";
+    txt+="<div id=graph></div>";
+    txt+="</div>";
+    $('#figureContents').html(txt);
+        loadBiodivPlot(locationID);
+    if(scrollTo){
+        scroll2div(scrollTo);    
+    }
+}
 
 
 function showDatastream(datastreamID, scrollTo){
@@ -908,6 +926,7 @@ function showOnceoffDatastreamInPopup(ds){
    });
 }
 
+
 function openInNewTab(url){
   var win = window.open(url, '_blank');
   win.focus();
@@ -922,3 +941,6 @@ function editDataset(_base, _datasetID){
     url="admin/?base="+_base+"&do=edit&table=dataset&datasetID="+_datasetID;
     openInNewTab(url);
 }
+
+
+
