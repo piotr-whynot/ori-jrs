@@ -190,7 +190,6 @@ function showhideYear(item){
                 s.options.showInLegend=true;
                 s.update(s.options);
             }else{
-                console.log(seriesColor);
                 s.options.marker.radius=markerRadius;
                 s.options.color=seriesColor;
                 s.options.lineWidth=lineWidth;
@@ -289,4 +288,132 @@ $(document).on('click','.graphMenuItem', function(event){
             }
         }
 });
+
+
+
+
+function createBiodivChart(divname, variableName, measuringUnit, locationName,  chartType, dataseries){
+    $('#graph').html("");
+    axisdateFormat='%b %Y';
+    tipdateFormat='%b %e %Y';
+    legendEnable=false;
+    scrollbarEnable=false;
+    rangeSelEnable=true;
+//creates empty chart. all chart formatting defined here
+    chart = Highcharts.chart({
+//    chart = new Highcharts.stockChart({
+        chart: {renderTo: divname, zoomType: 'xy', marginRight: 0, type:'area'},
+        legend: {
+            enabled: legendEnable,
+            align: 'left',
+            x:100,
+            y:50,
+            verticalAlign: 'top',
+            layout: 'vertical',
+            floating: true
+        },
+        credits: {text: '(C) Okavango Research Institute, University of Botswana', enabled: true, href: 'http://www.ori.ub.bw'},
+        tooltip: { valueDecimals: 2,
+	      formatter: function() {
+                var s = variableName;
+                s += '<br>';
+                s+=Highcharts.dateFormat(tipdateFormat, this.x);
+	        $.each(this.points, function(i, point) {
+                label=', '+point.series.name;
+                s += '<br>'+label+': '+ point.y;
+            });
+	        return s;			
+          },
+          shared: true				
+        },
+        scrollbar: {enabled: scrollbarEnable}, 
+        navigator: {enabled: false},
+        rangeSelector: {enabled: rangeSelEnable},
+        xAxis: {type: 'datetime', ordinal: false, dateTimeLabelFormats: {month: axisdateFormat}, showLastLabel: true},
+        yAxis: {title: {text: variableName+" ["+measuringUnit+"]"}, offset: 30, labels:{align: 'right', x: 0, y: 0}, visible: true},
+        title: {text: (variableName+" at "+ locationName).bold()},
+        plotOptions: {series: {marker: {enabled: true, symbol:"circle", radius: markerRadius}, lineWidth: lineWidth}, color:seriesColor, line: {dataGrouping: {enabled:false}}, column: {dataGrouping: {enabled:false}, pointWidth: 1}},
+        series: dataseries,
+        exporting: {
+        chartOptions: {
+            plotOptions: {
+                series: {
+                   marker: {enabled: true, symbol:"circle", radius: 2}
+                }
+            }
+        },
+        printMaxWidth: 1200
+        }
+    });
+    return chart;
+}
+
+
+
+
+
+
+
+function loadBiodivPlot(locationID){
+    markerRadius=1;
+    lineWidth=2;
+    txt="<div id=graphMenuAux></div>";
+    $('#graphControls').html(txt);
+    featureapicall="./api/api_biodiv.php?calltype=checklist&locationID="+locationID;
+    $.get(featureapicall, 
+        function(data0){
+            taxaList=JSON.parse(data0);
+            featureapicall="./api/api_biodiv.php?calltype=data&locationID="+locationID;
+            $.get(featureapicall, 
+                function(data){
+                    alldata=JSON.parse(data);
+                    selfeature=alldata[0];
+                    taxonData.length=0;
+                    seriesColor="#999999";
+                    currentList=[];
+                    for (e in selfeature['events']){
+                        ev=selfeature['events'][e];
+                        evDate=ev['eventDate'];
+                        dte=new Date(evDate);
+                        console.log(dte);
+                        temp = Object.assign({}, taxaList);
+                        for (o in ev['occurrenceData']){
+                            occurrence=ev['occurrenceData'][o];
+                            taxonID=occurrence['taxonID'];
+                            parsedval=parseFloat(occurrence['organismQuantity']);
+                            if (currentList.includes(taxonID)){
+                                taxonData[taxonID].push([dte.valueOf(),parsedval]);
+                            }else{
+                                taxonData[taxonID]=[[dte.valueOf(),parsedval]];
+                                currentList.push(taxonID);
+                            }
+                            delete temp[taxonID];
+                        }
+                        for (t in temp){
+                            if (taxonData.includes(t)){
+                          //      taxonData[t].push([dte.valueOf(),0]);
+                            }else{
+                             //   taxonData[t]=[[dte.valueOf(),0]];
+                            }
+                        }
+                    }
+                    seriesData=[];
+                    txt="<b> Highlight taxon:</b><br>";
+                    for (taxonID in taxaList){
+                        taxonName=taxaList[taxonID]['scientificName'];
+                        seriesData.push({id: taxonID, name: taxonID, data: taxonData[taxonID], color: seriesColor, showInLegend:false});
+                        txt+="<input type='checkbox' name='taxon' onclick='showhideYear(this.value)' value="+taxonID+" />"+taxonName+" <br/>"
+                    }
+                    console.log(seriesData);
+
+                    chart=createBiodivChart("graph", "organism count", "number or individuals", locationID, "timeseries", seriesData);
+
+                    $('#graphMenuAux').html(txt);
+
+                    $('#shade').hide();
+            });
+    });
+}
+
+
 
