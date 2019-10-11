@@ -77,8 +77,8 @@ function loadPopup(data){
 function closePopup(){
     //disables popup only if it is opened
     if(popupStatus==1){
-        $("#popupBackground").fadeOut("slow");
         $("#popupWindow").toggle('slide',{direction: "left" });
+        $("#popupBackground").fadeOut("slow");
         popupStatus = 0;
     }
 }

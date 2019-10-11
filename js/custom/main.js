@@ -642,9 +642,10 @@ function showBiodivEvent(ev, scrollTo){
             txt+="<table class='twoColour listTable narrowTable'>";
             txt+="<tr><th>Name</th><th>Unit</th><th>Value</th></tr>";
             mftxt="" 
-            for (oc in ev.occurrenceData){
-                oc=ev.occurrenceData[oc];
+            for (occ in ev.occurrenceData){
+                oc=ev.occurrenceData[occ];
                 txt+="<tr><td>"+oc.scientificName+"<td>"+oc.organismQuantityType+"<td>"+oc.organismQuantity+"</tr>";
+		console.log(oc.measurementOrFact);
                 for (mf in oc.measurementOrFact){
                     mf=oc.measurementOrFact[mf];
                     mftxt+="<tr><td>"+oc.scientificName+"<td>"+mf.measurementType+": <td>"+mf.measurementValue+" "+mf.measurementUnit+"</tr>";

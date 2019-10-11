@@ -100,7 +100,7 @@ function responseForm(responsetext, toReload){
     }else if(toReload=="none"){
         frm+="<button type='button' onClick='closePopup()'>OK</button>";
     }else{
-        frm+="<button type='button' onClick='closePopup(); window.open(\"/biodiv/\",\"_self\");'>OK</button>";
+        frm+="<button type='button' onClick='closePopup(); window.open(\"/\",\"_self\");'>OK</button>";
     }
     frm+="</form>"
     frm+="</div>";
@@ -120,7 +120,7 @@ function updatePassword(passwordCode){
 	        'passwordCode': passwordCode,
 	        'password': password
 	    };
-	    //console.log(formData);
+	    console.log(formData);
 	    $.ajax({
 	        type : 'POST',
             url  : 'login.php?action=updatePassword',
@@ -131,7 +131,7 @@ function updatePassword(passwordCode){
         .done(function(data) {
 	        console.log(data);
             if(data[0]=='true'){
-		        responseForm("Password updated.", "main");
+		responseForm("Password updated.", "main");
             }else{
                 $('.warning').html(data[1]);      
             }
@@ -151,6 +151,7 @@ function login(){
 	        'emailAddress': emailAddress,
 	        'password': password
 	    };
+	    console.log(formData);
 	    $.ajax({
 	        type : 'POST',
             url  : 'login.php?action=login',
@@ -163,6 +164,7 @@ function login(){
 		        responseForm("Logged in", "current");
             }else{
                 $('.warning').html(data[1]);      
+	        console.log(data[2]);
             }
         });
     }else{// end of email and password check                                                                                        
@@ -193,7 +195,7 @@ function register(){
         .done(function(data) {
 	        console.log(data);
             if(data[0]=='true'){
-		        window.open("/biodiv/?pid="+data[2],"_self") //this is temporary for testing without emailing
+		        //window.open("/biodiv/?pid="+data[2],"_self") //this is temporary for testing without emailing
 		        responseForm("Thank you for registering. <br>You will receive e-mail with a password reset link.", "current");
             }else if(data[0]=='false'){
                 $('.warning').html(data[1]);
@@ -238,7 +240,7 @@ function resetPassword(){
         .done(function(data) {
             console.log(data);
             if(data[0]){
-                window.open("/biodiv/?pid="+data[2],"_self") //this is temporary for testing without emailing
+              //  window.open("/biodiv/?pid="+data[2],"_self") //this is temporary for testing without emailing
    	            responseForm("E-mail with reset link sent", "current");
             }else{
 	            responseForm("Something went awry. Try again.", "current");
