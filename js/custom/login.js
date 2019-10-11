@@ -120,7 +120,7 @@ function updatePassword(passwordCode){
 	        'passwordCode': passwordCode,
 	        'password': password
 	    };
-	    //console.log(formData);
+	    console.log(formData);
 	    $.ajax({
 	        type : 'POST',
             url  : 'login.php?action=updatePassword',
@@ -131,7 +131,7 @@ function updatePassword(passwordCode){
         .done(function(data) {
 	        console.log(data);
             if(data[0]=='true'){
-		        responseForm("Password updated.", "main");
+		responseForm("Password updated.", "main");
             }else{
                 $('.warning').html(data[1]);      
             }

@@ -165,9 +165,9 @@ switch($function) {
         $data=$_POST["data"];
 	    $password=md5(stripslashes($data['password']));
 	    $passwordCode=stripslashes($data['passwordCode']);
-	    $sql= "SELECT * FROM users1.users WHERE passwordCode='".$passwordCode."'";
+	    $sql0= "SELECT * FROM users1.users WHERE passwordCode='".$passwordCode."'";
 	    //echo $sql;
-        $res=$mysqli->query($sql); 
+        $res=$mysqli->query($sql0); 
 	    if(mysqli_num_rows($res)){
 		    $sql= "UPDATE users1.users SET password='".$password."', passwordCode='".md5("")."' where passwordCode='".$passwordCode."'";
 		    //echo $sql;
@@ -183,7 +183,7 @@ switch($function) {
 	        $update="false";
             $outcome= "<p> Hmm... there is something seriously wrong here. If you think you are here legitimately - drop us an email. Otherwise don't try it again, please.</p>";
         }
-	    $result=array($update,$outcome);
+	    $result=array($update,$outcome, $sql0);
         echo json_encode($result);
         break;
 
