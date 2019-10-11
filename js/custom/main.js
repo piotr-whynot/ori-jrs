@@ -724,7 +724,7 @@ function initializeMap(){
 //main function for initializing map interface
     console.log("map");
     showMap();
-//    loadBaseMap(); // this is switched off for debugging
+    loadBaseMap(); // this is switched off for debugging
 }
 
 

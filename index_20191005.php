@@ -50,17 +50,7 @@ session_start();
 
 
     <div id='allContents'>
-    <div id='introWindow' class=wideDiv><div class='spacer'></div><div id='introHeader' class=headerDiv></div><div id='introContents' class=contentsDivnarrow>
-    <!--Here we check if the page has token for resetting the password. The code can still be placed somewhere else-->
-    <?php/*
-        if(isset($GET['pid']) AND isset($GET['pid']) != ''):
-		echo "Click <a href=168.167.30.196/login.php?action=resetPass&pid=".$pid.">here</a> to create a new password";
-        endif;
-**/
-    ?>
-
-
-    </div></div>
+    <div id='introWindow' class=wideDiv><div class='spacer'></div><div id='introHeader' class=headerDiv></div><div id='introContents' class=contentsDivnarrow></div></div>
     <div id='menuWindow' class=wideDiv><div class='spacer'></div><div id='menuHeader' class=headerDiv></div><div id='menuContents' class=contentsDivnarrow></div></div>
     <div id="mapWindow" class=wideDiv><div id='mapContents'></div></div>
     <div id="datasetWindow" class=wideDiv><div class=spacer></div><div id='datasetHeader' class=headerDiv></div><div id='datasetContents' class=contentsDivnarrow></div></div>

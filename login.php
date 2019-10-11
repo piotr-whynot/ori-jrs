@@ -52,7 +52,12 @@ switch($function) {
 	        $res=$mysqli->query($sql);
             if($res){
                 $register='true';
-		        $outcome="success";
+		$outcome="success";
+		$headers= 'MIME-Version: 1.0' . "\r\n";
+	        $headers.= 'Content-type: text/html; charset=UTF-8' . "\r\n";
+		$body="<p>Thank you for showing interest and registering on Monitoring Data website at Okavango Research Institute.</p>
+<p> click on the link below to verify</p><p><a href=monitoringdata.ub.bw/?pid=".$passwordcode.">Verify</a>";
+                 mail($emailaddress,"Monitoring Data Verification",$body, $headers);
 		        //send email with password
             }else{
                 $register='false';
@@ -61,7 +66,12 @@ switch($function) {
 	    }
 	    $result=array($register,$outcome, $passwordcode);
         echo json_encode($result);
-        break;
+	    break;
+//************************************************************************************************************	    
+    case "verify":
+	    $data=$_POST["data"];
+	    $sql = "SELECT * FROM users1.users WHERE emailAdress="."'$emailAddress'"." AND token=";
+	    break;
 
 //*************************************************************************************************************
     case "login":
@@ -182,20 +192,41 @@ switch($function) {
     case "resetPassword":
 	$passwordCode=md5(mt_rand(0,1000000));
         $data=$_POST['data'];
-        $emailAddress=stripslashes($data['emailAddress']);
-	$sql= "UPDATE users1.users set passwordCode='".$passwordCode."' WHERE emailAddress='".$emailAddress."'";
-        $res=$mysqli->query($sql);
-	if($res){
-	    $outcome="Success";
-	    $reset="true";
-	}else{
-	    $outcome="Something went awry. Try again";
-	    $reset="false";
-	}
-	$result=array($reset,$outcome, $passwordCode);
-	echo json_encode($result);
+	$emailAddress=stripslashes($data['emailAddress']);
+	$headers= "MIME-Version: 1.0" . "\r\n";
+	$headers.= "Content-type:text/html;charset=UTF-8" . "\r\n";
+	//Test
+// global $mailer;
+        $body='Thank you for visiting our site. Please click on the link below to reset your password
+               <a href="http://monitoringdata.ub.bw/?pid='.$passwordCode. '">reset password!</a>';
+	mail($emailAddress,"Monitoring Data Password Reset",$body, $headers); //This works
+
+	//Firstly check if the emailadress exists in the database
+	#$sqlUser="SELECT * FROM users1.users WHERE emailAdress='"$emailAdress."'";
+	#$resUser=$mysqli->query($sqlUser);
+        #if(mysqli_num_rows($resUser)>0){
+
+	    $sql= "UPDATE users1.users set passwordCode='".$passwordCode."' WHERE emailAddress='".$emailAddress."'";
+            $res=$mysqli->query($sql);
+	    if($res){
+	        $outcome="Success";
+	        $reset="true";
+	    }else{
+	        $outcome="Something went awry. Try again";
+	        $reset="false";
+	    }
+	    $result=array($reset,$outcome, $passwordCode);
+	    echo json_encode($result);
 	break;
 
+    case "passReset":
+	  header("Location: http://monitoringdata.ub.bw/");
+	    echo '<script type="text/javascript">updatePasswordForm("test");</script>';
+//	echo '<script type="text/javascript">alert("Loading");
+  //      document.getElementById("popupWindowContents").innerHTML=<span clickable onclik=updatePasswordForm()>Click to Update Password</span>
+//		</script>';
+        $pid = $_GET['pid'];
+        break;
 
 
 
