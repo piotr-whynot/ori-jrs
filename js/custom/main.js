@@ -162,10 +162,10 @@ function populateHeaders(){
     $('#locationHeader').html("<span class=headerText>Location Info</span>");
     $('#figureHeader').html("<span class=headerText>Graphs and Data</span>");
     $('#dataHeader').html("<span class=headerText>Data Editor</span>");
-    $('#datasetContents').html("<p>Select dataset first</p>");
-    $('#locationContents').html("<p>Select location first</p>");
-    $('#figureContents').html("<p>Select variable first</p>");
-    $('#dataContents').html("<p>Select variable first</p>");
+    $('#datasetContents').html("<p>Select dataset in Data Sources panel first</p>");
+    $('#locationContents').html("<p>Select location in Dataset panel first</p>");
+    $('#figureContents').html("<p>Select variable in Location panel first</p>");
+    $('#dataContents').html("<p>Select variable in Location panel first</p>");
     $('#dataWindow').hide();
 }
 
