@@ -50,14 +50,7 @@ session_start();
 
 
     <div id='allContents'>
-    <div id='introWindow' class=wideDiv><div class='spacer'></div><div id='introHeader' class=headerDiv></div><div id='introContents' class=contentsDivnarrow>
-    <!--Here we check if the page has token for resetting the password. The code can still be placed somewhere else-->
-    <?php/*
-        if(isset($GET['pid']) AND isset($GET['pid']) != ''):
-		echo "Click <a href=168.167.30.196/login.php?action=resetPass&pid=".$pid.">here</a> to create a new password";
-        endif;
-**/
-    ?>
+    <div id='introWindow' class=wideDiv><div class='spacer'></div><div id='introHeader' class=headerDiv></div><div id='introContents' class=contentsDivwide>
 
 
     </div></div>
@@ -70,7 +63,10 @@ session_start();
     <div class=floatRight id="fdown"><div class=floatImg><img src='img/down.svg' width=50px></div></div>
     <div class=floatRight id="fup"><div class=floatImg><img src='img/up.svg' width=50px></div></div>
     <div class=floatRight id="floatNav"></div>
-    <div class='floatLeft' id="floatHelp">?</div>
+    <!--
+    <div class='floatLeft' id=floatFaq>?</div>
+-->
+    <div class='floatLeft' id=floatFaq><div id=faqPointer>Scroll to explore or <br>click here for help</div><div id="floatFaqTxt">?</div></div>
 </div>
     <div id="shade"></div>
     <div id='footer'><?php include 'footer.php'; ?></div>

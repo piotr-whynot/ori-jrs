@@ -62,3 +62,22 @@
     margin-top:30px;
     margin-bottom:20px;
 }
+
+#popupWindow H1{
+    font-size: 40px;
+    line-height: 40px;
+    margin-top:50px;
+}
+#popupWindow H2{
+    font-size: 30px;
+    line-height: 30px;
+    margin-top:50px;
+}
+
+#popupWindow H3{
+    font-size: 20px;
+    line-height: 20px;
+}
+#popupWindow p{
+    margin-top:15px;
+}

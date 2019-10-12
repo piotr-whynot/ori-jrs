@@ -1,0 +1,116 @@
+<h1> Help, manual and FAQ</h1>
+<p>&nbsp
+<p>&nbsp
+<ul>
+<li><a class=clickable href='#whatsinherefaq'>What's in here?</a>
+<li><a class=clickable href='#whatisntherefaq'>What isn't here?</a>
+<li><a class=clickable href='#dataorganizationfaq'>How are the data organized?</a>
+<li><a class=clickable href='#navigationfaq'>How to use this website?</a>
+<li><a class=clickable href='#downloadfaq'>Can I download data and how?</a>
+<li><a class=clickable href='#graphfaq'>Can I copy/download graphs and how?</a>
+<li><a class=clickable href='#copyrightsfaq'>Are data copyrighted?</a>
+</ul>
+
+
+<h2 id=whatsinherefaq>What's in here?</h2>
+<p>The Monitoring Website provides access to measurements of environmental, ecological and biological variables from the Okavango Delta. Although the focus is on the Okavango, you will find here also measurements from the broader Okavango region.
+<p>The website actually has a double functionality. What we mean by "access" is the ability to firstly see the data, either the actual numbers or the visualizations of those number, and secondly the ability to get the data onto your computer.
+<p> In this, the website has a double purpose. One is to allow easy access to (hopefully the most recent) monitoring information on key environmental and ecosystem variables. Second, is the access to historical datasets, i.e. datasets generated within a plethora of projects in the past. This is simpl a data recovery and rescue effort.
+<p> Importantly, large part of the motivation to create this website, and funding for it, came from a JRS project. One of that project's objectives was collation, formatting and publication of biodiversity data from the Okavango Delta in the Global Biodiversity Information Facility website, and thus making them available for research now and in the future.
+
+<h2 id=whatisntherefaq>What isn't here?</h2>
+<p>This is not a data processing website, i.e. you will not be able to do any analyses on the data, subset them, merge, do calculations. There is no GIS functionality. 
+
+<h2 id=dataorganizationfaq>How are the data organized?</h2>
+<p>Data are divided into several categories. 
+<ul>
+<li>Firstly, there are <b>Monitoring</b> and <b>Once-off surveys</b>.
+<li>Secondly, there are <b>Environmental data</b> and <b>Biodiversity data</b>.
+<li>In each of these categories, data are stored in <b>Datasets</b>.
+<li>Each <b>Dataset</b> includes <b>Locations</b>, i.e. places where data are or were collected.
+<li>Things get a bit complicated from now on, unfortunately. Each <i>Monitoring</i> <b>Location</b> will have data for one or several <b>Variables</b>.
+<li> But each <i>Biodiversity</i> location will have a more complex structure. Biodiversity data are captured during <b>Sampling Events</b>.
+<li> Each <b>Event</b> will then record <b>Occurrences</b> and what we call <b>Other measurements</b>. 
+</ul>
+<p>Read about these groupings below.
+
+<h3>Environmental data vs. Biodiversity data</h3>
+<p>Environmental data are data on loosely defined "physical environment" that includes water, soil and air. Under this category you will find data on meteorological conditions (air temperature, humidity, rainfall, wind etc), on hydrological conditions (water flows, water levels, both in surface watr and in groundwater), results of water chemistry and water physical properties measurements.
+<p>Biodiversity data pertain to "biological" variables. This includes presence and abundance of various species or taxa in general, be it plants or animals, but also some characteristics of those plants or animals. For plant surveys those characteristics might include height, percent senescent. For animals it might include characteristics such as sex or maturity.
+<p> It is important to acknowledge here that the need to distinguish these two categories results from two facts - firstly, the data obviously describe different things. Secondly, they are also different in nature and thus the way they are organized (see below). We have organized biodiversity data in the way that is compatible with Global Biodiversity Information Facility (GBIF) requirements.
+
+<h3> Monitoring data vs. Once-off campaigns</h3>
+<p>These two categories group data according to for how long the measurements are or were carried out. The division is relatively straigtforward.
+<p> Monitoring data includes measurements that were carried out with an intention of providing information on temporal variability or behaviour of measured variables. Monitoring measurements usually have a character of a time series that span a substantial amount of time. However, Monitoring data do not necessarily include data that are continuous or regular. Some locations will be monitoring locations but will have very few data points, perhaps one only. That's because measurements at those locations were estabilished with an intention of monitoring, i.e. of continuous measurements, but that monitoring never really took off, or was abandoned for some reason.
+<p>Once-off surveys are exactly that - measurements that were carried out once, usually with an intention of characterizing spatial heterogeneity of the measured variable. Those measurements might include several repeated measurements at the same location, but in principle they provide a snapshot rather than some continous description of the variable of interest.
+
+<h3> Datasets</h3>
+<p>Datasets are natural "groupings" of data that express data source. Datasets very conveniently describe Once-off measurements, as these are usually carried out within research projects or some sort of single evaluation campaign. In such a context, a Dataset will simply be a set of data collected during a research project or a measurement campaign. Because a Dataset is collected within a project/campaign, it will have a particular purpose, and usually will be restricted to a particular set of variables. For example, a Dataset may comprise water chemistry measurements carried out along the Okavango transect, carried out with the objective to understand hydro-geo-chemical processes in the channel/floodplain system. Or it can be measurements of invertebrates in Phelo's Floodplain carried out to understand the aquatic food chain.
+<p> Importantly, a Dataset can span both Biodiversity and Environmental data categories. For example, Darwin Biodiversity Project's Dataset included Biodiversity data, but also water chemistry and hydrological data.
+
+<h3>Locations</h3>
+<p>Locations are simply places where data are being or were collected. It is important to note that Locations are Dataset-specific. It means that if data were collected at the same geographical location but under two different projects, or activities (and captured by us under two different Datasets) then that location will be recorded twice, i.e. in each of the Datasets.  
+
+<h3>Variables</h3>
+<p>Variables are what the name says - things that vary and are measured. Water level, air temperature, Oxygen concentration etc. are variables. In our website, term Variables pertain to Environmental data only. Biodiversity data uses slightly different terminology. 
+
+<h3>Sampling Events</h3>
+<p> Term Sampling Event is relevant for Biodiversity data only and stems from GBIF requirements for database structure. It denotes a set of measurements carried out at a particular location at a particular time. So, if measurements are carried out at two neighbouring locations at approximately the same time, they constitute two separate Sampling Events. Also, if measurements are carried out at the same location, but say, one in the morning, and one in the evening - they are still two different Sampling Events. However, if measurements of several biodiversity measures (say, percent total cover, height of vegetation, species occurrence) are taken at the same location at the same time, they constitute a single Sampling Event. Right?  
+
+<h3>Occurrences and other measurements</h3> 
+<p>Occurrences are again relevant to Biodiversity data only and stems from GBIF requirements for database structure. Occurrence is simply a qualitative or a quantitative statement about presence of a particular taxon recorded during a Sampling Event. That statement can simply be presence-absence, or some measure of abundance.
+Addiionally to Occurrence records, the GBIF database structure provides an entry for "additional" or "other" data that are related to Occurrences. In GBIF lingo it is "measurement or fact", but here we use simply "other measurments". The "Other measurements" may include data on status of particular taxon or vegetation stand - measurements such as "percent green cover", or "sex" of fish.
+
+
+<h2 id=navigationfaq>How to Use the Website?</h2>
+<p>The website is organized in the form of several "panels":
+<ol>
+<li>Intro
+<li>Data Sources
+<li>Map
+<li>Dataset info
+<li>Location info
+<li>Graphs
+<li>Data editor
+</ol>
+<p>You can scroll up-down between the panels, and you will notice that while you are scrolling, a quick menu appears on the right-hand side. You can use that menu to jump directly to given panel.
+<p>Note - Data editor panel will only be available to the users who are owners of a dataset that is presented on this website, and are logged in.
+
+<h3>Typical use case<h3>
+<p> Note that panels are populated sequentially according to the structure of the data. So if you want to view a particular variable at a particular location, say fish monitoring results at Chanoga, then you have to:
+<ul>
+<li>select appropriate dataset in the Data Source panel - that will be "Fish monitoring" under "Monitoring" and "Biodiversity"
+<li>upon selection of that dataset, the Map panel will be scrolled to automatically. You may select location from the map by clicking on the appropriate marker OR
+<li>scroll manually to Dataset Info panel, and select location from the list provided there.
+<li>On selecting the location you will be redirected to the Location Info panel, where you will see all Sampling Events for that location.
+<li>You may then select an event you are interested in, and you will be redirected to Graphs and Data panel, where you will see the actual data.
+<li>Alternatively, since this particular dataset is a monitoring dataset - you may choose to view a time series of fish data by following the "show time series" link in the Location Info panel. A time series graph will then be shown in the Graph and Data panel.
+<li> After viewing data or graph (mind the graphs are interactive - explore them, please), you may go back to Location Info, or Dataset Info or Data Sources panel, and select another Event, Location or Dataset.
+</ul>
+<br>
+<p>Access to Environmental monitoring data is organized in similar way.
+<br>
+<p>There are several "key" variables/locations/datasets that can be accessed by following direct links under "Key Monitoring Locations" in the Data Sources panel. 
+
+
+
+<h2 id=downloadfaq>Can I download data and how?</h2>
+<p>Download functionality is available only to registered users. You need to register and be logged in to download data. Registration process is easy, and we just require your name, e-mail and institutional affiliations. We will not share your data with anyone, and will not send you unsolicited e-mails. That process is purely for our records.
+<p>Data are available for download in CSV and JSON format by following the link in Dataset Info Panel or from Location Info Panel. The links are present only if you are a registered users and you are logged in.
+<p>You should mind and respect the data sharing licence that is specific to the dataset that you want to use and download.
+
+<h2 id=graphsfaq>Can I copy/download graphs and how?</h2>
+<p> Graphs can be downloaded by clicking on the "menu" icon in the top-right corner of the graph.
+<p> Please mind that graphs are shared under <a href="https://creativecommons.org/licenses/by-nd/4.0/"> Attribution-NoDerivs (CC BY-ND) </a> licence. This means that you may use the graph as is for any purpose provided its source is acknowledged, and you don't modify the graph in any way. If the graph does not show what you want it to show - sorry - you need to generate one you need from the data yourself. 
+
+<h2 id=copyrightsfaq>Are data copyrighted?</h2>
+<p>Some graphs and figures presented in this website are copyrighted and are available under <a href="https://creativecommons.org/licenses/by-nd/4.0/"> Creative Commons Attribution-NoDerivs(CC BY-ND) </a> licence. This means that the pictures and graphs, may be copied and reproduced, published, uploaded, posted, transmitted, or distributed in any way, without ORI Monitoring Team's prior written permission, provided that the copyright sign stays on the reproduced material, and the material is not altered in any way.</p>
+<p> Data are shared here under one of three licences:
+<ol>
+<li><a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>, under which data are made available for any use without restriction or particular requirements on the part of users
+<li><a href="https://creativecommons.org/licenses/by/4.0">CC BY</a>, under which data are made available for any use provided that attribution is appropriately given for the sources of data used
+<li><a href="https://creativecommons.org/licenses/by-nc/4.0"> CC BY-NC</a>, under which data are made available for any use provided that attribution is appropriately given and provided the use is not for commercial purposes
+</ol>
+<p>Licences are dataset-specific, and users should take notice of and respect the licence for dataset they wish to use.
+
+

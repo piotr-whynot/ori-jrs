@@ -34,6 +34,14 @@ function initialize(){
         "height":wh*0.96,
     });
 
+    if (wh<ww){
+        size="100% auto";
+    }else{
+        size="auto 100%";
+    }
+    $("#introWindow").css({
+        "background-size": size,
+    });
 
     populateHeaders();
     populateFloatNav();
@@ -60,7 +68,9 @@ function initialize(){
         var sBot = -$('#allContents').scrollTop() - $('#allContents').height()+$('#allContents')[0].scrollHeight;
         if ( sTop > 50 ) { 
             $('#fup').fadeIn(1000);
+            $('#faqPointer').hide();
         }else{
+            $('#faqPointer').fadeIn(1000);
             $('#fup').hide();
         }
         if ( sBot > 50 ) { 
@@ -105,8 +115,15 @@ function initialize(){
 
 
     });
+
+$('#floatFaq').on("click", function(){
+    pageinPopup(0.5,0.8,"faq_contents","FALSE")
 }
 
+);
+
+
+}
 
 
 function populateFloatNav(){
@@ -132,8 +149,13 @@ function populateFloatNav(){
 
 function populateHeaders(){
     console.log("page headers");
-    txt="<div id=intro>Welcome to Okavango Delta Monitoring and Data Sharing<br><img src=img/UB-logo.png></div>";
-    $('#introContents').html(txt);
+
+    $.get("intro_contents",
+        function(data){
+            $('#introContents').html(data);
+        }
+    );
+
     $('#introHeader').html("<span class=headerText>Okavango monitoring and data sharing</span>");
     $('#menuHeader').html("<span class=headerText>Data Sources</span>");
     $('#datasetHeader').html("<span class=headerText>Dataset Info</span>");

@@ -151,6 +151,12 @@ H3 {
    width: 100%;
 }
 
+#introWindow{
+   background-image: url("../img/Reeds.jpg");
+   background-repeat: no-repeat;
+   background-position: top left;
+}
+
 
 #menuContents{
     padding: 20px 20px 100px 20px; 
@@ -180,7 +186,24 @@ H3 {
     margin-bottom:10px;
 }
 
+#introText{
+    max-width:500px;
+    float:left;
+    margin-left: 20%;
+    margin-top: 5%;
+    opacity: 0.9;
+}
 
+#introText p{
+    color: black;
+    font : 130%/150% 'Rubik', sans-serif;
+}
+
+#helpPointer{
+    position:absolute;
+    float:left;
+    bottom:10%;
+}
 
 
 
@@ -288,7 +311,7 @@ th {
 .floatLeft{
     position:fixed;
     left:0;
-    z-index:10500;
+    z-index:9500;
 }
 
 
@@ -313,7 +336,7 @@ th {
     top:10%;
     padding:1%;
     margin-right:2%;
-    opacity: 0.5;
+    opacity: 0.8;
     text-align:center;
     background: var(--colD);
     width: 10%;
@@ -321,23 +344,26 @@ th {
 }
 
 
-#floatHelp{
+#floatFaq{
+    margin-left:5px;
+    bottom:5%;
+}
+
+#floatFaqTxt{
     font-size:25px;
     width:30px;
     height:30px;
     line-height:30px;
     color: orange;
     text-align:center;
-    margin-left:5px;
     cursor: pointer;
     border-radius: 18px;
     border-width: 2px;
     border-style: solid;
     border-color: orange;
-    bottom:5%;
     opacity: 1;
-} 
-
+}
+ 
 .qnavItem{
     font-size:80%;
     line-height:100%;
@@ -385,3 +411,4 @@ th {
 .icon-arrow-right {
   background-position: -264px -96px;
 }
+
