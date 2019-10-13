@@ -90,7 +90,7 @@ function prepareChart(divname, ds, firstyr, lastyr, measuringUnit, variableName,
                 dte0=new Date(data[i][0]);
                 dte=new Date(data[i][0]);
                 dte.setMinutes(dte.getMinutes() - dte.getTimezoneOffset())
-                console.log(dte);
+                //console.log(dte);
                 cury=dte.getFullYear();
                 curm=dte.getMonth(); //this is zero-indexed month
                 hydrom=curm-firstm;
@@ -118,7 +118,7 @@ function prepareChart(divname, ds, firstyr, lastyr, measuringUnit, variableName,
                     oldhydroy=hydroy;
                 }
                 if (started){
-                    console.log(hyearcode, hydroy, cury, firstm, curm, dte);
+                    //console.log(hyearcode, hydroy, cury, firstm, curm, dte);
                     if (graphType!="timeseries"){
                         dte.setFullYear(hyearcode);
                     }
