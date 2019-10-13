@@ -5,10 +5,14 @@ var currentLayer;
 var currentMarker;
 var allMarkers=new Array();
 var smallIcon = new L.Icon({
-     iconUrl:"img/marker.svg" 
+     iconUrl:"img/marker.svg",
+     iconAnchor:   [16, 45],
+     popupAnchor:  [0, -45]
 });
 var largeIcon = new L.Icon({
-     iconUrl:"img/marker0.svg" 
+     iconUrl:"img/marker0.svg", 
+     iconAnchor:   [16, 45],
+     popupAnchor:  [0, -45]
 });
 
 var taxonData=new Array();
@@ -193,14 +197,14 @@ function showAll(datastreamID, locationID, datasetID, obsType, dBase, varType){
                 showDatastream(datastreamID, false);
                 scrollTo='figureWindow';
             }else{
-                $('#figureContents').html("Select location and variable first");
+                $('#figureContents').html("Select variable from Location panel first");
             }
             if (locationID>""){
                 // location to show
                 showLocation(locationID, dataGroup, false, false);
             }else{
-                $('#locationContents').html("Select location first");
-                $('#figureContents').html("Select location and variable first");
+                $('#locationContents').html("Select location from Dataset panel first");
+                $('#figureContents').html("Select variable from Location panel first");
             }
             $('#dataContents').html("");
             //console.log("scrolling from all "+scrollTo);
@@ -531,8 +535,10 @@ function showLocation(locationID, dataGroup, scrollTo, cleanup){
                         lastDate=dstrm.lastMeasurementDate;
                         var fD = new Date(firstDate);
                         var lD = new Date(lastDate);
-                        firstDatestr=fD.getFullYear()+"/"+fD.getMonth()+"/"+fD.getDate()
-                        lastDatestr=lD.getFullYear()+"/"+lD.getMonth()+"/"+lD.getDate()
+                        fm=fD.getMonth()+1;
+                        lm=lD.getMonth()+1;
+                        firstDatestr=fD.getFullYear()+"/"+fm+"/"+fD.getDate()
+                        lastDatestr=lD.getFullYear()+"/"+lm+"/"+lD.getDate()
                         //console.log(firstDatestr);
                         firstDate=firstDate.replace(/ /g,"_");
                         lastDate=lastDate.replace(/ /g,"_");
