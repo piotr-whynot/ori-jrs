@@ -17,6 +17,7 @@ session_start();
     <script type="text/javascript" src="./js/custom/accordion.js"></script>
     <script type="text/javascript" src='./js/highstock-7.1.2.js'></script>
     <script type="text/javascript" src='./js/exporting.js'></script>
+    <script type="text/javascript" src='./js/offline-exporting.js'></script>
     <script type="text/javascript" src="./js/bootstrap/bootstrap-datetimepicker.min.js"></script>
     <script type="text/javascript" src="./js/custom/menu.js"></script>
     <script type="text/javascript" src="./js/custom/main.js"></script>

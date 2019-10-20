@@ -260,15 +260,22 @@ function createChart(divname, variableName, measuringUnit, locationName,  chartT
         title: {text: (variableName+" at "+ locationName).bold()},
         plotOptions: {series: {marker: {enabled: true, symbol:"circle", radius: markerRadius}, lineWidth: lineWidth}, color:seriesColor, line: {dataGrouping: {enabled:false}}, column: {dataGrouping: {enabled:false}, pointWidth: 1}},
         series: dataseries,
+
         exporting: {
-        chartOptions: {
-            plotOptions: {
-                series: {
-                   marker: {enabled: true, symbol:"circle", radius: 2}
+            chartOptions: { // specific options for the exported image
+                rangeSelector:{enabled:false},
+                chart:{marginRight:30},
+                plotOptions: {
+                    series: {
+                        dataLabels: {enabled: false},
+                        marker: {enabled: false, symbol:"circle", radius: 1}
+                    }
                 }
-            }
-        },
-        printMaxWidth: 1200
+            },
+            sourceHeight:400,
+            sourceWidth:1000,
+            scale:1,
+//            fallbackToExportServer: false
         }
     });
     return chart;
@@ -339,16 +346,24 @@ function createBiodivChart(divname, variableName, measuringUnit, locationName,  
         title: {text: (variableName+" at "+ locationName).bold()},
         plotOptions: {series: {marker: {enabled: true, symbol:"circle", radius: markerRadius}, lineWidth: lineWidth}, color:seriesColor, line: {dataGrouping: {enabled:false}}, column: {dataGrouping: {enabled:false}, pointWidth: 1}},
         series: dataseries,
+
         exporting: {
-        chartOptions: {
-            plotOptions: {
-                series: {
-                   marker: {enabled: true, symbol:"circle", radius: 2}
+            chartOptions: { // specific options for the exported image
+                rangeSelector:{enabled:false},
+                chart:{marginRight:30},
+                plotOptions: {
+                    series: {
+                        dataLabels: {enabled: false},
+                        marker: {enabled: false, symbol:"circle", radius: 1}
+                    }
                 }
-            }
-        },
-        printMaxWidth: 1200
+            },
+            sourceHeight:400,
+            sourceWidth:1000,
+            scale:1,
+//            fallbackToExportServer: false
         }
+
     });
     return chart;
 }
