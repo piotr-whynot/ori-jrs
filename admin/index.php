@@ -475,7 +475,7 @@ echo ">monitoring</option>
 <label><p>max length: 10 characters<br>Some sites have subsites. For example, one can measure water chemistry at one location at several depths, or measure vegetation cover along a short transect, or measure wind speed at two different heights abouve grond. To accomodate this, the database allows for defining 'parent' and 'child' locations. Child location is identified by having a parentLocationID that is non-empty and different from its own locationID. One has to create parent location before one can create child location. Unfortunately, for the sake of consistency, child location has to have all the necessary variables filled out, as if it was an independent location. parentLocationID should have no spaces and no special characters. Obviously, the field might be left empty, if given location does not have parent.</label><br> 
 
 <span id=parentLocationID class=warning></span>
-<input type=text size=10 name=parentLocationID class='nospace mustexistorempty' value='{$parentLocationID}'><br>
+<input type=text size=20 name=parentLocationID class='nospace mustexistorempty' value='{$parentLocationID}'><br>
 
 <h3>childLocationValue</h3>
 <label><p>max length:10 characters<br> value describing relationship between child and parent location. It can be distance along transect, depth, or simply a number reflecting a subsite, or a number describing a sequential sample</label><br>
