@@ -26,7 +26,8 @@ function validateForm(ado, argstring, returnstr) {
                 retvalue=false;
             }
 
-            if ($(this).hasClass("nospace") && /[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?\ ]/g.test(this.value)){
+            //if ($(this).hasClass("nospace") && /[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?\ ]/g.test(this.value)){
+            if ($(this).hasClass("nospace") && /[~`!#$%\^&*+=\[\]\\';,/{}|\\":<>\?\ ]/g.test(this.value)){
                 $("span#"+this.name+"").html("there should be no spaces or special characters<br>");
                 retvalue=false;
             }

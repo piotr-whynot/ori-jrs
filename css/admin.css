@@ -2,8 +2,13 @@
     margin-left:30px;*/
 }
 
+p{
+   font: 90%/110% 'Arial',sans-serif;
+    margin-bottom : 10px;
+}
+
 label p{
-   font: 14px/16px 'Arial',sans-serif;
+   font: 80%/100% 'Arial',sans-serif;
 }
 
 .warning {

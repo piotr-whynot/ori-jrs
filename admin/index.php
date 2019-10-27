@@ -194,28 +194,35 @@ suff=\"/biodiv\";
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //home button
-echo "<a href=\"../\">main page</a><br>";
+echo "<p><a href=\"../\">main page</a>&nbsp";
 if ($_SESSION['accessType']=="admin"){
     echo "<a href=\"./\">admin home</a><br>";
 }
+echo "<br><br>";
 
 // this is a "plain" call - shows menu
 if ($base=="admin" | ($do=="" & $table=="")){
 echo "
 <table width=800px>
-<tr><th>biodiversity database<th></tr>
+<tr><th width=700px>biodiversity database<th width=100px></tr>
 <tr><td>Management of database structure, adding/editing datasets and locations<td><a href=\"./?base=biodivdata&do=edit&table=dataset\">go</a></tr>
 <tr><td>Add/edit events and occurrences<td><a href=\"./?base=biodivdata&do=edit&table=occurrence\">go</a></tr>
 <!--
 <tr><td>Add/edit measurements/facts<td><a href=\"./?base=biodivdata&do=edit&table=measurementorfact\">go</a></tr>
 -->
 <tr><td>Checklist</><td><a href=\"./?base=biodivdata&do=edit&table=checklist\">edit</a></tr>
-<tr><th>environmental database<th></tr>
+</table>
+<br><br>
+<table width=800px>
+<tr><th width=700px>environmental database<th width=100px></tr>
 <tr><td>Management of database structure, adding/editing datasets and locations and datastreams<td><a href=\"./?base=envmondata&do=edit&table=dataset\">go</a></tr>
 <!--
 <tr><td>Add/edit measurements<td><a href=\"./?base=envmondata&do=edit&table=measurement\">go</a></tr>
 -->
-<tr><th>Site admin<th></tr>
+</table>
+<br><br>
+<table width=800px>
+<tr><th width=700px>site admin<th width=100px></tr>
 <tr><td>Users</><td><a href=\"./?base=users&do=edit&table=users\">go</a></tr>
 <tr><td>Key monitoring locations</><td><a href=\"./?base=envmondata&do=edit&table=keydatastream\">go</a></tr>
 </table>
@@ -224,7 +231,9 @@ echo "
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #
+#
 # envmondata and dataset table
+#
 #
 if ($base=="envmondata" & $table=="dataset"){
     // resetting dataset variables
@@ -242,11 +251,11 @@ if ($base=="envmondata" & $table=="dataset"){
             echo "<a href=./>back</a>";
         }
         echo "<h2>View/edit dataset in environmental database</h2>";
-        echo "<b><a href=\"./?base=envmondata&do=add&table=dataset\">Add new dataset</a></b>";
+        echo "<p><a href=\"./?base=envmondata&do=add&table=dataset\">Add new dataset</a></p>";
         echo "<table class=twoColour width=800px>";
         echo "<tr><th>datasetID<th>dataset name<th></tr>";
         while ($row = $result->fetch_assoc()){
-            echo "<tr><td>".$row['datasetID']."<td>".$row['datasetName']."<td><a href='./?base=envmondata&do=edit&table=dataset&datasetID=".$row['datasetID']."' >edit dataset</a><br><a href='./?base=envmondata&do=edit&table=location&datasetID=".$row['datasetID']."' >show locations</a></tr>";
+            echo "<tr><td>".$row['datasetID']."<td>".$row['datasetName']."<td><a href='./?base=envmondata&do=edit&table=dataset&datasetID=".$row['datasetID']."' >edit dataset info</a><br><a href='./?base=envmondata&do=edit&table=location&datasetID=".$row['datasetID']."' >show locations</a></tr>";
         }
         echo "</table>";
     }
@@ -271,19 +280,21 @@ if ($base=="envmondata" & $table=="dataset"){
             echo "<h2>Adding dataset to environmental monitoring database</h2>";
         }else{
             echo "<h2>Editing dataset in environmental monitoring database</h2>";
+            echo "<h3>Current dataset: <b>$datasetID</b></h3>";
         }
         echo"
 <label><p> required fields shaded in yellow-ish</label>
 <form id=form action='#' method=post>
+
 <h3>Dataset ID</h3>
 <label><p>max length:10 characters<br>usually three to six letters describing dataset and a year when the dataset was created, no spaces, no special characters, for example: mla2005, bkv2009 </label><br>
 <span id=datasetID class=warning></span>
 <input type=text size=10 name=datasetID class='nonempty nospace unique' value='{$datasetID}'><br>
 
 <h3>Dataset Name</h3>
-<label><p>max length:50 characters<br>short name describing dataset, to be used to identify the dataset in the website, example: Biokavango community-based monitoring, Silica project (2013)</label><br>
+<label><p>max length:100 characters<br>short name describing dataset, to be used to identify the dataset in the website, example: Biokavango community-based monitoring, Silica project (2013)</label><br>
 <span id=datasetName class=warning></span>
-<input type=text size=50 name=datasetName class=nonempty value='{$datasetName}'><br>
+<input type=text size=100 name=datasetName class=nonempty value='{$datasetName}'><br>
 
 <h3>Project or Institution Name</h3>
 <label><p>max length:100 characters<br>Name of institution/project that generated data</label><br>
@@ -312,7 +323,9 @@ if ($base=="envmondata" & $table=="dataset"){
 
 <input type='button' class='button' value=' Save ' onClick=validateForm(\"$do\",'base=envmondata&do={$do}&table=dataset','./?base=envmondata&do=edit&table=dataset');>
 
-        
+<input type='button' class='button' value=' Cancel ' onClick='window.location=\"./?base=envmondata&do=edit&table=dataset\"';>
+<br>        
+<br>        
 </form>
         ";
     }
@@ -348,7 +361,7 @@ if ($base=="envmondata" & $table=="location"){
     if ($datasetID==''){
         //dataset must be defined
         echo "dataset must be defined to list locations <br>";
-        if ($accessType=="admin"){
+        if ($_SESSION['accessType']=="admin"){
             echo "<a href=./?base=envmondata&do=edit&table=dataset>back</a>";
         }
     }
@@ -358,7 +371,8 @@ if ($base=="envmondata" & $table=="location"){
         $result = $mysqli->query($query);
         echo "<a href=./?base=envmondata&do=edit&table=dataset>back</a>";
         echo "<h2>View/edit location in environmental monitoring database</h2>";
-        echo "<b><a href=\"./?base=envmondata&do=add&table=location&datasetID={$datasetID}\">Add new location</a></b>";
+        echo "<h3>Current dataset: <b>$datasetID</b></h3>";
+        echo "<p><a href=\"./?base=envmondata&do=add&table=location&datasetID={$datasetID}\">Add new location</a></p>";
         echo "<table width=800px class=twoColour>";
         echo "<tr><th width=100px>locationID<th width=100px >locationName<th width=100px>locality<th width=100px>coordinates<th width=300px></tr>";
         while ($row = $result->fetch_assoc()){
@@ -514,8 +528,9 @@ echo ">monitoring</option>
 <span id=associatedMedia class=warning></span>
 <input type=text size=10 name=associatedMedia class='none' disabled value='{$associatedMedia}'><br>
 
-<input type='button' class='button' value=' Save ' onClick=validateForm(\"$do\",'base=envmondata&do={$do}&table=location','./?base=envmondata&do=edit&table=dataset');>
+<input type='button' class='button' value=' Save ' onClick=validateForm(\"$do\",'base=envmondata&do={$do}&table=location','./?base=envmondata&do=edit&table=location&datasetID=$datasetID');>
 
+<input type='button' class='button' value=' Cancel ' onClick='window.location=\"./?base=envmondata&do=edit&table=location&datasetID=$datasetID\"';>
 </form>
         ";
     }
@@ -547,7 +562,9 @@ if ($base=="envmondata" & $table=="datastream"){
         $result = $mysqli->query($query);
         echo "<a href=./?base=envmondata&do=edit&table=location&datasetID={$datasetID}>back</a>";
         echo "<h2>View/edit datastream in environmental monitoring database</h2>";
-        echo "<b><a href=\"./?base=envmondata&do=add&table=datastream&datasetID={$datasetID}&locationID={$locationID}\">Add new datastream</a></b>";
+        echo "<h3>Current dataset: <b> $datasetID</b></h3>";
+        echo "<h3>Current location: <b> $locationID</b></h3>";
+        echo "<p><a href=\"./?base=envmondata&do=add&table=datastream&datasetID={$datasetID}&locationID={$locationID}\">Add new datastream</a></p>";
         echo "<table width=800px class=twoColour>";
         echo "<tr><th>datastreamID<th>locationID<th>Name of variable<th>Base time<th></tr>";
         while ($row = $result->fetch_assoc()){
@@ -581,7 +598,7 @@ if ($base=="envmondata" & $table=="datastream"){
         echo" 
 <label><p> required fields shaded in grey</label>
 
-<form id=temp action='./submit.php?base=envmondata&do={$do}&table=datastream' method=post onSubmit='return validateForm(this,\"{$do}\")'>
+<form id=form action='#' method=post>
 
 <h3>Datastream ID</h3>
 <label><p>max length:20 characters<br> DatastreamID is composed of two elements: locationID and a code for variable. Those are separeted by underscore '_'. Note that locationID is composed of dataset code (ffirst three letters) and location code (up to 6 letters after the underscore). So the datastreamID will have three parts separated by underscores. Example: mla_nq22_DO, ori_boro_wlevel. Datastream ID should have no spaces, and no special characters. It has to be unique.</label><br>
@@ -591,7 +608,7 @@ if ($base=="envmondata" & $table=="datastream"){
 <h3>Location ID</h3>
 <label><p>Must be of existing location. Submission will fail, if ID given here does not exist.</label><br>
 <span id=locationID class=warning></span>
-<input type=text size=10 name=locationID class='nonempty nospace mustexist' value='{$locationID}'><br>
+<input type=text size=20 name=locationID class='nonempty nospace mustexist' value='{$locationID}'><br>
 
 <h3>Variable Type</h3>
 <label><p>max length:50 characters<br>Type of variable. Possible values: water chemistry, water physical parameters, water isotopic composition, biochemistry, channel hydraulics, meteorology, climate. This value is the basis for creating entries in the menu on main (map) page. Care should be taken that there are no typos, as well as not too many very similar types - as this would make menu rather messy.</label><br>
@@ -639,7 +656,9 @@ if ($base=="envmondata" & $table=="datastream"){
 <input type=text size=10 class=none name=sampleSizeUnit value='{$sampleSizeUnit}'><br>
 
 
-<input type='submit' class='button' value=' Save '>
+<input type='button' class='button' value=' Save ' onClick=validateForm(\"$do\",'base=envmondata&do={$do}&table=datastream','./?base=envmondata&do=edit&table=datastream&datasetID=$datasetID&locationID=$locationID');>
+
+<input type='button' class='button' value=' Cancel ' onClick='window.location=\"./?base=envmondata&do=edit&table=datastream&datasetID=$datasetID&locationID=$locationID\"';>
 </form>
         ";
     }
@@ -813,11 +832,11 @@ if ($base=="biodivdata" & $table=="dataset"){
         $result = $mysqli->query($query);
         echo "<a href=./>back</a>";
         echo "<h2>View/edit dataset in biodiversity database</h2>";
-        echo "<b><a href=\"./?base=biodivdata&do=add&table=dataset\">Add new dataset</a></b>";
+        echo "<p><a href=\"./?base=biodivdata&do=add&table=dataset\">Add new dataset</a></p>";
         echo "<table width=800px>";
         echo "<tr><th>datasetID<th>dataset name<th></tr>";
         while ($row = $result->fetch_assoc()){
-            echo "<tr><td>".$row['datasetID']."<td>".$row['datasetName']."<td><a href='./?base=biodivdata&do=edit&table=dataset&datasetID=".$row['datasetID']."' >edit dataset</a><br><a href='./?base=biodivdata&do=edit&table=location&datasetID=".$row['datasetID']."' >show locations</tr>";
+            echo "<tr><td>".$row['datasetID']."<td>".$row['datasetName']."<td><a href='./?base=biodivdata&do=edit&table=dataset&datasetID=".$row['datasetID']."' >edit dataset info</a><br><a href='./?base=biodivdata&do=edit&table=location&datasetID=".$row['datasetID']."' >show locations</tr>";
         }
         echo "</table>";
     }
@@ -843,8 +862,8 @@ if ($base=="biodivdata" & $table=="dataset"){
             echo "<h2>Editing dataset in biodiversity database</h2>";
         }
         echo"
-<label><p> required fields shaded in grey</label>
-<form id=form action='./submit.php?base=biodivdata&do={$do}&table=dataset' method=post onSubmit='return validateForm(this, \"$do\")'>
+<label><p> required fields shaded in yellow-ish</label>
+<form id=form action='#' method=post>
 
 <h3>datasetID</h3>
 <label><p>max length:10 characters<br>usually three to six letters describing dataset and a year dataset was created, no spaces, no special characters, for example: mla2005, bkv2009 </label><br>
@@ -852,9 +871,9 @@ if ($base=="biodivdata" & $table=="dataset"){
 <input type=text size=10 name=datasetID class='nonempty nospace unique' value='{$datasetID}'><br>
 
 <h3>datasetName</h3>
-<label><p>max length:50 characters<br>short name describing dataset, to be used in the website, example: Biokavango community-based monitoring, Silica project (2013)</label><br>
+<label><p>max length:100 characters<br>short name describing dataset, to be used in the website, example: Biokavango community-based monitoring, Silica project (2013)</label><br>
 <span id=datasetName class=warning></span>
-<input type=text size=50 name=datasetName class=nonempty value='{$datasetName}'><br>
+<input type=text size=100 name=datasetName class=nonempty value='{$datasetName}'><br>
 
 <h3>Institution Name</h3>
 <label><p>max length:100 characters<br>Name of institution/project that generated data</label><br>
@@ -881,7 +900,9 @@ if ($base=="biodivdata" & $table=="dataset"){
 <span id=datasetRemarks class=warning></span>
 <textarea cols=40 rows=6 size=900 name=datasetRemarks>{$datasetRemarks}</textarea><br>
 
-<input type='submit' class='button' value=' Save '>
+<input type='button' class='button' value=' Save ' onClick=validateForm(\"$do\",'base=biodivdata&do={$do}&table=dataset','./?base=biodivdata&do=edit&table=dataset');>
+
+<input type='button' class='button' value=' Cancel ' onClick='window.location=\"./?base=biodivdata&do=edit&table=dataset\"';>
 </form>
         ";
     }
@@ -921,7 +942,7 @@ if ($base=="biodivdata" & $table=="location"){
         $result = $mysqli->query($query);
         echo "<a href=./?base=biodivdata&do=edit&table=dataset>back</a>";
         echo "<h2>View/edit location in biodiversity database</h2>";
-        echo "<b><a href=\"./?base=biodivdata&do=add&table=location&datasetID={$datasetID}\">Add new location</a></b>";
+        echo "<p><a href=\"./?base=biodivdata&do=add&table=location&datasetID={$datasetID}\">Add new location</a></p>";
         echo "<table width=800px>";
         echo "<tr><th>locationID<th>locationName<th>locality<th>coordinates<th></tr>";
         while ($row = $result->fetch_assoc()){
@@ -951,10 +972,15 @@ if ($base=="biodivdata" & $table=="location"){
     if (($locationID!='' && $do=="edit") || $do=="add"){
        // this is common to "edit" and "add" functionality - form that is populated when "edit", or remains empty when "add"
         echo "<a href=./?base=biodivdata&do=edit&table=location&datasetID={$datasetID}>back</a>";
-        echo "
-<h2>Adding location to biodiversity database</h2>
+        if ($do=="add"){
+            echo "<h2>Adding location to biodiversity database</h2>";
+        }else{
+            echo "<h2>Editing location in biodiversity database</h2>";
+        }
+echo "
 <label><p> required fields shaded in grey</label>
-<form id=form action='./submit.php?base=biodivdata&do={$do}&table=location' method=post onSubmit='return validateForm(this,\"{$do}\")'>
+
+<form id=form action='#' method=post>
 
 <h3>locationID</h3>
 <label><p>max length: 20 characters<br>A location can potentially be measured under various datasets. However, typically, datasets, particularly once-off ones, have unique locations. To reconcile this somewhat contradictory requirements, there is no 'hard' link between location and dataset. Instead, locationID reflects its 'source' dataset. LocationID is typically constructed as follows: three letters describing dataset, underscore (\"_\"), and up to 6 characters describing the location, usually either the location code used in the source dataset, or some abbreviation of it. No spaces, no special characters. LocationID has to be unique. Example: mla_nq22, ori_boro </label><br>
@@ -1007,7 +1033,7 @@ if ($base=="biodivdata" & $table=="location"){
 <input type=text size=10 name=elevationUncertaintyInMeters class='numeric' value='{$elevationUncertaintyInMeters}'><br>
 
 <h3>locationType</h3>
-<label><p>max length:50 characters<br>Type of location. Either \"monitoring\", \"short-term\" or \"once-off\"</label><br>
+<label><p>max length:50 characters<br>Type of location. Either \"monitoring\", \"short-term\" </label><br>
 <span id=locationType class=warning></span>
 <input type=text size=50 name=locationType class=nonempty value='{$locationType}'><br>
 
@@ -1044,7 +1070,9 @@ if ($base=="biodivdata" & $table=="location"){
 <input type=text size=50 name=associatedMedia class='none' disabled value='{$associatedMedia}'><br>
 
 
-<input type='submit' class='button' value=' Save '>
+<input type='button' class='button' value=' Save ' onClick=validateForm(\"$do\",'base=biodivdata&do={$do}&table=location','./?base=biodivdata&do=edit&table=location&datasetID=$datasetID');>
+
+<input type='button' class='button' value=' Cancel ' onClick='window.location=\"./?base=biodivdata&do=edit&table=location&datasetID=$datasetID\"';>
 </form>
         ";
     }
@@ -1088,20 +1116,24 @@ if ($base=="biodivdata" & $table=="event"){
     if (($eventID!="" && $do=="edit") || $do=="add"){
         //shows form
         echo "<a href=./?base=biodivdata&do=edit&table=occurrence&datasetID={$datasetID}&locationID={$locationID}>back</a>";
+        if($do=="add"){
+            echo "<h2>Adding event to biodiversity database</h2>";
+        }else{
+            echo "<h2>Editing event in biodiversity database</h2>";
+        }
         echo" 
-<h2>Adding event to biodiversity database</h2>
 <label><p> required fields shaded in grey</label>
-<form id=form action='./submit.php?base=biodivdata&do={$do}&table=event' method=post onSubmit='return validateForm(this,\"{$do}\")'>
+<form id=form action='#' method=post>
 
 <h3>eventID</h3>
-<label><p>max length:20 characters<br> the source dataset, or some abbreviation of it. No spaces, no special characters. LocationID has to be unique. Example: mla_nq22, ori_boro </label><br>
+<label><p>max length:35 characters<br> the source dataset, or some abbreviation of it. No spaces, no special characters. LocationID has to be unique. Example: mla2004_nq22, ori1998_boro </label><br>
 <span id=locationID class=warning></span>
-<input type=text size=20 name=locationID class='nonempty unique nospace' value='{$eventID}'><br>
+<input type=text size=35 name=locationID class='nonempty unique nospace' value='{$eventID}'><br>
 
 <h3>locationID</h3>
 <label><p>Must be of existing location. Submission will fail, if ID given here does not exist.</label><br>
 <span id=locationID class=warning></span>
-<input type=text size=10 name=locationID class='nonempty unique nospace' value='{$locationID}'><br>
+<input type=text size=20 name=locationID class='nonempty unique nospace' value='{$locationID}'><br>
 
 <h3>basisOfRecord</h3>
 <label><p>max length:50 characters<br>possible values: manual measurement, automatic measurement, laboratory measurement</label><br>
@@ -1128,7 +1160,9 @@ if ($base=="biodivdata" & $table=="event"){
 <span id=sampleSizeUnit class=warning></span>
 <input type=text size=10 name=sampleSizeUnit class='none' value='{$sampleSizeUnit}'><br>
 
-<input type='submit' class='button' value=' Save '>
+<input type='button' class='button' value=' Save ' onClick=validateForm(\"$do\",'base=biodivdata&do={$do}&table=event','./?base=biodivdata&do=edit&table=dataset');>
+
+<input type='button' class='button' value=' Cancel ' onClick='window.location=\"./?base=biodivdata&do=edit&table=location&datasetID=$datasetID\"';>
 </form>
         ";
     }
@@ -1165,8 +1199,8 @@ if ($base=="biodivdata" & $table=="occurrence"){
 	#echo $query;
         $result = $mysqli->query($query);
         echo "<a href=./?base=biodivdata&do=edit&table=occurrence>back</a>";
-        echo "<h2>Add/edit event in environmental monitoring database</h2>";
-        echo "<h3>Dataset: ".$datasetID."</h3>";
+        echo "<h2>Add/edit event in biodiversity monitoring database</h2>";
+        echo "<h3>Current dataset: <b>".$datasetID."</b></h3>";
         echo "<label><p>Select location:</label>";
         echo "<table width=900px>";
         echo "<tr><th>Location ID<th>Location name<th>Locality<th></tr>";
@@ -1180,9 +1214,9 @@ if ($base=="biodivdata" & $table=="occurrence"){
         $query="select eventID, eventDate from event where locationID='".$locationID."'";
         $result = $mysqli->query($query);
         echo "<a href=./?base=biodivdata&do=edit&table=occurrence&datasetID={$datasetID}>back</a>";
-        echo "<h2>Add/edit event in environmental monitoring database</h2>";
+        echo "<h2>Add/edit event in biodiversity monitoring database</h2>";
         echo "<h3>dataset: ".$datasetID.", location: ".$locationID."</h3>";
-        echo "<b><a href=\"./?base=biodivdata&do=add&table=event&datasetID={$datasetID}&locationID={$locationID}\">Add new event</a></b>";
+        echo "<p><a href=\"./?base=biodivdata&do=add&table=event&datasetID={$datasetID}&locationID={$locationID}\">Add new event</a></p>";
         echo "<table width=900px>";
         echo "<tr><th>event ID<th>Event date<th></tr>";
         while ($row = $result->fetch_assoc()){
@@ -1194,21 +1228,20 @@ if ($base=="biodivdata" & $table=="occurrence"){
 
     if ($eventID!=''){
         //shows form for occurrences
-        echo "<a href=./?base=biodivdata&do=edit&table=occurrence&datasetID=$datasetID&locationID=$locationID>back</a>";
-        echo "<input type=hidden name=datasetID value=$datasetID>";
-        echo "<input type=hidden name=locationID value=$locationID>";
-        echo "<input type=hidden name=eventID value=$eventID>";
-        echo "<h2>Add/edit occurrences in biodiversity database</h2>";
-        echo "<h3>Dataset: ".$datasetID."</h3>";
-        echo "<h3>Location: ".$locationID."</h3>";
-        echo "<h3>Event: ".$eventID."</h3>";
-        echo "<form id=form action='./submit.php?base=biodivdata&do={$do}&table=occurrence' method=post onSubmit='return validateForm(this,\"{$do}\")'>";
-
-	echo"</div><div id='records_table' class=centeritem></div>";
-	echo"</div><div id='extras'></div>";
-        echo"<input type='submit' class='button' value=' Save '>";
-        echo"</form>";
-	echo"<script>editOccurrences()</script>";
+        echo "<a href=./?base=biodivdata&do=edit&table=occurrence&datasetID=$datasetID&locationID=$locationID>back</a>
+        <input type=hidden name=datasetID value=$datasetID>
+        <input type=hidden name=locationID value=$locationID>
+        <input type=hidden name=eventID value=$eventID>
+        <h2>Add/edit occurrences in biodiversity database</h2>
+        <h3>Dataset: $datasetID</h3>
+        <h3>Location: $locationID</h3>
+        <h3>Event: $eventID</h3>
+        <form id=form action='#' method=post>
+	    </div><div id='records_table' class=centeritem></div>
+	    </div><div id='extras'></div>
+        <input type='button' class='button' value=' Save ' onClick=validateForm(\"$do\",'base=biodivdata&do={$do}&table=occurrence','./?base=biodivdata&do=edit&table=occurrence&datasetID=$datasetID&locationID=$locationID');>
+        </form>
+	    <script>editOccurrences()</script>";
     }
 } //end biodiv and occurrence table
 
@@ -1279,7 +1312,7 @@ if ($base=="biodivdata" & $table=="checklist"){
         }
         echo"
 <label><p> required fields shaded in grey</label>
-<form id=form action='./submit.php?base=envmondata&do={$do}&table=checklist' method=post onSubmit='return validateForm(this, \"$do\")'>
+<form id=form action='#' method=post>
 
 <h3>taxonID</h3>
 <label><p>max length:10 characters<br>usually three to six letters describing dataset and a year dataset was created, no spaces, no special characters, for example: mla2005, bkv2009 </label><br>
@@ -1352,7 +1385,7 @@ if ($base=="biodivdata" & $table=="checklist"){
 <span id=acceptedNameUsageID class=warning></span>
 <input type=text size=50 name=acceptedNameUsageID value='{$acceptedNameUsageID}'><br>
 
-<input type='submit' class='button' value=' Save '>
+<input type='button' class='button' value=' Save ' onClick=validateForm(\"$do\",'base=envmondata&do={$do}&table=checklist','./?base=envmondata&do=edit&table=checklist');>
 </form>
         ";
     }
@@ -1572,11 +1605,6 @@ if ($base=="users" & $table=="ownership"){
     }
 }
 
-if ($_SESSION['accessType']=="admin"){
-    echo "<a href=\"./\">admin home</a><br><br>";
-}
-
-echo"<br><br><a href=\"../\">main page</a>";
 
 echo"
 <div id='popupBackground'></div>
