@@ -2,6 +2,11 @@
     margin-left:30px;*/
 }
 
+h3{
+    margin-top : 30px;
+    margin-bottom : 0px;
+}
+
 p{
    font: 90%/110% 'Arial',sans-serif;
     margin-bottom : 10px;
@@ -63,4 +68,8 @@ input.text {
 #datepicker:hover{
     color : var(--colHover);
     cursor: pointer;    
+}
+
+.clickable{
+    margin-bottom: 0px;
 }

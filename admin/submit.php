@@ -171,17 +171,16 @@ if ($base=="biodivdata" & $table=="dataset"){
 if ($base=="biodivdata" & $table=="event"){
     $errorflag=false;
     $mysqli->select_db('biodivdata');
-    // these are for numeric fields that may be null
-
+    $eventDate="{$_POST['eventDate']}";
     if ($do=="add"){
         //using prepared statements - apparently v.secure way of interacting with database
         $stmt = $mysqli->prepare("insert into biodivdata.event values (?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-        $stmt->bind_param("ssssddsssdsss", $_POST['eventID'], $_POST['locationID'], $_POST['habitat'], $datasetID,$_POST['eventDate'],$_POST['eventTime'],$_POST['samplingProtocol'],$_POST['samplingEffort'],$_POST['basisOfRecord'],$_POST['sampleSizeValue'],$_POST['sampleSizeUnit'],$_POST['recordedBy'],$_POST['eventRemarks']);
+        $stmt->bind_param("sssssssssdsss", $_POST['eventID'], $_POST['locationID'], $_POST['habitat'], $_POST['datasetID'],$_POST['eventDate'],$_POST['eventTime'],$_POST['samplingProtocol'],$_POST['samplingEffort'],$_POST['basisOfRecord'],$_POST['sampleSizeValue'],$_POST['sampleSizeUnit'],$_POST['recordedBy'],$_POST['eventRemarks']);
     }else if ($do=="edit"){
-        $stmt = $mysqli->prepare("update biodivdata.event set  locationID=?, habitat=?, datasetID=?,  decimalLatitude=?, decimalLongitude=?, coordinateUncertaintyInMeters=?, geodeticDatum=?, verbatimElevation=?, elevationUncertaintyInMeters=?, locationType=?, geomorphologicalPosition=?, countryCode=?, locationRemarks=?, associatedMedia=? where locationID=?");
+        $stmt = $mysqli->prepare("update biodivdata.event set  locationID=?, habitat=?, datasetID=?,  eventDate=?, eventTime=?, samplingProtocol=?, samplingEffort=?, basisOfRecord=?, sampleSizeValue=?, sampleSizeUnit=?, recordedBy=?, eventRemarks=? where eventID=?");
 
-        $stmt->bind_param("sssdddsddssssss", $_POST['datasetID'], $_POST['locationName'], $_POST['locality'],$_POST['decimalLatitude'],$_POST['decimalLongitude'],$_POST['coordinateUncertaintyInMeters'],$_POST['geodeticDatum'],$verbatimElevation,$elevationUncertaintyInMeters,$_POST['locationType'],$_POST['geomorphologicalPosition'],$_POST['countryCode'],$_POST['locationRemarks'],$_POST['associatedMedia'], $_POST['locationID']);
+        $stmt->bind_param("ssssssssdssss", $_POST['locationID'], $_POST['habitat'], $_POST['datasetID'],$eventDate,$_POST['eventTime'],$_POST['samplingProtocol'],$_POST['samplingEffort'],$_POST['basisOfRecord'],$_POST['sampleSizeValue'],$_POST['sampleSizeUnit'],$_POST['recordedBy'],$_POST['eventRemarks'], $_POST['eventID']);
     }
     if (!$stmt->execute()) {
         $errorflag=true;
@@ -190,7 +189,7 @@ if ($base=="biodivdata" & $table=="event"){
         echo "success";
     }
     $stmt->close();
-    $url="./?base=biodivdata&do=edit&table=location&datasetID={$_POST['datasetID']}";
+    $url="./?base=biodivdata&do=edit&table=event&datasetID={$_POST['datasetID']}&locationID={$_POST['locationID']}";
 }
 
 
@@ -251,6 +250,33 @@ if ($base=="biodivdata" & $table=="checklist"){
     $stmt->close();
     $url="./?base=biodivdata&do=edit&table=location&datasetID={$_POST['datasetID']}";
 }
+
+#******************************************************************************************************************************************
+# biodiv & occurrence
+#
+if ($base=="biodivdata" & $table=="occurrence"){
+    $errorflag=false;
+    $mysqli->select_db('biodivdata');
+    // these are for numeric fields that may be null
+    if ($do=="add"){
+        //using prepared statements - apparently v.secure way of interacting with database
+        $stmt = $mysqli->prepare("insert into biodivdata.checklist values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        $stmt->bind_param("ssssdddsddsssssss", $_POST['locationID'], $_POST['datasetID'], $_POST['locationName'], $_POST['locality'],$_POST['decimalLatitude'],$_POST['decimalLongitude'],$_POST['coordinateUncertaintyInMeters'],$_POST['geodeticDatum'],$verbatimElevation,$elevationUncertaintyInMeters,$_POST['locationType'],$_POST['geomorphologicalPosition'],$_POST['countryCode'],$_POST['footprintWKT'],$_POST['footprintSRS'],$_POST['locationRemarks'],$_POST['associatedMedia']);
+    }else if ($do=="edit"){
+        $stmt = $mysqli->prepare("update biodivdata.location set  datasetID=?, locationName=?, locality=?,  decimalLatitude=?, decimalLongitude=?, coordinateUncertaintyInMeters=?, geodeticDatum=?, verbatimElevation=?, elevationUncertaintyInMeters=?, locationType=?, geomorphologicalPosition=?, countryCode=?, footprintWKT=?, footprintSRS=?, locationRemarks=?, associatedMedia=? where locationID=?");
+
+        $stmt->bind_param("sssdddsddssssssss", $_POST['datasetID'], $_POST['locationName'], $_POST['locality'],$_POST['decimalLatitude'],$_POST['decimalLongitude'],$_POST['coordinateUncertaintyInMeters'],$_POST['geodeticDatum'],$verbatimElevation,$elevationUncertaintyInMeters,$_POST['locationType'],$_POST['geomorphologicalPosition'],$_POST['countryCode'],$_POST['footprintWKT'],$_POST['footprintSRS'],$_POST['locationRemarks'],$_POST['associatedMedia'], $_POST['locationID']);
+    }
+    if (!$stmt->execute()) {
+        $errorflag=true;
+        echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
+    }else{
+        echo "success";
+    }
+    $stmt->close();
+    $url="./?base=biodivdata&do=edit&table=location&datasetID={$_POST['datasetID']}";
+}
+
 
 
 #******************************************************************************************************************************************

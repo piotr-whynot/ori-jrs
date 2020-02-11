@@ -49,8 +49,16 @@ if ($base=="envmondata" && ($item=="parentLocationID" || $item=="locationID")){
     checkIfExists($base, 'datastream','datastreamID',$value);
 }else if ($base=="envmondata" && $item=="datasetID"){
     checkIfExists('envmondata','dataset','datasetID',$value);
+}else if ($base=="biodivdata" && $item=="datasetID"){
+    checkIfExists('biodivdata','dataset','datasetID',$value);
+}else if ($base=="biodivdata" && $item=="locationID"){
+    checkIfExists('biodivdata','location','locationID',$value);
+}else if ($base=="biodivdata" && strpos($item,"taxonID")!==false){
+    checkIfExists('biodivdata','checklist','taxonID',$value);
 }else{
-    echo "error0";
+    echo "error0<br>";
+    echo strpos($item,"taxnID");
+    echo "<br>";
     echo $base, $item, $value;
 }
 

@@ -154,6 +154,7 @@ if(isset($_SESSION['userInfo'])){
 
 if (!isset($_SESSION['accessType'])){
     echo "You are not authorized to access this page.";
+    header("Location: ../");
 }else{
 
 include '/.creds/.credentials.php';
@@ -206,7 +207,7 @@ echo "
 <table width=800px>
 <tr><th width=700px>biodiversity database<th width=100px></tr>
 <tr><td>Management of database structure, adding/editing datasets and locations<td><a href=\"./?base=biodivdata&do=edit&table=dataset\">go</a></tr>
-<tr><td>Add/edit events and occurrences<td><a href=\"./?base=biodivdata&do=edit&table=occurrence\">go</a></tr>
+<tr><td>Add/edit events (and occurrences)<td><a href=\"./?base=biodivdata&do=edit&table=event\">go</a></tr>
 <!--
 <tr><td>Add/edit measurements/facts<td><a href=\"./?base=biodivdata&do=edit&table=measurementorfact\">go</a></tr>
 -->
@@ -1086,26 +1087,85 @@ echo "
 # biodiv and event table
 #
 #
-# this one is a bit different - it is called while editing occurrence table, so it comes back to occurrence table
+# structure is a bit weird - this section handles entire "path" to edit occurrence table, i.e. selection of dataset, location and event. Editing events, however, is handled by request event table...
 #
+#
+
 if ($base=="biodivdata" & $table=="event"){
+    if ($datasetID=='' && $locationID==''){
+        // shows list of datasets
+        $query="select datasetID, datasetName from dataset";
+        $result = $mysqli->query($query);
+        echo "<a href=./>back</a>";
+        echo "<h2>Add/edit sampling events in biodiversity monitoring database</h2>";
+        echo "<label><p>Select dataset:</label>";
+        echo "<table width=900px>";
+        echo "<tr><th>Dataset ID<th>Dataset name<th></tr>";
+        while ($row = $result->fetch_assoc()){
+            echo "<tr><td>".$row['datasetID']."<td>".$row['datasetName']."<td><a href='./?base=biodivdata&do=edit&table=event&datasetID=".$row['datasetID']."' >select</a></tr>";
+        }
+        echo "</table>";
+    }
+    if ($datasetID!='' && $locationID==''){
+        //shows list of locations for given dataset
+        $query="select distinct location.locationID,locationName,locality from  location where datasetID='".$datasetID."'";
+	#echo $query;
+        $result = $mysqli->query($query);
+        echo "<a href=./?base=biodivdata&do=edit&table=event>back</a>";
+        echo "<h2>Add/edit event in biodiversity monitoring database</h2>";
+        echo "<h3>Current dataset: <b>".$datasetID."</b></h3><br>";
+        echo "<table width=900px>";
+        echo "<tr><th>Location ID<th>Location name<th>Locality<th></tr>";
+        while ($row = $result->fetch_assoc()){
+            echo "<tr><td>".$row['locationID']."<td>".$row['locationName']."<td>".$row['locality']."<td><a href='./?base=biodivdata&do=edit&table=event&locationID=".$row['locationID']."&datasetID=".$datasetID."'>select</a></tr>";
+        }
+        echo "</table>";
+    }
+    if ($datasetID!='' && $locationID!='' && $eventID==''){
+        //shows list of events for given location
+        $query="select eventID, eventDate from event where locationID='".$locationID."'";
+        $result = $mysqli->query($query);
+        echo "<a href=./?base=biodivdata&do=edit&table=event&datasetID={$datasetID}>back</a>";
+        echo "<h2>Add/edit event in biodiversity monitoring database</h2>";
+        echo "<h3>Current dataset:<b> ".$datasetID."</b></h3>";
+        echo "<h3>Current location: <b>".$locationID."</b></h3><br>";
+        echo "<p><a href=\"./?base=biodivdata&do=add&table=event&datasetID={$datasetID}&locationID={$locationID}\">Add new event</a></p>";
+        echo "<table width=900px>";
+        echo "<tr><th>event ID<th>Event date<th></tr>";
+        while ($row = $result->fetch_assoc()){
+            echo "<tr><td>".$row['eventID']."<td>".$row['eventDate']."<td><a href='./?base=biodivdata&do=edit&table=event&locationID=".$locationID."&datasetID=".$datasetID."&eventID=".$row['eventID']."'>edit event</a><br><a href='./?base=biodivdata&do=edit&table=occurrence&locationID=".$locationID."&datasetID=".$datasetID."&eventID=".$row['eventID']."'>edit/add occurrences</a></tr>";
+        }
+        echo "</table>";
+    }
+
+    if ($eventID!=''){
     //resetting variables
     $variableType='';
     $variableName='';
     $variableUnit='';
     $eventDate='';
+    $eventTime='';
     $baseTime='';
+    $habitat='';
     $basisOfRecord='';
     $samplingEffort='';
     $samplingProtocol='';
     $sampleSizeValue='';
     $sampleSizeUnit='';
+    $eventRemarks='';
+    $recordedBy='';
    if ($eventID!='' && $do=='edit'){
         // when eventID is set through url argument - query database for event values
         $query="select * from event where eventID='{$eventID}'";
         $result = $mysqli->query($query);
         $row = $result->fetch_assoc();
-        $datastreamID=$row['eventID'];
+        $eventID=$row['eventID'];
+        $habitat=$row['habitat'];
+        $datasetID=$row['datasetID'];
+        $eventDate=$row['eventDate'];
+        $eventTime=$row['eventTime'];
+        $recordedBy=$row['recordedBy'];
+        $eventRemarks=$row['eventRemarks'];
         $locationID=$row['locationID'];
         $basisOfRecord=$row['basisOfRecord'];
         $samplingEffort=$row['samplingEffort'];
@@ -1115,7 +1175,7 @@ if ($base=="biodivdata" & $table=="event"){
     }
     if (($eventID!="" && $do=="edit") || $do=="add"){
         //shows form
-        echo "<a href=./?base=biodivdata&do=edit&table=occurrence&datasetID={$datasetID}&locationID={$locationID}>back</a>";
+        echo "<a href=./?base=biodivdata&do=edit&table=event&datasetID={$datasetID}&locationID={$locationID}>back</a>";
         if($do=="add"){
             echo "<h2>Adding event to biodiversity database</h2>";
         }else{
@@ -1127,13 +1187,34 @@ if ($base=="biodivdata" & $table=="event"){
 
 <h3>eventID</h3>
 <label><p>max length:35 characters<br> the source dataset, or some abbreviation of it. No spaces, no special characters. LocationID has to be unique. Example: mla2004_nq22, ori1998_boro </label><br>
-<span id=locationID class=warning></span>
-<input type=text size=35 name=locationID class='nonempty unique nospace' value='{$eventID}'><br>
+<span id=eventID class=warning></span>
+<input type=text size=35 name=eventID class='nonempty unique nospace' value='{$eventID}'><br>
 
 <h3>locationID</h3>
 <label><p>Must be of existing location. Submission will fail, if ID given here does not exist.</label><br>
 <span id=locationID class=warning></span>
-<input type=text size=20 name=locationID class='nonempty unique nospace' value='{$locationID}'><br>
+<input type=text size=20 name=locationID class='nonempty mustexist nospace' value='{$locationID}'><br>
+
+<h3>habitat</h3>
+<label><p>max length:100 characters<br>examples: riverine low open grassed shrubland, low open grassland, grassland, woodland</label><br>
+<span id=habitat class=warning></span>
+<input type=text size=100 name=habitat class='' value='{$habitat}'><br>
+
+<h3>datasetID</h3>
+<label><p>Must be of existing dataset. Submission will fail, if ID given here does not exist already.</label><br>
+<span id=datasetID class=warning></span>
+<input type=text size=10 name=datasetID class='nonempty mustexist nospace' value='{$datasetID}'><br>
+
+<h3>event date</h3>
+<label><p>Date in YYYY-MM-DD format</label><br>
+<span id=eventDate class=warning></span>
+<input type=text size=10 name=eventDate class='nonempty' value='{$eventDate}'><br>
+
+
+<h3>event time</h3>
+<label><p>Time in hh:mm:ss format. If unknown - put 00:00:00</label><br>
+<span id=eventTime class=warning></span>
+<input type=text size=10 name=eventTime class='nonempty' value='{$eventTime}'><br>
 
 <h3>basisOfRecord</h3>
 <label><p>max length:50 characters<br>possible values: manual measurement, automatic measurement, laboratory measurement</label><br>
@@ -1160,91 +1241,52 @@ if ($base=="biodivdata" & $table=="event"){
 <span id=sampleSizeUnit class=warning></span>
 <input type=text size=10 name=sampleSizeUnit class='none' value='{$sampleSizeUnit}'><br>
 
-<input type='button' class='button' value=' Save ' onClick=validateForm(\"$do\",'base=biodivdata&do={$do}&table=event','./?base=biodivdata&do=edit&table=dataset');>
 
-<input type='button' class='button' value=' Cancel ' onClick='window.location=\"./?base=biodivdata&do=edit&table=location&datasetID=$datasetID\"';>
+<h3>recorded by</h3>
+<label><p>max length:50 characters<br>Who recorded data</label><br>
+<span id=recordedBy class=warning></span>
+<input type=text size=50 name=recordedBy class='none' value='{$recordedBy}'><br>
+
+<h3>eventRemarks</h3>
+<label><p>max length:255 characters<br>Any other remarks you might have</label><br>
+<span id=eventRemarks class=warning></span>
+<textarea cols=40 rows=6 size=255 name=eventRemarks>{$eventRemarks}</textarea><br>
+
+
+<input type='button' class='button' value=' Save ' onClick=validateForm(\"$do\",'base=biodivdata&do={$do}&table=event','./?base=biodivdata&do=edit&table=event&datasetID=$datasetID&locationID=$locationID');>
+
+<input type='button' class='button' value=' Cancel ' onClick='window.location=\"./?base=biodivdata&do=edit&table=event&datasetID=$datasetID&locationID=$locationID\"';>
 </form>
         ";
     }
+
+    }
 } //end biodiv and event table
 
-#
-#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#
-# biodiv and occurrence table
-#
-#
-# structure is a bit weird - this section handles entire "path" to edit occurrence table, i.e. selection of dataset, location and event. Editing events, however, is handled by request event table...
-#
-#
+
 
 if ($base=="biodivdata" & $table=="occurrence"){
-    if ($datasetID=='' && $locationID==''){
-        // shows list of datasets
-        $query="select datasetID, datasetName from dataset";
-        $result = $mysqli->query($query);
-        echo "<a href=./>back</a>";
-        echo "<h2>Add/edit sampling events and occurrences in biodiversity monitoring database</h2>";
-        echo "<label><p>Select dataset:</label>";
-        echo "<table width=900px>";
-        echo "<tr><th>Dataset ID<th>Dataset name<th></tr>";
-        while ($row = $result->fetch_assoc()){
-            echo "<tr><td>".$row['datasetID']."<td>".$row['datasetName']."<td><a href='./?base=biodivdata&do=edit&table=occurrence&datasetID=".$row['datasetID']."' >select</a></tr>";
-        }
-        echo "</table>";
-    }
-    if ($datasetID!='' && $locationID==''){
-        //shows list of locations for given dataset
-        $query="select distinct location.locationID,locationName,locality from  location where datasetID='".$datasetID."'";
-	#echo $query;
-        $result = $mysqli->query($query);
-        echo "<a href=./?base=biodivdata&do=edit&table=occurrence>back</a>";
-        echo "<h2>Add/edit event in biodiversity monitoring database</h2>";
-        echo "<h3>Current dataset: <b>".$datasetID."</b></h3>";
-        echo "<label><p>Select location:</label>";
-        echo "<table width=900px>";
-        echo "<tr><th>Location ID<th>Location name<th>Locality<th></tr>";
-        while ($row = $result->fetch_assoc()){
-            echo "<tr><td>".$row['locationID']."<td>".$row['locationName']."<td>".$row['locality']."<td><a href='./?base=biodivdata&do=edit&table=occurrence&locationID=".$row['locationID']."&datasetID=".$datasetID."'>select</a></tr>";
-        }
-        echo "</table>";
-    }
-    if ($datasetID!='' && $locationID!='' && $eventID==''){
-        //shows list of events for given location
-        $query="select eventID, eventDate from event where locationID='".$locationID."'";
-        $result = $mysqli->query($query);
-        echo "<a href=./?base=biodivdata&do=edit&table=occurrence&datasetID={$datasetID}>back</a>";
-        echo "<h2>Add/edit event in biodiversity monitoring database</h2>";
-        echo "<h3>dataset: ".$datasetID.", location: ".$locationID."</h3>";
-        echo "<p><a href=\"./?base=biodivdata&do=add&table=event&datasetID={$datasetID}&locationID={$locationID}\">Add new event</a></p>";
-        echo "<table width=900px>";
-        echo "<tr><th>event ID<th>Event date<th></tr>";
-        while ($row = $result->fetch_assoc()){
-            echo "<tr><td>".$row['eventID']."<td>".$row['eventDate']."<td><a href='./?base=biodivdata&do=edit&table=event&locationID=".$locationID."&datasetID=".$datasetID."&eventID=".$row['eventID']."'>edit event</a><br><a href='./?base=biodivdata&do=edit&table=occurrence&locationID=".$locationID."&datasetID=".$datasetID."&eventID=".$row['eventID']."'>edit/add occurrences</a></tr>";
-        }
-        echo "</table>";
-    }
-
-
     if ($eventID!=''){
         //shows form for occurrences
-        echo "<a href=./?base=biodivdata&do=edit&table=occurrence&datasetID=$datasetID&locationID=$locationID>back</a>
+        echo "<a href=./?base=biodivdata&do=edit&table=event&datasetID=$datasetID&locationID=$locationID>back</a>
         <input type=hidden name=datasetID value=$datasetID>
         <input type=hidden name=locationID value=$locationID>
         <input type=hidden name=eventID value=$eventID>
         <h2>Add/edit occurrences in biodiversity database</h2>
-        <h3>Dataset: $datasetID</h3>
-        <h3>Location: $locationID</h3>
-        <h3>Event: $eventID</h3>
+        <h3>Dataset:<b> $datasetID</b></h3>
+        <h3>Location: <b>$locationID</b></h3>
+        <h3>Event: <b>$eventID</b></h3><br>
         <form id=form action='#' method=post>
-	    </div><div id='records_table' class=centeritem></div>
-	    </div><div id='extras'></div>
-        <input type='button' class='button' value=' Save ' onClick=validateForm(\"$do\",'base=biodivdata&do={$do}&table=occurrence','./?base=biodivdata&do=edit&table=occurrence&datasetID=$datasetID&locationID=$locationID');>
+        <p><span class=clickable onClick=addRow()>add occurrence</span></p>
+	    <div id='records_table'></div>
+	    <div id='extras'></div>
+        <input type='button' class='button' value=' Save ' onClick=validateForm(\"$do\",'base=biodivdata&do={$do}&table=occurrence','./?base=biodivdata&do=edit&table=event&datasetID=$datasetID&locationID=$locationID');>
+        <input type='button' class='button' value=' Cancel ' onClick='window.location=\"./?base=biodivdata&do=edit&table=event&datasetID=$datasetID&locationID=$locationID\"';>
+
         </form>
 	    <script>editOccurrences()</script>";
     }
-} //end biodiv and occurrence table
-
+}
 
 #
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1275,7 +1317,7 @@ if ($base=="biodivdata" & $table=="checklist"){
         $result = $mysqli->query($query);
         echo "<a href=./>back</a>";
         echo "<h2>Add/edit checklist entries in biodiversity monitoring database</h2>";
-        echo "<b><a href=\"./?base=biodivdata&do=add&table=checklist\">Add new entry</a></b>";
+        echo "<p><a href=\"./?base=biodivdata&do=add&table=checklist\">Add new entry</a></p>";
         echo "<table width=900px class=twoColour>";
         echo "<tr><th>taxonID<th>Scientific name<th></tr>";
         while ($row = $result->fetch_assoc()){
@@ -1386,6 +1428,9 @@ if ($base=="biodivdata" & $table=="checklist"){
 <input type=text size=50 name=acceptedNameUsageID value='{$acceptedNameUsageID}'><br>
 
 <input type='button' class='button' value=' Save ' onClick=validateForm(\"$do\",'base=envmondata&do={$do}&table=checklist','./?base=envmondata&do=edit&table=checklist');>
+
+<input type='button' class='button' value=' Cancel ' onClick='window.location=\"./?base=biodivdata&do=edit&table=checklist\"';>
+
 </form>
         ";
     }

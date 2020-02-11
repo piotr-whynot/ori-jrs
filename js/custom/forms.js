@@ -5,6 +5,13 @@
 
 function validateForm(ado, argstring, returnstr) {
 // form validation based on classes of text/textarea fields. This function handles "regular" validation and validation against database entries. The latter is done asynchronously - for that a queue of ajax calls is created, and a function executing these calls is called. Only once that function finishes, the submit function is called. If form validation returns false, submit function does not proceed, but displays warning alert. Otherwise form is submitted using url defined in argstring. On sucessful submision, form is closed and user is redirected to higherlevel page - defined by returnstr.
+
+    if (argstring.includes("biodivdata")){
+        base="biodivdata";
+    }else{
+        base="envmondata";
+    }
+
     console.log("checking nonAjax");
     retvalue=true; //defalt, flips to false, if any check fails
     var queue = []; // array of ajax calls checking against database entries
@@ -33,17 +40,17 @@ function validateForm(ado, argstring, returnstr) {
             }
 
             if ($(this).hasClass("mustexist")){
-                queue.push({file: 'checkID.php', data: {item: this.name, check: 'mustexist', base: 'envmondata', value:this.value }});
+                queue.push({file: 'checkID.php', data: {item: this.name, check: 'mustexist', base: base, value:this.value }});
             }
 
             if ($(this).hasClass("mustexistorempty")){
                 if(this.value>""){
-                    queue.push({file: 'checkID.php', data: {item: this.name, check: 'mustexist', base: 'envmondata', value:this.value }});
+                    queue.push({file: 'checkID.php', data: {item: this.name, check: 'mustexist', base: base, value:this.value }});
                 }
             }
 
             if ($(this).hasClass("unique") && ado=='add'){
-                queue.push({file: 'checkID.php', data: {item: this.name, check: 'unique', base: 'envmondata', value:this.value }});
+                queue.push({file: 'checkID.php', data: {item: this.name, check: 'unique', base: base, value:this.value }});
             }
 
             if ($(this).hasClass("unique") && this.name=='emailAddress' && ado=="edit"){
@@ -54,7 +61,6 @@ function validateForm(ado, argstring, returnstr) {
             if ($(this).hasClass("unique") && this.name=='emailAddress' && ado=="add"){
                 queue.push({file: 'checkEmail.php', data: {item: this.name, check: 'unique', value:this.value}});
             }
-            console.log(retvalue);
             console.log(retvalue);
         });
 
@@ -100,6 +106,7 @@ function runAjaxChecks(queue, i, callback) {
             //response is true if ID exists, false if it doesn't
             console.log("checkID...\n");
             console.log(response);
+            console.log("_");
             if (response=='false' & queue[i].data.check=='mustexist'){
                 $("span#"+queue[i].data.item+"").html("ID must exist in the database already<br>");
                 retvalue=false;
@@ -175,7 +182,7 @@ function editOnceoffRecords(datasetID, locationID, datetime){
     datetime=decodeURIComponent(datetime);
 
     // create table with all datastreams in columns
-    apicall=suff+"/api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID
+    apicall="./api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID
 
     $.get(apicall,
     function(data0){
@@ -256,7 +263,7 @@ function editOnceoffRecords(datasetID, locationID, datetime){
 function populateOnceoffRecords(datasetID, locationID){
     datetime=$("#dateSelect option:selected").text();
     console.log(datetime);
-    $.get(suff+"/api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID,
+    $.get("./api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID,
     function(data0){
         data0=JSON.parse(data0);
         datastreams=data0[0].datastreams;
@@ -280,7 +287,7 @@ function populateOnceoffRecords(datasetID, locationID){
         $("#records_table").html(txt);
         if(datetime){
             // populate table - get data for given month
-            apicall=suff+"/api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID+"&datetime="+datetime;
+            apicall="./api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID+"&datetime="+datetime;
             console.log(apicall);
             $.get(apicall,
             function(data){
@@ -353,8 +360,8 @@ function populateMonitoringRecords(datasetID, locationID, baseTime){
         ldstr=date2str(ld);
         console.log(fdstr, ldstr);
 	// reading all datastreams for location
-        console.log(suff+"/api/api_envdata.php?calltype=datastream&datasetID="+datasetID+"&locationID="+locationID);
-        $.get(suff+"/api/api_envdata.php?calltype=datastream&datasetID="+datasetID+"&locationID="+locationID,
+        console.log("./api/api_envdata.php?calltype=datastream&datasetID="+datasetID+"&locationID="+locationID);
+        $.get("./api/api_envdata.php?calltype=datastream&datasetID="+datasetID+"&locationID="+locationID,
         function(data0){
 	    //console.log(data0);
             data0=JSON.parse(data0);
@@ -404,8 +411,8 @@ function populateMonitoringRecords(datasetID, locationID, baseTime){
 
             //populate cells with actual data
 
-            console.log(suff+"/api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID+"&startdate="+fdstr+"&enddate="+ldstr);
-            $.get(suff+"/api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID+"&startdate="+fdstr+"&enddate="+ldstr,
+            console.log("./api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID+"&startdate="+fdstr+"&enddate="+ldstr);
+            $.get("./api/api_envdata.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID+"&startdate="+fdstr+"&enddate="+ldstr,
             function(data){
                 data=JSON.parse(data);
                 if (data.length>0){
@@ -430,7 +437,7 @@ function populateMonitoringRecords(datasetID, locationID, baseTime){
 
 
 function editMonitoringRecords(datasetID, locationID, baseTime){
-    apicall=suff+"/api/api_envdata.php?calltype=location&locationID="+locationID;
+    apicall="./api/api_envdata.php?calltype=location&locationID="+locationID;
     console.log(apicall);
     $.get(apicall, function(data){
     console.log(data);
@@ -523,7 +530,7 @@ function uploadCell(object){
     date = objvariables[1];
     field = objvariables[2];
     newval=object.value;    
-    url = suff+"/admin/updateCell.php?base=env&table=measurement&value="+newval+"&datastreamID="+datastreamID+"&date="+date+"&field="+field;
+    url = "./admin/updateCell.php?base=env&table=measurement&value="+newval+"&datastreamID="+datastreamID+"&date="+date+"&field="+field;
     console.log(object.name, field, date, newval, datastreamID);
     console.log(url);
     $.get(url,
@@ -548,29 +555,28 @@ function editOccurrences(){
     console.log(datasetID, locationID);
     // create data table
     $('#records_table').html("<center style='font-size:14px; color:lightgrey;'><img src='../img/ajax-loader.gif'><br><b>Loading...</b></center>");
-    console.log(suff+"/api/api_biodiv.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID+"&eventID="+eventID);
-    $.get(suff+"/api/api_biodiv.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID+"&eventID="+eventID,
+    console.log("./api/api_biodiv.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID+"&eventID="+eventID);
+    $.get("./api/api_biodiv.php?calltype=data&datasetID="+datasetID+"&locationID="+locationID+"&eventID="+eventID,
     function(data){
             data=JSON.parse(data);
             occurrences=data[0].events[0].occurrenceData;
             txt='';
             w=0.9*$(window).width();
-            txt+="<br><div style='width: "+w+"px; overflow: auto'>";
+            txt+="<div style='width: "+w+"px; overflow: auto'>";
             txt+="<form>";
             txt+="<table style='table-layout: fixed; white-space: nowrap;' id=occur>";
             txt+="<tr><th>Occurrence ID<th>Taxon ID<th>Organism quantity<th>Organism Quantity Typei<th></tr>";
             i=0;
             for (occur in occurrences){
                 occur=occurrences[occur];
-                console.log(occur);
-                txt+="<tr id=row"+i+"><td><input type=text name=occurrenceID_"+i+" value="+occur.occurrenceID+"><td><input type=text name=taxonID_"+i+" size=8 value="+occur.taxonID+"><td><input type=text name=organismQuantity_"+i+" size=8 value="+occur.organismQuantity+"><td><input type=text name=organismQuantityType_"+i+" value="+occur.organismQuantityType+"><td><span class=clickable onClick=removeRow("+i+")>remove</span></tr>";
+                //console.log(occur);
+                txt+="<tr id=row"+i+"><td><span id=occurrenceID_"+i+" class=warning></span><input size=35 ype=text name=occurrenceID_"+i+" value="+occur.occurrenceID+" class='nonempty'><td><span id=taxonID_"+i+" class=warning></span><input type=text name=taxonID_"+i+" size=8 value="+occur.taxonID+" class='nonempty mustexist'><td><span id=organismQuantity_"+i+" class=warning></span><input type=text name=organismQuantity_"+i+" size=8 value="+occur.organismQuantity+" class=nonempty><td><span id=organismQuantityType_"+i+" class=warning></span><input type=text name=organismQuantityType_"+i+" value="+occur.organismQuantityType+" class=nonempty><td><span class=clickable onClick=removeRow("+i+")>remove</span></tr>";
                 i+=1;
             }
             txt+="</table>";
             txt+="</form>";
             $('#records_table').html(txt);
             txt="<input id=ocount name=ocount type=hidden value="+i+"><br>";
-            txt+="<span class=clickable onClick=addRow()>add occurrence</span>";
             $('#extras').html(txt);
        });
 
