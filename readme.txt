@@ -24,6 +24,7 @@ from map:
 	updates location
 
 
+
 from location:
 - datastream -> figure
 	updates figure
