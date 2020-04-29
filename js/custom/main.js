@@ -627,7 +627,10 @@ function showDatastream(datastreamID, scrollTo){
                 graphType="compareyearscumsum";
                 showcumsum=true;
             }
-
+            if(datastreamID=="dwa1972_mohembo_wdisch"){
+                graphType="compareyears";
+                showcumsum=true;
+            }
             //console.log(datastreamID+" "+graphType+" "+isFirst+" "+showcumsum);
             loadPlot(datastreamID, graphType, isFirst, showcumsum);
         }
