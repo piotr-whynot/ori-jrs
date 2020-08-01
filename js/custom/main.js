@@ -154,7 +154,7 @@ function populateFloatNav(){
 function populateHeaders(){
     console.log("page headers");
 
-    $.get("http://localhost/biodiv/intro_contents", function(data){
+    $.get("intro_contents", function(data){
             $('#introContents').html(data);
             console.log("loaded intro_contents");
         },"html"
