@@ -73,7 +73,7 @@ session_start();
     </div></div>
     <div id='menuWindow' class=wideDiv><div class='spacer'></div><div id='menuHeader' class=headerDiv></div><div id='menuContents' class=contentsDivnarrow></div></div>
     <div id="datasetWindow" class=wideDiv><div class=spacer></div><div id='datasetHeader' class=headerDiv></div><div id='datasetContents' class=contentsDivnarrow></div></div>
-    <div id="mapWindow" class=wideDiv><div id='mapContents'></div></div>
+    <div id="mapWindow" class=wideDiv><div class=spacer></div><div id='mapHeader' class=headerDiv></div><div id='mapContents'></div></div>
     <div id="locationWindow" class=wideDiv><div class=spacer></div><div id='locationHeader' class=headerDiv></div><div id='locationContents' class=contentsDivnarrow></div></div>
     <div id="figureWindow" class=wideDiv><div class=spacer></div><div id='figureHeader' class=headerDiv></div><div id='figureContents' class=contentsDiv></div></div>
     <div id="dataWindow" class=wideDiv><div class=spacer></div><div id='dataHeader' class=headerDiv></div><div id='dataContents' class=contentsDiv></div></div>

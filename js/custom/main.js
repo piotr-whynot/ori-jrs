@@ -163,6 +163,7 @@ function populateHeaders(){
     $('#introHeader').html("<span class=headerText>Okavango monitoring and data sharing</span>");
     $('#menuHeader').html("<span class=headerText>Data Sources</span>");
     $('#datasetHeader').html("<span class=headerText>Dataset Info</span>");
+    $('#mapHeader').html("<span class=headerText>Map</span>");
     $('#locationHeader').html("<span class=headerText>Location Info</span>");
     $('#figureHeader').html("<span class=headerText>Graphs and Data</span>");
     $('#dataHeader').html("<span class=headerText>Data Editor</span>");
