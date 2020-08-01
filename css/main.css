@@ -194,9 +194,10 @@ H3 {
     opacity: 0.9;
 }
 
-#introText p{
+#introText p {
     color: black;
-    font : 130%/150% 'Rubik', sans-serif;
+    font : 90%/110% 'Rubik', sans-serif;
+    margin-bottom: 20px;
 }
 
 #helpPointer{

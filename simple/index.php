@@ -82,11 +82,8 @@ session_start();
     <div class=floatRight id="floatNav"></div>
     <!--
     <div class='floatLeft' id=floatFaq>?</div>
-        <div id=faqPointer>Scroll to explore or <br>click here for help</div>
 -->
-    <div class='floatLeft' id=floatFaq>
-        <div id="floatFaqTxt">?</div>
-    </div>
+    <div class='floatLeft' id=floatFaq><div id=faqPointer>Scroll to explore or <br>click here for help</div><div id="floatFaqTxt">?</div></div>
 </div>
     <div id="shade"></div>
     <div id='footer'><?php include 'footer.php'; ?></div>

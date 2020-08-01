@@ -76,9 +76,9 @@ Addiionally to Occurrence records, the GBIF database structure provides an entry
 <p>You can scroll up-down between the panels, and you will notice that while you are scrolling, a quick menu appears on the right-hand side. You can use that menu to jump directly to given panel.
 <p>Note - Data editor panel will only be available to the users who are owners of a dataset that is presented on this website, and are logged in.
 
-<h3>Typical use case<h3>
+<h3>Typical use case</h3>
 <p> Note that panels are populated sequentially according to the structure of the data. So if you want to view a particular variable at a particular location, say fish monitoring results at Chanoga, then you have to:
-<ul>
+<ol>
 <li>select appropriate dataset in the Data Source panel - that will be "Fish monitoring" under "Monitoring" and "Biodiversity"
 <li>upon selection of that dataset, the Map panel will be scrolled to automatically. You may select location from the map by clicking on the appropriate marker OR
 <li>scroll manually to Dataset Info panel, and select location from the list provided there.
@@ -86,7 +86,7 @@ Addiionally to Occurrence records, the GBIF database structure provides an entry
 <li>You may then select an event you are interested in, and you will be redirected to Graphs and Data panel, where you will see the actual data.
 <li>Alternatively, since this particular dataset is a monitoring dataset - you may choose to view a time series of fish data by following the "show time series" link in the Location Info panel. A time series graph will then be shown in the Graph and Data panel.
 <li> After viewing data or graph (mind the graphs are interactive - explore them, please), you may go back to Location Info, or Dataset Info or Data Sources panel, and select another Event, Location or Dataset.
-</ul>
+</ol>
 <br>
 <p>Access to Environmental monitoring data is organized in similar way.
 <br>

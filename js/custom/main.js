@@ -72,9 +72,9 @@ function initialize(){
         var sBot = -$('#allContents').scrollTop() - $('#allContents').height()+$('#allContents')[0].scrollHeight;
         if ( sTop > 50 ) { 
             $('#fup').fadeIn(1000);
-            $('#faqPointer').hide();
+//            $('#faqPointer').hide();
         }else{
-            $('#faqPointer').fadeIn(1000);
+//            $('#faqPointer').fadeIn(1000);
             $('#fup').hide();
         }
         if ( sBot > 50 ) { 
@@ -154,12 +154,12 @@ function populateFloatNav(){
 function populateHeaders(){
     console.log("page headers");
 
-    $.get("intro_contents",
-        function(data){
+    $.get("http://localhost/biodiv/intro_contents", function(data){
             $('#introContents').html(data);
-        }
+            console.log("loaded intro_contents");
+        },"html"
     );
-
+    
     $('#introHeader').html("<span class=headerText>Okavango monitoring and data sharing</span>");
     $('#menuHeader').html("<span class=headerText>Data Sources</span>");
     $('#datasetHeader').html("<span class=headerText>Dataset Info</span>");
@@ -192,7 +192,7 @@ function showAll(datastreamID, locationID, datasetID, obsType, dBase, varType){
 
     showDataset(locationID, datasetID,dBase,varType, obsType, false, 
         function(data){
-            scrollTo='mapWindow';
+            scrollTo='datasetWindow';
             if (datastreamID>""){
                 showDatastream(datastreamID, false);
                 scrollTo='figureWindow';
@@ -881,13 +881,15 @@ function centerLeafletMapOnMarker(marker) {
 
 
 function downloadAPI(_base, _datasetID, _locationID, _baseTime, _datastreamID, _format){
-    alert("not available at the moment");
-}
+    txt="<h1> Downloading data</h1>";
+    txt+="<p>"+_datasetID+" available for download"+_base;
 
-function downloadAPI_final(_base, _datasetID, _locationID, _baseTime, _datastreamID, _format){
-
-    apicall="./api/api_"+_base+".php?calltype=data";
-
+    if(_base=="biodivdata"){
+        apicall="./api/api_biodiv.php?calltype=data";
+    }
+    if(_base=="envmondata"){
+        apicall="./api/api_envdata.php?calltype=data";
+    }
     if (_datasetID!=''){
         apicall+="&datasetID="+_datasetID;
     }
@@ -900,7 +902,39 @@ function downloadAPI_final(_base, _datasetID, _locationID, _baseTime, _datastrea
     if (_baseTime!=''){
         apicall+="&baseTime="+_baseTime;
     }
-    //console.log(apicall);
+
+    if (_base=="biodivdata"){
+        txt+="<p>Entire dataset in "
+        txt+="<span class=clickable onClick=downloadAPI_call('"+apicall+"&format=csv','json','"+_datasetID+"')>json</span>";
+        txt+=" or ";
+        txt+="<span class=clickable onClick=downloadAPI_call('"+apicall+"&format=csv','csv','"+_datasetID+"')>csv</span>";
+        txt+=" format";
+ 
+    }else{
+        txt+="<p>Entire dataset in "
+        txt+="<span class=clickable onClick=downloadAPI_call('"+apicall+"&format=csv','json','"+_datasetID+"')>json</span>";
+        txt+=" or ";
+        txt+="<span class=clickable onClick=downloadAPI_call('"+apicall+"&format=csv','csv','"+_datasetID+"')>csv</span>";
+        txt+=" format";
+        
+    }
+    popup(0.9,0.9, txt);
+    //alert("not available at the moment");
+}
+
+
+function downloadAPI_call(_apicall,_format,_datasetID){
+    $("#shade").show();
+
+    console.log(_apicall);
+        $.get(_apicall,function(data){
+        var blob=new Blob([data]);
+        var link=document.createElement('a');
+        link.href=window.URL.createObjectURL(blob);
+        link.download=_datasetID+"."+_format;
+        link.click();
+        $("#shade").hide();
+    });
 }
 
 
