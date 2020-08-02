@@ -147,13 +147,13 @@ H3 {
 
 /* map size has to be prescribed*/
 #mapContents{
-    height: 90%;
+    height: 80%;
     width: 90%;
     margin:auto;
 }
 
 #introWindow{
-   background-image: url("../img/Reeds.jpg");
+   background-image: url("../img/Reeds3.jpg");
    background-repeat: no-repeat;
    background-position: top left;
 }
@@ -302,7 +302,9 @@ th {
 
 
 
-/*scroll indicator*/
+/*scroll indicator
+
+*/
 
 .floatRight{
     position:fixed;
@@ -316,11 +318,25 @@ th {
     z-index:9500;
 }
 
+#quickMenu{
+    top:0;
+    opacity: 1;
+    margin-right: 30px;
+    background:none;
+    padding:5px;
+    cursor: pointer;
+    font : 15px/10px 'Arial',sans-serif;
+    color: rgba(10,10,10,0.5);
+}
+
+#quickMenu:hover{
+    background:white;
+}
 
 #fup{
     top:0;
-    opacity: 0.3;
-    width: 10%;
+    opacity: 1;
+    padding-right: 20px;
 }
 
 #fdown{

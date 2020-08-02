@@ -5,7 +5,6 @@
 <li><a class=clickable href='#whatsinherefaq'>What's in here?</a>
 <li><a class=clickable href='#whatisntherefaq'>What isn't here?</a>
 <li><a class=clickable href='#dataorganizationfaq'>How are the data organized?</a>
-<li><a class=clickable href='#navigationfaq'>How to use this website?</a>
 <li><a class=clickable href='#downloadfaq'>Can I download data and how?</a>
 <li><a class=clickable href='#graphfaq'>Can I copy/download graphs and how?</a>
 <li><a class=clickable href='#copyrightsfaq'>Are data copyrighted?</a>
@@ -60,37 +59,6 @@
 <h3>Occurrences and other measurements</h3> 
 <p>Occurrences are again relevant to Biodiversity data only and stems from GBIF requirements for database structure. Occurrence is simply a qualitative or a quantitative statement about presence of a particular taxon recorded during a Sampling Event. That statement can simply be presence-absence, or some measure of abundance.
 Addiionally to Occurrence records, the GBIF database structure provides an entry for "additional" or "other" data that are related to Occurrences. In GBIF lingo it is "measurement or fact", but here we use simply "other measurments". The "Other measurements" may include data on status of particular taxon or vegetation stand - measurements such as "percent green cover", or "sex" of fish.
-
-
-<h2 id=navigationfaq>How to Use the Website?</h2>
-<p>The website is organized in the form of several "panels":
-<ol>
-<li>Intro
-<li>Data Sources
-<li>Map
-<li>Dataset info
-<li>Location info
-<li>Graphs
-<li>Data editor
-</ol>
-<p>You can scroll up-down between the panels, and you will notice that while you are scrolling, a quick menu appears on the right-hand side. You can use that menu to jump directly to given panel.
-<p>Note - Data editor panel will only be available to the users who are owners of a dataset that is presented on this website, and are logged in.
-
-<h3>Typical use case</h3>
-<p> Note that panels are populated sequentially according to the structure of the data. So if you want to view a particular variable at a particular location, say fish monitoring results at Chanoga, then you have to:
-<ol>
-<li>select appropriate dataset in the Data Source panel - that will be "Fish monitoring" under "Monitoring" and "Biodiversity"
-<li>upon selection of that dataset, the Map panel will be scrolled to automatically. You may select location from the map by clicking on the appropriate marker OR
-<li>scroll manually to Dataset Info panel, and select location from the list provided there.
-<li>On selecting the location you will be redirected to the Location Info panel, where you will see all Sampling Events for that location.
-<li>You may then select an event you are interested in, and you will be redirected to Graphs and Data panel, where you will see the actual data.
-<li>Alternatively, since this particular dataset is a monitoring dataset - you may choose to view a time series of fish data by following the "show time series" link in the Location Info panel. A time series graph will then be shown in the Graph and Data panel.
-<li> After viewing data or graph (mind the graphs are interactive - explore them, please), you may go back to Location Info, or Dataset Info or Data Sources panel, and select another Event, Location or Dataset.
-</ol>
-<br>
-<p>Access to Environmental monitoring data is organized in similar way.
-<br>
-<p>There are several "key" variables/locations/datasets that can be accessed by following direct links under "Key Monitoring Locations" in the Data Sources panel. 
 
 
 

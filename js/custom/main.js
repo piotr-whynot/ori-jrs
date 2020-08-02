@@ -16,6 +16,7 @@ var largeIcon = new L.Icon({
 });
 
 var taxonData=new Array();
+var currentDataset=new Array();
 
 
 function initialize(){
@@ -70,6 +71,7 @@ function initialize(){
     $('#allContents').scroll(function() {
         var sTop = $('#allContents').scrollTop();
         var sBot = -$('#allContents').scrollTop() - $('#allContents').height()+$('#allContents')[0].scrollHeight;
+/*
         if ( sTop > 50 ) { 
             $('#fup').fadeIn(1000);
 //            $('#faqPointer').hide();
@@ -84,7 +86,7 @@ function initialize(){
         }
 
         $('#floatNav').stop(true, true).show().fadeOut(6000);
-
+*/
     });
 
     call="./login.php?action=userInfo";
@@ -120,11 +122,13 @@ function initialize(){
 
     });
 
-$('#floatFaq').on("click", function(){
-    pageinPopup(0.5,0.8,"faq_contents","FALSE")
-}
+    $('#floatFaq').on("click", function(){
+        pageinPopup(0.5,0.8,"faq_contents","FALSE")
+    });
 
-);
+    $('#quickMenu').on("click", function(){
+        $("#floatNav").toggle();
+    });
 
 
 }
@@ -147,6 +151,7 @@ function populateFloatNav(){
     $(".qnavItem").on("click", function(){
         target=$(this).data('id');
         scroll2div(target);
+        $("#floatNav").hide();
     });  
 }
 
@@ -348,29 +353,31 @@ function describeDataset(group, datasetID, varType, scrollTo){
     $("#shade").show();
     $.get(apicall, 
         function(data){
-            alldata=JSON.parse(data);
+            console.log(data);
+            currentDataset=JSON.parse(data)[datasetID];
+            console.log(currentDataset);
             txt="<div class=infotableDiv id=dsetinfoDiv>";
             txt+="<div class=tableTitle>";
-		    txt+=alldata['datasetName'];
+		    txt+=currentDataset['datasetName'];
             txt+="</div>";
 		    txt+="<table class='fullwidthTable infoTable'>";
-            txt+="<tr><td class=infoLabel width=50%>dataset ID:<td width=50%>"+alldata['datasetID']+"</tr>";
-            txt+="<tr><td class=infoLabel>dataset name:<td>"+alldata['datasetName']+"</tr>";
-            txt+="<tr><td class=infoLabel>description:<td>"+alldata['datasetDescription']+"</tr>";
-            txt+="<tr><td class=infoLabel>institution holding data:<td>"+alldata['institutionCode']+"</tr>";
-            txt+="<tr><td class=infoLabel>institution owning data:<td>"+alldata['ownerInstitutionCode']+"</tr>";
-		    if (alldata['publications']){
-                txt+="<tr><td class=infoLabel>relevant publications:<td>"+alldata['publications']+"</tr>";
+            txt+="<tr><td class=infoLabel width=50%>dataset ID:<td width=50%>"+currentDataset['datasetID']+"</tr>";
+            txt+="<tr><td class=infoLabel>dataset name:<td>"+currentDataset['datasetName']+"</tr>";
+            txt+="<tr><td class=infoLabel>description:<td>"+currentDataset['datasetDescription']+"</tr>";
+            txt+="<tr><td class=infoLabel>institution holding data:<td>"+currentDataset['institutionCode']+"</tr>";
+            txt+="<tr><td class=infoLabel>institution owning data:<td>"+currentDataset['ownerInstitutionCode']+"</tr>";
+		    if (currentDataset['publications']){
+                txt+="<tr><td class=infoLabel>relevant publications:<td>"+currentDataset['publications']+"</tr>";
 		    }
-		    if (alldata['datasetRemarks']){
-                txt+="<tr><td class=infoLabel>remarks:<td>"+alldata['datasetRemarks']+"</tr>";
+		    if (currentDataset['datasetRemarks']){
+                txt+="<tr><td class=infoLabel>remarks:<td>"+currentDataset['datasetRemarks']+"</tr>";
 		    }
 		    txt+="</table>";
             if (ownedItems[0].includes(datasetID) || userType=="admin"){
-                txt+="<div class=centered><span class=clickable onClick=editDataset('"+dataGroup+"','"+alldata['datasetID']+"')>edit dataset info</span></div>";
+                txt+="<div class=centered><span class=clickable onClick=editDataset('"+dataGroup+"','"+currentDataset['datasetID']+"')>edit dataset info</span></div>";
             }
             txt+="</div>";
-            txt+="<div class=auxDiv><span class=clickable onClick=downloadAPI('"+dataGroup+"','"+alldata['datasetID']+"','','','','csv')>download entire dataset</span></div>";
+            txt+="<div class=auxDiv><span class=clickable onClick=downloadAPI('"+dataGroup+"','"+currentDataset['datasetID']+"','','','','')>download entire dataset</span></div>";
             txt+="<div class=listtableDiv id=dsetlistDiv></div>";
             $("#datasetContents").html(txt);
 
@@ -883,13 +890,14 @@ function centerLeafletMapOnMarker(marker) {
 
 function downloadAPI(_base, _datasetID, _locationID, _baseTime, _datastreamID, _format){
     txt="<h1> Downloading data</h1>";
-    txt+="<p>"+_datasetID+" available for download"+_base;
+    txt+="<p>Dataset: "+currentDataset['datasetName']+" ("+_datasetID+")";
+    txt+="<p>";
 
     if(_base=="biodivdata"){
-        apicall="./api/api_biodiv.php?calltype=data";
+        apicall="./api/api_biodiv.php?";
     }
     if(_base=="envmondata"){
-        apicall="./api/api_envdata.php?calltype=data";
+        apicall="./api/api_envdata.php?";
     }
     if (_datasetID!=''){
         apicall+="&datasetID="+_datasetID;
@@ -903,19 +911,23 @@ function downloadAPI(_base, _datasetID, _locationID, _baseTime, _datastreamID, _
     if (_baseTime!=''){
         apicall+="&baseTime="+_baseTime;
     }
+    console.log(currentDataset);
 
     if (_base=="biodivdata"){
-        txt+="<p>Entire dataset in "
-        txt+="<span class=clickable onClick=downloadAPI_call('"+apicall+"&format=csv','json','"+_datasetID+"')>json</span>";
-        txt+=" or ";
-        txt+="<span class=clickable onClick=downloadAPI_call('"+apicall+"&format=csv','csv','"+_datasetID+"')>csv</span>";
-        txt+=" format";
- 
+        txt+="<p>Download all data in one file (<b>json</b> format) ";
+        txt+="&nbsp<span class=clickable onClick=downloadAPI_call('"+apicall+"&calltype=data&format=json','json','"+_datasetID+"','alldata')>download json file </span>";
+        txt+="<p>";
+        txt+="<p>";
+        txt+="<p>";
+        txt+="<p>Download data in separate files (<b>csv</b> format)";
+        txt+="<p>Occurrence data <span class=clickable onClick=downloadAPI_call('"+apicall+"&calltype=data&format=csv','csv','"+_datasetID+"','occurrence')>csv file</span>";
+        txt+="<p>\"Measurement or fact\" data <span class=clickable onClick=downloadAPI_call('"+apicall+"&calltype=mof&format=csv','csv','"+_datasetID+"','measurementorfact')>csv file</span>";
+
     }else{
-        txt+="<p>Entire dataset in "
-        txt+="<span class=clickable onClick=downloadAPI_call('"+apicall+"&format=csv','json','"+_datasetID+"')>json</span>";
+        txt+="<p>Entire dataset in ";
+        txt+="<span class=clickable onClick=downloadAPI_call('"+apicall+"&calltype=data&format=json','json','"+_datasetID+"','alldata')>json</span>";
         txt+=" or ";
-        txt+="<span class=clickable onClick=downloadAPI_call('"+apicall+"&format=csv','csv','"+_datasetID+"')>csv</span>";
+        txt+="<span class=clickable onClick=downloadAPI_call('"+apicall+"&calltype=data&format=csv','csv','"+_datasetID+"','alldata')>csv</span>";
         txt+=" format";
         
     }
@@ -924,7 +936,7 @@ function downloadAPI(_base, _datasetID, _locationID, _baseTime, _datastreamID, _
 }
 
 
-function downloadAPI_call(_apicall,_format,_datasetID){
+function downloadAPI_call(_apicall,_format,_datasetID,_prefix){
     $("#shade").show();
 
     console.log(_apicall);
@@ -932,7 +944,7 @@ function downloadAPI_call(_apicall,_format,_datasetID){
         var blob=new Blob([data]);
         var link=document.createElement('a');
         link.href=window.URL.createObjectURL(blob);
-        link.download=_datasetID+"."+_format;
+        link.download=_prefix+"_"+_datasetID+"."+_format;
         link.click();
         $("#shade").hide();
     });

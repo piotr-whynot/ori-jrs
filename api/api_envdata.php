@@ -119,9 +119,16 @@ if (isset($_GET['baseTime'])){
 ###########################################################################
 if ($calltype=="datasetinfo"){
 #if datasetinfo call
-    $query="select * from dataset where datasetID='".$datasetID."' ";
+    $query="select * from dataset";
+    if($datasetID){
+        $query=$query." where datasetID='".$datasetID."' ";
+    }
     $result = $mysqli->query($query);
-    $output = $result->fetch_assoc();
+    $output=array(); #to store data
+    while($row = $result->fetch_assoc()){
+        $output[$row['datasetID']]=$row;
+    }
+
     $num_rows = $result->num_rows;
     if ($format=="csv" && $num_rows>0){
         $outfile = fopen("php://output",'w') or die("Can't open php://output");

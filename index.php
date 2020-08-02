@@ -73,20 +73,20 @@ session_start();
     </div></div>
     <div id='menuWindow' class=wideDiv><div class='spacer'></div><div id='menuHeader' class=headerDiv></div><div id='menuContents' class=contentsDivnarrow></div></div>
     <div id="datasetWindow" class=wideDiv><div class=spacer></div><div id='datasetHeader' class=headerDiv></div><div id='datasetContents' class=contentsDivnarrow></div></div>
-    <div id="mapWindow" class=wideDiv><div class=spacer></div><div id='mapHeader' class=headerDiv></div><div id='mapContents'></div></div>
+    <div id="mapWindow" class=wideDiv><div class=spacer></div><div id='mapHeader' class=headerDiv></div><div id='mapContents' class=contentsDiv></div></div>
     <div id="locationWindow" class=wideDiv><div class=spacer></div><div id='locationHeader' class=headerDiv></div><div id='locationContents' class=contentsDivnarrow></div></div>
     <div id="figureWindow" class=wideDiv><div class=spacer></div><div id='figureHeader' class=headerDiv></div><div id='figureContents' class=contentsDiv></div></div>
     <div id="dataWindow" class=wideDiv><div class=spacer></div><div id='dataHeader' class=headerDiv></div><div id='dataContents' class=contentsDiv></div></div>
+    <div class=floatRight id="floatNav"></div>
+    <div class=floatRight id=onscreenMenu>
+        <div id=quickMenu class='clickable centered'><img src="img/menu32.svg" alt=""><br>quick<br>nav</div>
+    <!--
     <div class=floatRight id="fdown"><div class=floatImg><img src='img/down.svg' width=50px></div></div>
     <div class=floatRight id="fup"><div class=floatImg><img src='img/up.svg' width=50px></div></div>
-    <div class=floatRight id="floatNav"></div>
-    <!--
     <div class='floatLeft' id=floatFaq>?</div>
         <div id=faqPointer>Scroll to explore or <br>click here for help</div>
 -->
-    <div class='floatLeft' id=floatFaq>
-        <div id="floatFaqTxt">?</div>
-    </div>
+    <div class='floatLeft' id=floatFaq><div id="floatFaqTxt">?</div></div>
 </div>
     <div id="shade"></div>
     <div id='footer'><?php include 'footer.php'; ?></div>
