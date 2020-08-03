@@ -484,7 +484,7 @@ function showLocation(locationID, dataGroup, scrollTo, cleanup){
             if (ownedItems[0].includes(datasetID) || ownedItems[1].includes(locationID) || userType=="admin"){
                 txt+="<div class=centered><span class=clickable onClick=editLocation('"+dataGroup+"','"+selfeature['datasetID']+"','"+selfeature['locationID']+"')>edit location info</span></div>";
             }
-            txt+="<div class=auxDiv><span class=clickable onClick=downloadAPI('"+dataGroup+"','','"+alldata['locationID']+"','','','csv')>download data for this location</span></div>";
+            //txt+="<div class=auxDiv><span class=clickable onClick=downloadAPI('"+dataGroup+"','','"+alldata['locationID']+"','','','csv')>download data for this location</span></div>";
             txt+="</div>";
             datasetID=selfeature['datasetID'];
             // base times or events
@@ -839,7 +839,7 @@ function datasetInfoBox(group, datasetID, whattodo){
 
 function scroll2div(_target){
     $(".exploreDiv").hide();
-    $("#"+_target).show();
+    $("#"+_target).fadeIn(1000);
     $(".expmenuItem").removeClass("current");
     $("#nav-"+_target).addClass("current");
     if(_target=="datasetWindow"){

@@ -75,7 +75,7 @@ session_start();
     <div id='mainContents'>
         <div id='introWindow' class='wideDiv homeDiv'><div class='spacer'></div><div id='introContents' class=contentsDivwide></div></div>
         <div id='sourcesWindow' class='wideDiv exploreDiv'><div class='spacer'></div><div id='sourcesHeader' class=headerDiv></div><div id='sourcesContents' class=contentsDivnarrow></div></div>
-        <div id="datasetWindow" class='wideDiv exploreDiv'><div class=spacer></div><div id='datasetHeader' class=headerDiv></div><div id='datasetContents' class=contentsDivnarrow><div id=datasetInfo></div><div id=mapDiv></div><div id=locationsList></div></div></div>
+        <div id="datasetWindow" class='wideDiv exploreDiv'><div class=spacer></div><div id='datasetHeader' class=headerDiv></div><div id='datasetContents' ><div id=datasetInfo class=contentsDivnarrow></div><div id=mapDiv></div><div id=locationsList class=contentsDivnarrow ></div></div></div>
 <!--    <div id="mapWindow" class='wideDiv exploreDiv'><div class=spacer></div><div id='mapHeader' class=headerDiv></div><div id='mapContents' class=contentsDiv></div></div>
 -->
     <div id="locationWindow" class='wideDiv exploreDiv'><div class=spacer></div><div id='locationHeader' class=headerDiv></div><div id='locationContents' class=contentsDivnarrow></div></div>
