@@ -1,4 +1,4 @@
-function populateMenu(){ 
+function populateSources(){ 
     console.log("menu");
     //calls this, but that php should be merged with other api functions into a single function
     apicall="./api/api_menu.php";
@@ -6,6 +6,7 @@ function populateMenu(){
     $.get(apicall,
         function(data){
   	        menuArr0=JSON.parse(data);
+            txt="";
             txt+="<div id='menu'>";
             txt="<ul class='topnav'>";
             for (i in menuArr0){
@@ -82,8 +83,8 @@ function populateMenu(){
                 txt+="</ul>"; 
                 txt+="</li>";
             }
-        $('#menuContents').html(txt);
-        $('#menuContents').accordion();
+        $('#sourcesContents').html(txt);
+        $('#sourcesContents').accordion();
         }
     );
 }

@@ -53,19 +53,18 @@ H3 {
 
 
 #footer {
-    display : block;
-    margin:auto;
-    border-top : 1px dotted var(--colB);
-    clear : both;
+    /*border-top : 1px dotted var(--colB);*/
     text-align: center;
-    overflow-y: scroll;
     padding-left: 5px;
     padding-right: 5px;
+    position: fixed;
+    bottom:0px;
+    background:white;
 }
 
 #footer p {
     color : var(--colB);
-    font : 70%/100% 'Arial', sans-serif;
+    font : 10px/10px 'Arial', sans-serif;
 }
 
 #footer a:hover {
@@ -116,8 +115,8 @@ H3 {
     background: var(--colD);
     color: var(--colB);
     margin:auto;
-    min-height: 10%;
-    padding: 20px 0 20px 0; 
+    min-height: 5%;
+    padding: 0px 0 0px 0; 
     text-align: center;
     text-transform: uppercase;
 }
@@ -134,21 +133,75 @@ H3 {
     display: inline-block;
 }
 
-
-
-
-/* this is container where everything sits, apart from footer*/
-#allContents{
+#topMenu{
     margin:auto;
-    overflow-y: scroll;
-    scroll-snap-type: y proximity;
+    background: white;
+    text-align: center;
+}
+
+.topmenuItem{
+    margin-left:10px;
+    margin-right:10px;
+    font : 12px/10px 'Rubik', sans-serif;
+}
+
+#exploreMenu{
+    text-align:center;
+    z-index: 10000;
+}
+
+.expmenuItem{
+    display: inline-block;
+    width:70px;
+    height:30px;
+    margin:5px;
+    background: var(--colE);
+}
+
+.expmenuItem span{
+    text-transform: uppercase;
+    font : 12px/10px 'Rubik', sans-serif;
+    vertical-align:middle;
+    line-height:normal;
+    display: inline-block;
+    color: var(--colB);
+}
+
+.expmenuItem.current{
+    background: var(--colD);
+}
+
+.expmenuItem.active{
+    color: var(--colD);
 }
 
 
+#loginContainer{
+    top=0;
+    position:fixed;
+    right:0;
+}
+
+/* this is container where everything sits, apart from footer
+*/
+#mainContents{
+    margin:auto;
+    overflow-y: scroll;
+}
+
+/*    
+#dataDiv{
+    scroll-snap-type: y proximity;
+}
+/*    
+
 /* map size has to be prescribed*/
-#mapContents{
-    height: 80%;
-    width: 90%;
+
+#mapDiv{
+/*    
+    height: 500px;
+    width: 500px;
+*/
     margin:auto;
 }
 
@@ -156,10 +209,11 @@ H3 {
    background-image: url("../img/Reeds3.jpg");
    background-repeat: no-repeat;
    background-position: top left;
+   scroll-snap-type: none;
 }
 
 
-#menuContents{
+#sourcesContents{
     padding: 20px 20px 100px 20px; 
 }
 
@@ -188,17 +242,18 @@ H3 {
 }
 
 #introText{
-    max-width:500px;
+    width:80%;
+    max-width:400px;
     float:left;
-    margin-left: 20%;
+    margin-left: 10%;
     margin-top: 5%;
     opacity: 0.9;
 }
 
 #introText p {
     color: black;
-    font : 90%/110% 'Rubik', sans-serif;
-    margin-bottom: 20px;
+    font : 15px/18px 'Rubik', sans-serif;
+    margin-bottom: 10px;
 }
 
 #helpPointer{
@@ -206,8 +261,6 @@ H3 {
     float:left;
     bottom:10%;
 }
-
-
 
 /*tables*/
 
@@ -276,11 +329,10 @@ th {
     margin-top: 50px;
     padding:20px;
     width: 50%;
-    background: var(--colE);
     color: var(--colC);
     font-size: 20px;
     text-align:center;
-    border: 2px solid var(--colD);
+    border: 2px solid var(--colB);
 }
 
 
@@ -290,6 +342,7 @@ th {
     font-weight: bold;
     color: var(--colAnchor);
     cursor:pointer;
+    text-decoration:none;
 }
 
 .clickable:hover{
@@ -350,21 +403,9 @@ th {
     margin-right:10%;
 }
 
-#floatNav{
-    top:10%;
-    padding:1%;
-    margin-right:2%;
-    opacity: 0.8;
-    text-align:center;
-    background: var(--colD);
-    width: 10%;
-    width:70px;
-}
-
-
 #floatFaq{
     margin-left:5px;
-    bottom:5%;
+    bottom:10px;
 }
 
 #floatFaqTxt{
@@ -380,17 +421,10 @@ th {
     border-style: solid;
     border-color: orange;
     opacity: 1;
+    background:yellow;
+    font-weight: bold;
 }
  
-.qnavItem{
-    font-size:80%;
-    line-height:100%;
-    padding: 3% 0 0 0; 
-    margin-top:30%;
-    font-weight: normal;
-    text-transform: uppercase;
-}
-
 
 
 
@@ -413,7 +447,7 @@ th {
   display: inline-block;
   width: 14px;
   height: 14px;
-  *margin-right: .3em;
+  margin-right: .3em;
   line-height: 14px;
   vertical-align: text-top;
   background-image: url("../img/glyphicons-halflings.png");

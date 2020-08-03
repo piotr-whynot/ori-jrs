@@ -64,23 +64,26 @@ session_start();
 <body onload='initialize();'>
     <div id='popupBackground'></div>
     <div id='popupWindow'><div id=popupWindowClose>&times</div><div id='popupWindowContents'></div></div>
+    <span class='topmenuItem' id=loginContainer></span>
+    <div id=topMenu>
+        <span class='topmenuItem clickable' data-id=home>Home</span>
+        <span class='topmenuItem clickable' data-id=exploredata>Explore&nbspData</span>
+    </div>
+<!--        <span class='topmenuItem clickable' data-id=downloaddata >Download&nbspData</span>
+-->        
+    <div id=exploreMenu></div>
+    <div id='mainContents'>
+        <div id='introWindow' class='wideDiv homeDiv'><div class='spacer'></div><div id='introContents' class=contentsDivwide></div></div>
+        <div id='sourcesWindow' class='wideDiv exploreDiv'><div class='spacer'></div><div id='sourcesHeader' class=headerDiv></div><div id='sourcesContents' class=contentsDivnarrow></div></div>
+        <div id="datasetWindow" class='wideDiv exploreDiv'><div class=spacer></div><div id='datasetHeader' class=headerDiv></div><div id='datasetContents' class=contentsDivnarrow><div id=datasetInfo></div><div id=mapDiv></div><div id=locationsList></div></div></div>
+<!--    <div id="mapWindow" class='wideDiv exploreDiv'><div class=spacer></div><div id='mapHeader' class=headerDiv></div><div id='mapContents' class=contentsDiv></div></div>
+-->
+    <div id="locationWindow" class='wideDiv exploreDiv'><div class=spacer></div><div id='locationHeader' class=headerDiv></div><div id='locationContents' class=contentsDivnarrow></div></div>
+    <div id="figureWindow" class='wideDiv exploreDiv'><div class=spacer></div><div id='figureHeader' class=headerDiv></div><div id='figureContents' class=contentsDiv></div></div>
+    <div id="dataWindow" class='wideDiv exploreDiv'><div class=spacer></div><div id='dataHeader' class=headerDiv></div><div id='dataContents' class=contentsDiv></div></div>
 
-
-    <div id='allContents'>
-    <div id='introWindow' class=wideDiv><div class='spacer'></div><div id='introContents' class=contentsDivwide>
-
-
-    </div></div>
-    <div id='menuWindow' class=wideDiv><div class='spacer'></div><div id='menuHeader' class=headerDiv></div><div id='menuContents' class=contentsDivnarrow></div></div>
-    <div id="datasetWindow" class=wideDiv><div class=spacer></div><div id='datasetHeader' class=headerDiv></div><div id='datasetContents' class=contentsDivnarrow></div></div>
-    <div id="mapWindow" class=wideDiv><div class=spacer></div><div id='mapHeader' class=headerDiv></div><div id='mapContents' class=contentsDiv></div></div>
-    <div id="locationWindow" class=wideDiv><div class=spacer></div><div id='locationHeader' class=headerDiv></div><div id='locationContents' class=contentsDivnarrow></div></div>
-    <div id="figureWindow" class=wideDiv><div class=spacer></div><div id='figureHeader' class=headerDiv></div><div id='figureContents' class=contentsDiv></div></div>
-    <div id="dataWindow" class=wideDiv><div class=spacer></div><div id='dataHeader' class=headerDiv></div><div id='dataContents' class=contentsDiv></div></div>
-    <div class=floatRight id="floatNav"></div>
-    <div class=floatRight id=onscreenMenu>
-        <div id=quickMenu class='clickable centered'><img src="img/menu32.svg" alt=""><br>quick<br>nav</div>
     <!--
+    <div id=quickMenu class='clickable floatRight'><img src="img/menu32.svg" alt=""><br>quick<br>nav</div>
     <div class=floatRight id="fdown"><div class=floatImg><img src='img/down.svg' width=50px></div></div>
     <div class=floatRight id="fup"><div class=floatImg><img src='img/up.svg' width=50px></div></div>
     <div class='floatLeft' id=floatFaq>?</div>
@@ -90,7 +93,5 @@ session_start();
 </div>
     <div id="shade"></div>
     <div id='footer'><?php include 'footer.php'; ?></div>
-<!--
--->
 </body>
 </html>

@@ -1,5 +1,7 @@
 // global variables
 var map;
+var ismap=false;
+
 var suff="/biodiv";
 var currentLayer;
 var currentMarker;
@@ -18,42 +20,23 @@ var largeIcon = new L.Icon({
 var taxonData=new Array();
 var currentDataset=new Array();
 
+window.addEventListener("resize", resizeElements);
+
 
 function initialize(){
     //just some housekeeping to adjust sizes of divs to the current screen
     console.log("initialize");
-    wh=$(window).height();
-    ww=$(window).width();
-    $("#allContents").css({
-        "height":wh*0.96,
-        "width":ww,
-    });
-    $("#footer").css({
-        "height": wh*0.04-1,
-        "width": ww-10,
-    });
-    $(".spacer").css({
-        "height":wh*0.96,
-    });
-    $("#mapWindow").css({
-        "height":wh*0.96,
-    });
 
-    if (wh<ww){
-        size="100% auto";
-    }else{
-        size="auto 100%";
-    }
-    $("#introWindow").css({
-        "background-size": size,
-    });
-
-    populateHeaders();
-    populateFloatNav();
-    initializeMap();
+    $.get("intro_contents", function(data){
+            $('#introContents').append(data);
+            console.log("loaded intro_contents");
+        },"html"
+    );
+ 
+    initializeExplore();
 
 
-    //check if flat call
+    //check if flat call 
     init="normal";
     var urlString = window.location.search.substring(1);
     if (urlString!=""){
@@ -66,12 +49,57 @@ function initialize(){
 	    }
     }
 
+    call="./login.php?action=userInfo";
+    $.get(call,
+        function(data){
+        //console.log(data);
+	    data=JSON.parse(data);
+        ownedItems= new Array();
+        userType= data[1];
+	    if (data[0]==null){ //when not registered;
+            $('#loginContainer').html("<span class=clickable onClick=loginForm()>login</span>&nbsp|&nbsp<span class=clickable onClick=registerForm()>register</span>");
+            ownedItems.push([]);
+            ownedItems.push([]);
+        }else{ //when registered
+            ownedItems.push(data[6]);
+            ownedItems.push(data[7]);
+            if(data[1]=="admin"){
+                $('#loginContainer').html("<span class=clickable onClick=window.location.href='./admin/';>admin&nbsppages</span>&nbsp|&nbsp<span class=clickable onClick=logoutForm()>logout</span>&nbsp|&nbsp<span class=clickable onClick=updateUserForm()>your&nbspaccount</span>");
+            }else{
+                $('#loginContainer').html("<span class=clickable onClick=logoutForm()>logout</span>&nbsp|&nbsp<span class=clickable onClick=updateUserForm()>your account</span>");
+            }
+            if (ownedItems.length>0){
 
-    // scroll indicators
-    $('#allContents').scroll(function() {
-        var sTop = $('#allContents').scrollTop();
-        var sBot = -$('#allContents').scrollTop() - $('#allContents').height()+$('#allContents')[0].scrollHeight;
+            }
+	    }
+	    if (init=="updatePassword"){
+             updatePasswordForm(tempPassword);
+        }
+        populateSources();
+    });
+
+
+// global functions
+
+    $('#floatFaq').on("click", function(){
+        pageinPopup(0.5,0.8,"faq_contents","FALSE")
+    });
+
+    $(".topmenuItem").on("click", function(){
+        target=$(this).data('id');
+        if (target=="home"){
+            showHome();
+        }else if (target=="exploredata"){
+            showExplore();
+        }else if(target=="downloaddata"){
+            showDownload();
+        }
+    });  
 /*
+    // scroll indicators
+    $('#mainContents').scroll(function() {
+        var sTop = $('#mainContents').scrollTop();
+        var sBot = -$('#mainContents').scrollTop() - $('#mainContents').height()+$('#mainContents')[0].scrollHeight;
         if ( sTop > 50 ) { 
             $('#fup').fadeIn(1000);
 //            $('#faqPointer').hide();
@@ -84,99 +112,56 @@ function initialize(){
         }else{
             $('#fdown').hide();
         }
-
         $('#floatNav').stop(true, true).show().fadeOut(6000);
+    });
 */
-    });
+    showHome();
+//    resizeElements();
+}
 
-    call="./login.php?action=userInfo";
-    $.get(call,
-        function(data){
-        //console.log(data);
-	    data=JSON.parse(data);
-        ownedItems= new Array();
-        userType= data[1];
-	    if (data[0]==null){ //when not registered;
-            $('#loginContainerFooter').html("<span class=clickable onClick=loginForm()>login</span>&nbsp|&nbsp<span class=clickable onClick=registerForm()>register</span>");
-            ownedItems.push([]);
-            ownedItems.push([]);
-        }else{ //when registered
-            ownedItems.push(data[6]);
-            ownedItems.push(data[7]);
-            if(data[1]=="admin"){
-                $('#loginContainerFooter').html("<span class=clickable onClick=window.location.href='./admin/';>admin pages</span>&nbsp|&nbsp<span class=clickable onClick=logoutForm()>logout</span>&nbsp|&nbsp<span class=clickable onClick=updateUserForm()>your account</span>");
-            }else{
-                $('#loginContainerFooter').html("<span class=clickable onClick=logoutForm()>logout</span>&nbsp|&nbsp<span class=clickable onClick=updateUserForm()>your account</span>");
-            }
-            if (ownedItems.length>0){
-                $('#dataWindow').show();
-                $('#qnavData').show();
-            }
-	    }
-	    if (init=="updatePassword"){
-                updatePasswordForm(tempPassword);
-        }
+function showHome(){
+    $(".exploreDiv").hide()
+    $(".homeDiv").show()
+    $("#exploreMenu").hide()
+    resizeElements();
+}
 
-        populateMenu();
-
-
-    });
-
-    $('#floatFaq').on("click", function(){
-        pageinPopup(0.5,0.8,"faq_contents","FALSE")
-    });
-
-    $('#quickMenu').on("click", function(){
-        $("#floatNav").toggle();
-    });
-
-
+function showExplore(){
+    $(".homeDiv").hide()
+    $("#exploreMenu").show()
+    scroll2div("sourcesWindow");
 }
 
 
-function populateFloatNav(){
-    console.log("floatNav");
-    txt="<div class='clickable qnavItem' data-id=introWindow>Intro</div>";
-    txt+="<div class='clickable qnavItem'  data-id=menuWindow>Data sources</div>";
-    txt+="<div class='clickable qnavItem' data-id=mapWindow>Map</div>";
-    txt+="<div class='clickable qnavItem' data-id=datasetWindow>Dataset Info</div>";
-    txt+="<div class='clickable qnavItem' data-id=locationWindow>Location Info</div>";
-    txt+="<div class='clickable qnavItem' data-id=figureWindow>Graph</div>";
-    txt+="<div class='clickable qnavItem' id=qnavData data-id=dataWindow>Data</div>";
-    $('#floatNav').html(txt);
-    $('#floatNav').hide();
-    $('#qnavData').hide();
 
 
-    $(".qnavItem").on("click", function(){
-        target=$(this).data('id');
-        scroll2div(target);
-        $("#floatNav").hide();
-    });  
-}
-
-
-function populateHeaders(){
-    console.log("page headers");
-
-    $.get("intro_contents", function(data){
-            $('#introContents').html(data);
-            console.log("loaded intro_contents");
-        },"html"
-    );
-    
-    $('#introHeader').html("<span class=headerText>Okavango monitoring and data sharing</span>");
-    $('#menuHeader').html("<span class=headerText>Data Sources</span>");
+function initializeExplore(){
+    //$('#introHeader').html("<span class=headerText>Okavango monitoring and data sharing</span>");
+    $('#sourcesHeader').html("<span class=headerText>Data Sources</span>");
     $('#datasetHeader').html("<span class=headerText>Dataset Info</span>");
-    $('#mapHeader').html("<span class=headerText>Map</span>");
     $('#locationHeader').html("<span class=headerText>Location Info</span>");
     $('#figureHeader').html("<span class=headerText>Graphs and Data</span>");
     $('#dataHeader').html("<span class=headerText>Data Editor</span>");
-    $('#datasetContents').html("<p>Select dataset in Data Sources panel first</p>");
-    $('#locationContents').html("<p>Select location in Dataset panel first</p>");
-    $('#figureContents').html("<p>Select variable in Location panel first</p>");
-    $('#dataContents').html("<p>Select variable in Location panel first</p>");
-    $('#dataWindow').hide();
+    $('#datasetInfo').html("<p>Select dataset in <span class='clickable' onclick=scroll2div('sourcesWindow')>Data sources</span> panel first</p>");
+    $('#locationContents').html("<p>Select location in <span class='clickable navItem'  onclick=scroll2div('datasetWindow')>Dataset</span> panel first</p>");
+    $('#figureContents').html("<p>Select variable in  <span class='clickable navItem'  onclick=scroll2div('locationWindow')>Location </span> panel first</p>");
+    $('#dataContents').html("<p>Select variable in <span class='clickable navItem'  onclick=scroll2div('locationWindow')>Location</span> panel first</p>");
+
+    txt="<div class='clickable expmenuItem navItem' id=nav-sourcesWindow data-id=sourcesWindow><span>Data sources</span></div>";
+    txt+="<div class='clickable expmenuItem navItem' id=nav-datasetWindow data-id=datasetWindow><span>Dataset Info</span></div>";
+    txt+="<div class='clickable expmenuItem navItem' id=nav-locationWindow data-id=locationWindow><span>Location Info</span></div>";
+    txt+="<div class='clickable expmenuItem navItem' id=nav-figureWindow data-id=figureWindow><span>Graph</span></div>";
+    txt+="<div class='clickable expmenuItem navItem' id=nav-dataWindow data-id=dataWindow><span>Data</span></div>";
+    $('#exploreMenu').html(txt);
+    $('#exploreMenu').show();
+    $("#nav-sourcesWindow").addClass("active");
+    $("#nav-sourcesWindow").addClass("current");
+    $(".expmenuItem").on("click", function(){
+        target=$(this).data('id');
+        scroll2div(target);
+    });
+    initializeMap()
+    ismap=true;
 }
 
 
@@ -195,27 +180,32 @@ function clickOnMapItem(itemId, dataGroup, datasetID, typeCode) {
 
 function showAll(datastreamID, locationID, datasetID, obsType, dBase, varType){
     console.log(dBase);
+    scrollTo='datasetWindow';
+    scroll2div(scrollTo);
+
+    if (!ismap){
+        initializeMap()
+        ismap=true;
+    }
 
     showDataset(locationID, datasetID,dBase,varType, obsType, false, 
         function(data){
-            scrollTo='datasetWindow';
             if (datastreamID>""){
                 showDatastream(datastreamID, false);
                 scrollTo='figureWindow';
             }else{
-                $('#figureContents').html("Select variable from Location panel first");
+                $('#figureContents').html("Select variable from <span class=clickable onclick=scroll2div('locationWindow') Location </span> panel first");
             }
             if (locationID>""){
                 // location to show
                 showLocation(locationID, dataGroup, false, false);
             }else{
-                $('#locationContents').html("Select location from Dataset panel first");
-                $('#figureContents').html("Select variable from Location panel first");
+                $('#locationContents').html("Select location from <span class='clickable' onclick=scroll2div('datasetWindow')> Dataset info </span> panel first");
+                $('#figureContents').html("Select variable from <span class='clickable' onclick=scroll2div('locationWindow')>Location info</span> panel first");
             }
             $('#dataContents').html("");
             //console.log("scrolling from all "+scrollTo);
             if (scrollTo){
-                scroll2div(scrollTo);
             }
         }
     );
@@ -233,6 +223,7 @@ function showDataset(locationID, datasetID,dBase,varType, obsType, scrollTo, cal
 // shows dataset in map, highlights selected location if needed, executes scroll and cleanup if needed
 // only called from menu
 // dataset always shown
+
     dataGroup=dBase;
     describeDataset(dataGroup, datasetID, varType, null);
 
@@ -256,6 +247,7 @@ function showDataset(locationID, datasetID,dBase,varType, obsType, scrollTo, cal
     $.get(apicall, 
         function(data){
             alldata=JSON.parse(data);
+            map.invalidateSize();
             geoJSONLayer = L.geoJSON(alldata, {
                 pointToLayer: function(feature, latlng) {
                     marker=L.marker(latlng, {icon: smallIcon});
@@ -353,9 +345,7 @@ function describeDataset(group, datasetID, varType, scrollTo){
     $("#shade").show();
     $.get(apicall, 
         function(data){
-            console.log(data);
             currentDataset=JSON.parse(data)[datasetID];
-            console.log(currentDataset);
             txt="<div class=infotableDiv id=dsetinfoDiv>";
             txt+="<div class=tableTitle>";
 		    txt+=currentDataset['datasetName'];
@@ -378,10 +368,9 @@ function describeDataset(group, datasetID, varType, scrollTo){
             }
             txt+="</div>";
             txt+="<div class=auxDiv><span class=clickable onClick=downloadAPI('"+dataGroup+"','"+currentDataset['datasetID']+"','','','','')>download entire dataset</span></div>";
-            txt+="<div class=listtableDiv id=dsetlistDiv></div>";
-            $("#datasetContents").html(txt);
+            $("#datasetInfo").html(txt);
 
-            listLocationsInDataset(group, datasetID, varType, 'dsetlistDiv')
+            listLocationsInDataset(group, datasetID, varType, 'locationsList')
 
             if(scrollTo){
                 scroll2div(scrollTo);    
@@ -760,35 +749,19 @@ function showEnvmonEvent(locationID, evDate, scrollTo){
 
 
 function initializeMap(){
-//main function for initializing map interface
+    //main function for initializing map interface
     console.log("map");
-    showMap();
-    loadBaseMap(); // this is switched off for debugging
-}
-
-
-
-function loadBaseMap(){
-// loads openstreetmap. For the time being the only option for background. Perhaps one day will implement google satellite overlay... 
+    map = L.map('mapDiv', {dragging: true, center: new L.LatLng(-19.3, 23), zoom: 9, zindex: 30});
+    map.scrollWheelZoom.disable();
+    // loads openstreetmap. For the time being the only option for background. Perhaps one day will implement google satellite overlay... 
     var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
     osm=new L.TileLayer(osmUrl, {minZoom: 7, maxZoom: 15, attribution: osmAttrib});    
     osm.addTo(map);
+    return("done");
 }
 
 
-
-function showMap(){
-// shows empty map canvas
-// map is a global variable here
-//    if($(window).height()*0.9<400){
-//        mapheight=400;
-//    }else{
-//        mapheight=$(window).height()-20;
-//    }
-        map = L.map('mapContents', {dragging: true, center: new L.LatLng(-19.3, 23), zoom: 9, zindex: 30});
-        map.scrollWheelZoom.disable();
-}
 
 
 
@@ -864,13 +837,17 @@ function datasetInfoBox(group, datasetID, whattodo){
 
 
 
-function scroll2div(_div2scroll){
-    //console.log(_div2scroll);
-    $('#'+_div2scroll).get(0).scrollIntoView({
-        block: "start",
-        behavior: "smooth"
-    });
+function scroll2div(_target){
+    $(".exploreDiv").hide();
+    $("#"+_target).show();
+    $(".expmenuItem").removeClass("current");
+    $("#nav-"+_target).addClass("current");
+    if(_target=="datasetWindow"){
+        map.invalidateSize();
+    }
 }
+
+
 
 function showAndScroll(_txt, _div2show, _div2scroll){
     $("#"+_div2show).html(_txt);
@@ -1020,5 +997,56 @@ function editDataset(_base, _datasetID){
     openInNewTab(url);
 }
 
+
+function resizeElements(){ 
+    wh=$(window).height();
+    ww=$(window).width();
+
+    tmh=$("#topMenu").height();
+    fh=$("#footer").height();
+    emh=$("#exploreMenu").height();
+
+    if (wh<ww){
+        //landscape
+        size="100% auto"; 
+        $("#exploreMenu").css({
+            "width":80,
+            "top": wh/3,
+        });
+        $("#exploreMenu").addClass("floatRight");
+        emh=0
+    }else{
+        //portrait
+        size="auto 100%";
+        $("#exploreMenu").css({
+            "width":"100%",
+        });
+        $("#exploreMenu").removeClass("floatRight");
+        if($("#introWindow").is(":visible") == true ){
+             emh=0;
+        }
+   }
+
+    ch=wh-tmh-fh-emh-1,
+    console.log(wh,tmh,fh,emh);
+    $("#mainContents").css({
+        "height":ch,
+        "width":ww,
+    });
+
+    $(".spacer").css({
+        "height":ch,
+    });
+
+    $("#mapDiv").css({
+        "height":0.8*ch,
+        "width":ww*0.7,
+    });
+
+
+    $("#introWindow").css({
+        "background-size": size,
+    });
+}
 
 

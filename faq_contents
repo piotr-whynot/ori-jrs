@@ -69,10 +69,12 @@ Addiionally to Occurrence records, the GBIF database structure provides an entry
 
 <h2 id=graphsfaq>Can I copy/download graphs and how?</h2>
 <p> Graphs can be downloaded by clicking on the "menu" icon in the top-right corner of the graph.
-<p> Please mind that graphs are shared under <a href="https://creativecommons.org/licenses/by-nd/4.0/"> Attribution-NoDerivs (CC BY-ND) </a> licence. This means that you may use the graph as is for any purpose provided its source is acknowledged, and you don't modify the graph in any way. If the graph does not show what you want it to show - sorry - you need to generate one you need from the data yourself. 
+
 
 <h2 id=copyrightsfaq>Are data copyrighted?</h2>
-<p>Some graphs and figures presented in this website are copyrighted and are available under <a href="https://creativecommons.org/licenses/by-nd/4.0/"> Creative Commons Attribution-NoDerivs(CC BY-ND) </a> licence. This means that the pictures and graphs, may be copied and reproduced, published, uploaded, posted, transmitted, or distributed in any way, without ORI Monitoring Team's prior written permission, provided that the copyright sign stays on the reproduced material, and the material is not altered in any way.</p>
+
+<p>Some graphs and figures presented in this website are available under <a href="https://creativecommons.org/licenses/by-nd/4.0/"> Creative Commons Attribution-NoDerivs (CC BY-ND) </a>  licence. This means that the pictures and graphs, may be copied and reproduced, published, uploaded, posted, transmitted, or distributed in any way, without ORI Monitoring Team's prior written permission, provided that the appropriate attribution (recognition of the source, i.e. this website) is given, and that the material is not altered in any way. If the graph does not show what you want it to show - sorry - you need to generate one you need from the data yourself.</p>
+
 <p> Data are shared here under one of three licences:
 <ol>
 <li><a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>, under which data are made available for any use without restriction or particular requirements on the part of users
