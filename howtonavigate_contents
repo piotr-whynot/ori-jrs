@@ -1,15 +1,15 @@
 <h2 id=navigationfaq>How to Navigate this Website?</h2>
-<p>The website is organized in the form of several "panels":
+<p>The data exploration section of the website is organized in the form of several "panels":
 <ol>
-<li>Intro
 <li>Data Sources
-<li>Map
 <li>Dataset info
 <li>Location info
 <li>Graphs
 <li>Data editor
 </ol>
-<p>You can scroll up-down between the panels, and you will notice that while you are scrolling, a "quick menu" appears on the right-hand side of the screen. You can use that menu to jump directly to given panel.
+
+
+<p>You can switch between the panels using the menu on the right-hand-side of the screen (or on top of the screen if on smartphone).
 <p>Note - Data editor panel will only be available to the users who are owners of a dataset that is presented on this website, and are logged in.
 
 <p>Panels are populated sequentially. 
@@ -19,9 +19,7 @@
 <ol>
 <li>select appropriate dataset in the Data Source panel - that will be "Fish monitoring" under "Monitoring" and "Biodiversity"
 <li>upon selection of that dataset, the Dataset Info panel will be scrolled to automatically. 
-<li> You may select the desired location from the list provided there OR
-
-<li>scroll manually to Map panel and select location from the map by clicking on the appropriate marker
+<li> You may select the desired location from the list provided there OR select location from the map by clicking on the appropriate marker
 <li>On selecting the location you will be automatically redirected to the "Location Info panel", where you will see all Sampling Events for that location.
 <li>You may then select an event you are interested in, and you will be redirected to Graphs and Data panel, where you will see the actual data.
 <li>Alternatively, since this particular dataset is a monitoring dataset - you may choose to view a time series of fish data by following the "show time series" link in the Location Info panel. A time series graph will then be shown in the Graph and Data panel.
@@ -34,8 +32,8 @@
 
 
 <h2 id=downloadfaq>How to download data?</h2>
-<p>Download functionality is available for all datasets. Some dataset you may download anonymously. To downlaod some datasets, you will have to register and be logged in. Registration process is easy, and we just require your name, e-mail and institutional affiliations. We will not share this information with anyone, and will not send you unsolicited e-mails. That process is purely for our records.
-<p>Data are available for download in CSV and JSON format by following the "Download entire dataset" link in the Dataset Info Panel or from Location Info Panel. 
+<p>Download functionality is available for all datasets.To downlaod a dataset, you will have to register and be logged in. Registration process is easy, and we just require your name, e-mail and institutional affiliations. We will not share this information with anyone, and will not send you unsolicited e-mails. That process is purely for our records.
+<p>Data are available for download in CSV and JSON format by following the "Download entire dataset" link in the Dataset Info Panel or from Location Info Panel. CSV files can be opened in Excel. JSON files have to be processed "programatically".
+ 
 <p>You should mind and respect the data sharing licence that is specific to each dataset.
-
 
