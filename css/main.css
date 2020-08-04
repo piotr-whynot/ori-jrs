@@ -361,7 +361,7 @@ th {
 
 .floatRight{
     position:fixed;
-    right:0;
+    right:20px;
     z-index:10500;
 }
 
@@ -464,3 +464,41 @@ th {
   background-position: -264px -96px;
 }
 
+
+.topnav2 .menulevel1 {
+    /* this is for menulevel divs in 1st and lower levels*/
+    background: var(--colE);
+    color: var(--colC);
+    width: 89%;
+    margin-left: 8%;
+    text-transform: uppercase;
+}
+  
+.topnav2 .menulevel2 {
+    /* this is for menulevel divs in 2nd and lower levels*/
+    width: 86%;
+    margin-left: 11%;
+    background: var(--colE);
+    color: var(--colC);
+    font-size: 14pt;
+}
+
+.topnav2 .menulevel3 {
+    /* this is for menulevel divs in 3nd and lower levels*/
+    width: 83%;
+    margin-left: 14%;
+    background: var(--colE);
+    color: var(--colC);
+    font-size: 13pt;
+}
+
+.topnav2 .info { 
+    margin-left: 16%;
+    color: var(--colC);
+    font : 12px/12px 'Rubik',sans-serif;
+    width: 50%;
+}
+.topnav2 .infoLink { 
+    color: var(--colC);
+    font : 14px/14px 'Rubik',sans-serif;
+}

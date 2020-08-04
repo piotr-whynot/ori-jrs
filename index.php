@@ -68,8 +68,9 @@ session_start();
     <div id=topMenu>
         <span class='topmenuItem clickable' data-id=home>Home</span>
         <span class='topmenuItem clickable' data-id=exploredata>Explore&nbspData</span>
+        <span class='topmenuItem clickable' data-id=downloaddata >Download&nbspData</span>
     </div>
-<!--        <span class='topmenuItem clickable' data-id=downloaddata >Download&nbspData</span>
+<!--
 -->        
     <div id=exploreMenu></div>
     <div id='mainContents'>
@@ -81,6 +82,7 @@ session_start();
     <div id="locationWindow" class='wideDiv exploreDiv'><div class=spacer></div><div id='locationHeader' class=headerDiv></div><div id='locationContents' class=contentsDivnarrow></div></div>
     <div id="figureWindow" class='wideDiv exploreDiv'><div class=spacer></div><div id='figureHeader' class=headerDiv></div><div id='figureContents' class=contentsDiv></div></div>
     <div id="dataWindow" class='wideDiv exploreDiv'><div class=spacer></div><div id='dataHeader' class=headerDiv></div><div id='dataContents' class=contentsDiv></div></div>
+    <div id="downloadWindow" class='wideDiv downloadDiv'><div id='downloadHeader' class=headerDiv></div><div id='downloadContents' class=contentsDiv></div></div>
 
     <!--
     <div id=quickMenu class='clickable floatRight'><img src="img/menu32.svg" alt=""><br>quick<br>nav</div>

@@ -132,6 +132,15 @@ function showExplore(){
     scroll2div("sourcesWindow");
 }
 
+function showDownload(){
+    $(".homeDiv").hide()
+    $("#exploreMenu").hide()
+    $(".downloadDiv").show()
+    scroll2div("downloadWindow");
+    populateDownload();
+}
+
+
 
 
 
@@ -160,8 +169,10 @@ function initializeExplore(){
         target=$(this).data('id');
         scroll2div(target);
     });
-    initializeMap()
-    ismap=true;
+    if (!ismap){
+        initializeMap()
+        ismap=true;
+    }
 }
 
 
@@ -180,16 +191,9 @@ function clickOnMapItem(itemId, dataGroup, datasetID, typeCode) {
 
 function showAll(datastreamID, locationID, datasetID, obsType, dBase, varType){
     console.log(dBase);
-    scrollTo='datasetWindow';
-    scroll2div(scrollTo);
-
-    if (!ismap){
-        initializeMap()
-        ismap=true;
-    }
-
     showDataset(locationID, datasetID,dBase,varType, obsType, false, 
         function(data){
+            scrollTo='datasetWindow';
             if (datastreamID>""){
                 showDatastream(datastreamID, false);
                 scrollTo='figureWindow';
@@ -206,7 +210,9 @@ function showAll(datastreamID, locationID, datasetID, obsType, dBase, varType){
             $('#dataContents').html("");
             //console.log("scrolling from all "+scrollTo);
             if (scrollTo){
+                scroll2div(scrollTo);
             }
+            console.log(scrollTo);
         }
     );
 }
@@ -864,49 +870,71 @@ function centerLeafletMapOnMarker(marker) {
 
 
 
+function directDownload(_base,_datasetID){
+   if (_base=="biodivdata"){
+        apicall="./api/api_biodiv.php?calltype=datasetinfo&datasetID="+_datasetID+"";
+    }else{
+        apicall="./api/api_envdata.php?calltype=datasetinfo&datasetID="+_datasetID+"";
+    }
+    //console.log(apicall);
+    $("#shade").show();
+    $.get(apicall, 
+        function(data){
+            currentDataset=JSON.parse(data)[_datasetID];
+            downloadAPI(_base, _datasetID,"","","","");
+            $("#shade").hide();
+        });
+}
+
 
 function downloadAPI(_base, _datasetID, _locationID, _baseTime, _datastreamID, _format){
-    txt="<h1> Downloading data</h1>";
-    txt+="<p>Dataset: "+currentDataset['datasetName']+" ("+_datasetID+")";
-    txt+="<p>";
-
-    if(_base=="biodivdata"){
-        apicall="./api/api_biodiv.php?";
-    }
-    if(_base=="envmondata"){
-        apicall="./api/api_envdata.php?";
-    }
-    if (_datasetID!=''){
-        apicall+="&datasetID="+_datasetID;
-    }
-    if (_locationID!=''){
-        apicall+="&locationID="+_locationID;
-    }
-    if (_datastreamID!=''){
-        apicall+="&datastreamID="+_datastreamID;
-    }
-    if (_baseTime!=''){
-        apicall+="&baseTime="+_baseTime;
-    }
-    console.log(currentDataset);
-
-    if (_base=="biodivdata"){
-        txt+="<p>Download all data in one file (<b>json</b> format) ";
-        txt+="&nbsp<span class=clickable onClick=downloadAPI_call('"+apicall+"&calltype=data&format=json','json','"+_datasetID+"','alldata')>download json file </span>";
-        txt+="<p>";
-        txt+="<p>";
-        txt+="<p>";
-        txt+="<p>Download data in separate files (<b>csv</b> format)";
-        txt+="<p>Occurrence data <span class=clickable onClick=downloadAPI_call('"+apicall+"&calltype=data&format=csv','csv','"+_datasetID+"','occurrence')>csv file</span>";
-        txt+="<p>\"Measurement or fact\" data <span class=clickable onClick=downloadAPI_call('"+apicall+"&calltype=mof&format=csv','csv','"+_datasetID+"','measurementorfact')>csv file</span>";
-
+    console.log(userType);
+    if (userType===null){
+        txt="<p>You have to register and be logged in to download data "; 
+        txt+="<p><span class=clickable onClick=loginForm()>login</span>&nbsp|&nbsp<span class=clickable onClick=registerForm()>register</span>";
     }else{
-        txt+="<p>Entire dataset in ";
-        txt+="<span class=clickable onClick=downloadAPI_call('"+apicall+"&calltype=data&format=json','json','"+_datasetID+"','alldata')>json</span>";
-        txt+=" or ";
-        txt+="<span class=clickable onClick=downloadAPI_call('"+apicall+"&calltype=data&format=csv','csv','"+_datasetID+"','alldata')>csv</span>";
-        txt+=" format";
-        
+        txt="<h1> Downloading data</h1>";
+        txt+="<p>Dataset: "+currentDataset['datasetName']+" ("+_datasetID+")";
+        txt+="<p>";
+
+        if(_base=="biodivdata"){
+            apicall="./api/api_biodiv.php?";
+        }
+        if(_base=="envmondata"){
+            apicall="./api/api_envdata.php?";
+        }
+        if (_datasetID!=''){
+            apicall+="&datasetID="+_datasetID;
+        }
+        if (_locationID!=''){
+            apicall+="&locationID="+_locationID;
+        }
+        if (_datastreamID!=''){
+            apicall+="&datastreamID="+_datastreamID;
+        }
+        if (_baseTime!=''){
+            apicall+="&baseTime="+_baseTime;
+        }
+        console.log(currentDataset);
+
+        if (_base=="biodivdata"){
+            txt+="<p>Download all data in one file (<b>json</b> format) ";
+            txt+="&nbsp<span class=clickable onClick=downloadAPI_call('"+apicall+"&calltype=data&format=json','json','"+_datasetID+"','alldata')>download json file </span>";
+            txt+="<p>";
+            txt+="<p>";
+            txt+="<p>";
+            txt+="<p>Download data in separate files (<b>csv</b> format)";
+            txt+="<p>Occurrence data <span class=clickable onClick=downloadAPI_call('"+apicall+"&calltype=data&format=csv','csv','"+_datasetID+"','occurrence')>csv file</span>";
+            txt+="<p>\"Measurement or fact\" data <span class=clickable onClick=downloadAPI_call('"+apicall+"&calltype=mof&format=csv','csv','"+_datasetID+"','measurementorfact')>csv file</span>";
+
+        }else{
+            txt+="<p>Entire dataset in ";
+            txt+="<span class=clickable onClick=downloadAPI_call('"+apicall+"&calltype=data&format=json','json','"+_datasetID+"','alldata')>json</span>";
+            txt+=" or ";
+            txt+="<span class=clickable onClick=downloadAPI_call('"+apicall+"&calltype=data&format=csv','csv','"+_datasetID+"','alldata')>csv</span>";
+            txt+=" format";
+            
+        }
     }
     popup(0.9,0.9, txt);
     //alert("not available at the moment");
@@ -1049,4 +1077,11 @@ function resizeElements(){
     });
 }
 
-
+function showhidedloadInfo(_datasetID){
+    if($("#info-"+_datasetID).is(":visible") == true){
+        $("#info-"+_datasetID).hide();
+    }else{
+        $(".info").hide();
+        $("#info-"+_datasetID).show();
+    }
+}
