@@ -135,6 +135,7 @@ H3 {
 
 #topMenu{
     margin:auto;
+    padding-top:10px;
     background: white;
     text-align: center;
 }
@@ -142,7 +143,11 @@ H3 {
 .topmenuItem{
     margin-left:10px;
     margin-right:10px;
-    font : 14px/12px 'Rubik', sans-serif;
+    font : 16px/16px 'Rubik', sans-serif;
+}
+
+#loginContainer{
+    font : 12px/14px 'Rubik', sans-serif;
 }
 
 #exploreMenu{
@@ -469,8 +474,9 @@ th {
     /* this is for menulevel divs in 1st and lower levels*/
     background: var(--colE);
     color: var(--colC);
-    width: 89%;
-    margin-left: 8%;
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 2%;
     text-transform: uppercase;
 }
   
@@ -481,6 +487,7 @@ th {
     background: var(--colE);
     color: var(--colC);
     font-size: 14pt;
+    margin-top: 1%;
 }
 
 .topnav2 .menulevel3 {
@@ -493,12 +500,14 @@ th {
 }
 
 .topnav2 .info { 
-    margin-left: 16%;
+    margin-left: 5%;
+    margin-bottom: 1%;
     color: var(--colC);
-    font : 12px/12px 'Rubik',sans-serif;
+    font : 13px/13px 'Rubik',sans-serif;
     width: 50%;
 }
 .topnav2 .infoLink { 
-    color: var(--colC);
-    font : 14px/14px 'Rubik',sans-serif;
+/*    color: var(--colC);
+*/    font : 14px/14px 'Rubik',sans-serif;
+
 }

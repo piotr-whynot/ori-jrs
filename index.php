@@ -64,7 +64,7 @@ session_start();
 <body onload='initialize();'>
     <div id='popupBackground'></div>
     <div id='popupWindow'><div id=popupWindowClose>&times</div><div id='popupWindowContents'></div></div>
-    <span class='topmenuItem' id=loginContainer></span>
+    <span id=loginContainer></span>
     <div id=topMenu>
         <span class='topmenuItem clickable' data-id=home>Home</span>
         <span class='topmenuItem clickable' data-id=exploredata>Explore&nbspData</span>
