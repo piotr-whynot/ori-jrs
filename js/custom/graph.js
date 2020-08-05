@@ -250,7 +250,7 @@ function createChart(divname, variableName, measuringUnit, locationName,  chartT
             });
 	        return s;			
           },
-          shared: true				
+          shared: false	
         },
         scrollbar: {enabled: scrollbarEnable}, 
         navigator: {enabled: false},

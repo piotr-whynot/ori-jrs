@@ -64,7 +64,7 @@ H3 {
 
 #footer p {
     color : var(--colB);
-    font : 12px/12px 'Arial', sans-serif;
+    font : 13px/13px 'Arial', sans-serif;
 }
 
 #footer a:hover {
@@ -135,9 +135,10 @@ H3 {
 
 #topMenu{
     margin:auto;
-    padding-top:10px;
+    padding-top:15px;
     background: white;
     text-align: center;
+    border-bottom: 1px solid var(--colB);
 }
 
 .topmenuItem{
@@ -208,6 +209,7 @@ H3 {
     width: 500px;
 */
     margin:auto;
+    margin-bottom: 30px;
 }
 
 #introWindow{
@@ -247,12 +249,11 @@ H3 {
 }
 
 #introText{
-    width:80%;
+    width:70%;
     max-width:400px;
     float:left;
     margin-left: 10%;
-    margin-top: 5%;
-    opacity: 0.9;
+    margin-top: 30px;
 }
 
 #introText p {
@@ -367,13 +368,11 @@ th {
 .floatRight{
     position:fixed;
     right:20px;
-    z-index:10500;
 }
 
 .floatLeft{
     position:fixed;
     left:0;
-    z-index:9500;
 }
 
 #quickMenu{
@@ -410,7 +409,7 @@ th {
 
 #floatFaq{
     margin-left:5px;
-    bottom:10px;
+    bottom:20px;
 }
 
 #floatFaqTxt{
@@ -501,13 +500,27 @@ th {
 
 .topnav2 .info { 
     margin-left: 5%;
-    margin-bottom: 1%;
+    margin-bottom: 10px;
     color: var(--colC);
     font : 13px/13px 'Rubik',sans-serif;
-    width: 50%;
+    width: 80%;
+    max-width:400px;
+    margin-bottom: 10px;
 }
 .topnav2 .infoLink { 
 /*    color: var(--colC);
 */    font : 14px/14px 'Rubik',sans-serif;
 
+}
+
+#logos {
+    margin-left: 10%;
+}
+
+.exploreDiv{
+    padding-bottom:100px;
+}
+
+.downloadDiv{
+    padding-bottom:100px;
 }

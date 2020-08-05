@@ -1,6 +1,6 @@
 <div id='logos'>
-<img src='./img/ub_logo.png'>
-<img src='./img/jrs-logo.svg'>
+<img src='./img/UB-logo2.svg' width=100px>
+<img src='./img/jrs-logo.svg' width=100px>
 </div>
 
 <div id="introText">
@@ -11,10 +11,12 @@ The (Okavango) Monitoring and Data Sharing website provides access to environmen
 You will find here (hopefully the most recent) results of environmental and biodiversity monitoring activities but also historical data gathered during short-term research projects in the past. This is simply a data recovery and rescue effort.
 
 <p>
+Biodiversity data available here are also stored in Global Biodiversity Information Facility (<a class=clickable href='https://www.gbif.org' target=_blank>GBIF</a>). You can access our biodiversity data on GBIF <a class='clickable' href='https://www.gbif.org/dataset/search?publishing_org=02b89818-33ab-4bf7-984d-f88a8e0b0b0f' target=_blank> here</a>.
+<p>
 You will be able to "explore" various datasets - see what was measured, when and where, plot data in graphs and tables, and, should you wish to do so, downlodad data to perform any analyses on your computer.
 
 <p>
-This site is maintained by the staff of the Monitoring Unit of the <a class=clickable href="https://www.ori.ub.bw">Okavango Research Institute</a> of <a class=clickable href="https://www.ub.bw">the University of Botswana</a> and developed under funding from <a class=clickable href="https://jrsbiodiversity.org/grants/ori-2017/"> JRS Biodiversity Foundation</a>.
+This site is maintained by the staff of the Monitoring Unit of the <a class=clickable href="https://www.ori.ub.bw" target=_blank>Okavango Research Institute</a> of <a class=clickable href="https://www.ub.bw" target=_blank>the University of Botswana</a> and developed under funding from <a class=clickable href="https://jrsbiodiversity.org/grants/ori-2017/" target=_blank> JRS Biodiversity Foundation</a>.
 </p>
 <p>
 <p><div class=clickable onClick='pageinPopup(0.5,0.8,"faq_contents","FALSE");'>Learn more...</div>

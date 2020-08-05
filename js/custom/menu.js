@@ -134,7 +134,8 @@ function populateDownload(){
                                 datasetDescription=menuArr3[iiii].datasetDescription;
                                 txt+="<li>";
                                 txt+="<div class=menulevel3>";
-                                txt+="<div>"+datasetName+" (<span class='clickable infoLink' onclick=showhidedloadInfo('"+datasetID+"')>info</span>) <span class=clickable onClick=directDownload('"+catID2+"','"+datasetID+"')>download</span> </div>";
+                                txt+="<div>"+datasetName+"</div>";
+                                txt+="<div>&nbsp&nbsp&nbsp<span class='clickable infoLink' onclick=showhidedloadInfo('"+datasetID+"')>info</span> | <span class='clickable infoLink' onClick=directDownload('"+catID2+"','"+datasetID+"')>download</span> </div>";
                                 txt+="<div class=info id=info-"+datasetID+">"+datasetDescription+"</div>";
                                 txt+="</div>";
                                 txt+="</li>";

@@ -121,6 +121,7 @@ function initialize(){
 
 function showHome(){
     $(".exploreDiv").hide()
+    $(".downloadDiv").hide()
     $(".homeDiv").show()
     $("#exploreMenu").hide()
     resizeElements();
@@ -128,6 +129,7 @@ function showHome(){
 
 function showExplore(){
     $(".homeDiv").hide()
+    $(".downloadDiv").hide()
     $("#exploreMenu").show()
     scroll2div("sourcesWindow");
 }
@@ -1030,18 +1032,19 @@ function resizeElements(){
     wh=$(window).height();
     ww=$(window).width();
 
-    tmh=$("#topMenu").height();
-    fh=$("#footer").height();
-    emh=$("#exploreMenu").height();
+    tmh=$("#topMenu").outerHeight();
+    fh=$("#footer").outerHeight();
+    emh=$("#exploreMenu").outerHeight();
 
     if (wh<ww){
         //landscape
         size="100% auto"; 
         $("#exploreMenu").css({
             "width":80,
-            "top": wh/3,
+            "top": wh/5,
         });
         $("#exploreMenu").addClass("floatRight");
+
         emh=0
     }else{
         //portrait
@@ -1050,6 +1053,7 @@ function resizeElements(){
             "width":"100%",
         });
         $("#exploreMenu").removeClass("floatRight");
+
         if($("#introWindow").is(":visible") == true ){
              emh=0;
         }
