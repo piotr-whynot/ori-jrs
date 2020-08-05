@@ -6,37 +6,37 @@
 
 #graph{
     height:400px;
-    width:80%;
-    float:left;    
+    width:100%;
+    max-width:800px;
     background: white;
+    margin:auto;
     padding: 0px;
     }
 
-#graphControls{
-    float: left;    
-    width: 20%;
-    height: 400px;
-    background: white;
+#graphMenu{
+    text-align:center;
 }
 
 #graphMenuAux{
     width: 90%;
-    height: 245px;
-    background: white;
-    font-size: 1.5vh;
+    font-size: 13px;
     padding: 5px;
-    overflow-y: auto;
+    margin:auto;
+    text-align:center;
 }
 
 
 .graphMenuItem{
-    font-family: 'Rubik',sans-serif;
+    font-family: 13px/13px,'Rubik',sans-serif;
+    width: 30%;
+    max-width: 100px;
     margin: auto;
-    display: block;
+    display: inline-block;
     background: var(--colD);
     color: var(--colC);
     padding: 10px;
     margin-bottom: 5px;
+    margin: 5px;
     font-size: 1.6vh;
     text-align: center;
     vertical-align: middle;

@@ -9,12 +9,12 @@ function loadPlot(datastream, graphType, isFirst, showcumsum){
     if (isFirst){
     //isFirst indicates whether this is a first call to loadPlot for a particular datastream. 
     // if yes - graph controlbox is populated depending on showcumsum
-        txt="<div id=graphMenu><div class=graphMenuItem id=timeseries>Show one long time series</div>";
+        txt="<div class=graphMenuItem id=timeseries>Show one long time series</div>";
         if (showcumsum){
             txt+="<div class='graphMenuItem' id=compareyearscumsum>Show year-by-year cumulative</div>";
         }
-        txt+="<div class=graphMenuItem id=compareyearsnormal>Show year-by-year</div></div><hr><div id=graphMenuAux></div>";
-        $('#graphControls').html(txt);
+        txt+="<div class=graphMenuItem id=compareyearsnormal>Show year-by-year</div>";
+        $('#graphMenu').html(txt);
     }
 
     $.get(eventapicall,
@@ -165,7 +165,7 @@ function prepareChart(divname, ds, firstyr, lastyr, measuringUnit, variableName,
             for(var i=datayrs.length-1, len=0; i >= len; i--){
                 y=datayrs[i];
                 if (year2show==0){year2show=y;}
-                txt+="<input type='checkbox' name='years' onclick='showhideYear(this.value)' value="+y+" />"+y+" <br/>"
+                txt+="<input type='checkbox' name='years' onclick='showhideYear(this.value)' value="+y+" />"+y+" "
             }
             $('#graphMenuAux').html(txt);
             chart=createChart(divname, variableName, measuringUnit, locationName, graphType, seriesData);

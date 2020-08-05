@@ -588,8 +588,9 @@ function showBiodivTimeseries(locationID, scrollTo){
     $("#shade").show();
     txt="";
     txt+="<div id=graphWrapper>";
-    txt+="<div id=graphControls></div>";
+    txt+="<div id=graphMenu></div>";
     txt+="<div id=graph></div>";
+    txt+="<div id=graphMenuAux></div>";
     txt+="</div>";
     $('#figureContents').html(txt);
         loadBiodivPlot(locationID);
@@ -613,8 +614,9 @@ function showDatastream(datastreamID, scrollTo){
             selfeature=alldata[0];
                 txt="";
                 txt+="<div id=graphWrapper>";
-                txt+="<div id=graphControls></div>";
+                txt+="<div id=graphMenu></div>";
                 txt+="<div id=graph></div>";
+                txt+="<div id=graphMenuAux></div>";
                 txt+="</div>";
 //            console.log(selfeature.properties);
             // there should be only one datastream at this stage...
