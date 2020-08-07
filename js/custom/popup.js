@@ -62,7 +62,7 @@ function loadPopup(data){
        // $("#popupWindow").show();
         popupStatus = 1;
         totalH = $('#popupWindowContents')[0].scrollHeight;
-        totalH=Math.min(totalH, $(window).height()*0.8);
+        totalH=Math.min(totalH, $(window).height()*0.9);
         $("#popupWindowContents").css({
             "height":totalH,
         });
@@ -85,25 +85,28 @@ function closePopup(){
 
 function centerPopup(H, W){
     // H and W are fraction of window size
+    wh=$(window).height();
+    ww=$(window).width();
     if(H>1){
         // if H and W are given in pixels
-        H=Math.min(0.8, H/$(window).height());
-        W=Math.min(0.8, W/$(window).width());
+        H=Math.min(0.9, H/wh);
+        W=Math.min(0.8, W/ww);
     }
-    popupheight=$(window).height();
-    popupwidth=$(window).width()*W;
+    popupheight=wh;
+    popupwidth=ww*W;
     $("#popupWindow").css({
         "height":popupheight,
         "width":popupwidth,
     });
-    contentsheight=($(window).height()-20)*H; //first guess, as prescribed
+    contentsheight=(wh)*H; //first guess, as prescribed
+    console.log(contentsheight);
 
-    $("#popupWindowContents").css({
-        "height":contentsheight,
-    });
+//    $("#popupWindowContents").css({
+//        "height":contentsheight,
+//    });
     //only need force for IE6
     $("#popupBackground").css({
-        "height": $(window).height()
+        "height": wh
     });
 }       
   

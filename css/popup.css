@@ -11,7 +11,7 @@
 	left:0;
 	background:#000000;
 	border:1px solid #cecece;
-	z-index:10000;
+	z-index:10999;
 }
 
 #popupWindowClose{
@@ -21,11 +21,11 @@
     top:10px;
     cursor:pointer;
     font-size:50px;
-    z-index: 10002;
+    z-index: 11002;
   }
 
 #popupWindowClose:hover{
-    color:#888888;
+    color:black;
 }
 
 #popupWindow{	
@@ -36,15 +36,13 @@
     _position:absolute; /* hack for internet explorer 6*/
     background:#FFFFFF;
     border: 0px solid #cecece;
-    z-index: 10001;
-    font-size: 13px;
+    z-index: 11001;
     padding-bottom: 20px;
-    vertical-align: middle;
+    margin:auto;
 }
 
 #popupWindowContents{
-    z-index: 10002;
-    position:relative;
+    z-index: 11002;
     overflow:auto;
     background:#FFFFFF;
     padding-left:0%;
@@ -60,7 +58,8 @@
 #popupWindow H1{
     font-size: 40px;
     line-height: 40px;
-    margin-top:50px;
+    margin-top:10px;
+    margin-left:30px;
 }
 #popupWindow H2{
     font-size: 30px;
@@ -72,7 +71,23 @@
     font-size: 20px;
     line-height: 20px;
 }
+
 #popupWindow p{
-    font-size: 20px;
+    font-size: 14px;
     margin-top:15px;
+    color:#555555;
 }
+
+#popupWindow li{
+    font-size: 14px;
+    color:#555555;
+}
+
+
+#popupTextBox{
+    width:80%;
+    max-width:400px;
+    background:#FFFFFF;
+    margin:auto;
+}
+
