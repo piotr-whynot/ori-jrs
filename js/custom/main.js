@@ -848,10 +848,16 @@ function datasetInfoBox(group, datasetID, whattodo){
 
 
 function scroll2div(_target){
+    console.log(_target);
     $(".exploreDiv").hide();
-    $("#"+_target).fadeIn(1000);
+    //$("#"+_target).animate({scrollTop: 0}, 100).show();
+    $("#"+_target).animate({scrollTop: 0}, 1).fadeIn(200);
+    //$("#"+_target).scrollTop(0).show();
+    //$("#"+_target).scrollTop(0).fadeIn(200);
     $(".expmenuItem").removeClass("current");
     $("#nav-"+_target).addClass("current");
+//    $("#"+_target).animate({scrollTop: 0}, 100);
+
     if(_target=="datasetWindow"){
         map.invalidateSize();
     }
@@ -1062,7 +1068,7 @@ function resizeElements(){
    }
 
     ch=wh-tmh-fh-emh-1,
-    console.log(wh,tmh,fh,emh);
+//    console.log(wh,tmh,fh,emh);
     $("#mainContents").css({
         "height":ch,
         "width":ww,

@@ -148,6 +148,8 @@ H3 {
 }
 
 #loginContainer{
+    margin-top:5px;
+    margin-right:10px;
     font : 12px/14px 'Rubik', sans-serif;
 }
 
@@ -514,7 +516,8 @@ th {
 }
 
 #logos {
-    margin-left: 10%;
+    margin-left: 5%;
+    margin-top: 10px;
 }
 
 .exploreDiv{
