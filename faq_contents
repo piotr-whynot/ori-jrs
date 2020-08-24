@@ -1,13 +1,12 @@
+<div id=popupTextBox>
 <h1> Help, manual and FAQ</h1>
-<p>&nbsp
-<p>&nbsp
 <ul>
-<li><a class=clickable href='#whatsinherefaq'>What's in here?</a>
-<li><a class=clickable href='#whatisntherefaq'>What isn't here?</a>
-<li><a class=clickable href='#dataorganizationfaq'>How are the data organized?</a>
-<li><a class=clickable href='#downloadfaq'>Can I download data and how?</a>
-<li><a class=clickable href='#graphfaq'>Can I copy/download graphs and how?</a>
-<li><a class=clickable href='#copyrightsfaq'>Are data copyrighted?</a>
+<li><div class=clickable onClick=scroll2div('whatsinherefaq')>What's in here?</div>
+<li><div class=clickable onClick=scroll2div('whatisntherefaq')>What isn't here?</div>
+<li><div class=clickable onClick=scroll2div('dataorganizationfaq')>How are the data organized?</div>
+<li><div class=clickable onClick=scroll2div('downloadfaq')>Can I download data and how?</div>
+<li><div class=clickable onClick=scroll2div('graphfaq')>Can I copy/download graphs and how?</div>
+<li><div class=clickable onClick=scroll2div('copyrightsfaq')>Are data copyrighted?</div>
 </ul>
 
 
@@ -82,5 +81,5 @@ Addiionally to Occurrence records, the GBIF database structure provides an entry
 <li><a href="https://creativecommons.org/licenses/by-nc/4.0"> CC BY-NC</a>, under which data are made available for any use provided that attribution is appropriately given and provided the use is not for commercial purposes
 </ol>
 <p>Licences are dataset-specific, and users should take notice of and respect the licence for dataset they wish to use.
-
+</div>
 

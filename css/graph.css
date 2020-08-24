@@ -8,6 +8,7 @@
     height:400px;
     width:100%;
     max-width:800px;
+    min-width:360px;
     background: white;
     margin:auto;
     padding: 0px;
@@ -25,27 +26,31 @@
     text-align:center;
 }
 
+.graphMenuItem span{
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
+}
 
 .graphMenuItem{
-    font-family: 13px/13px,'Rubik',sans-serif;
-    width: 30%;
-    max-width: 100px;
+    height: 30px;
+    line-height:30px;
+    width: 25%;
     margin: auto;
     display: inline-block;
-    background: var(--colD);
-    color: var(--colC);
+    background: #DEF2F1;
+    color: #3AAFA9;
     padding: 10px;
-    margin-bottom: 5px;
     margin: 5px;
-    font-size: 1.6vh;
     text-align: center;
     vertical-align: middle;
     cursor:pointer;
+    box-sizing:content-box;
 }
 
 .graphMenuItem.current{
-    background: var(--colC);
-    color: var(--colE);
+    background: #3AAFA9;
+    color: #FEFFFF;
 }
 
 .graphMenuItem:hover{

@@ -1,529 +1,88 @@
-:root {
---colA: #17252A;
---colB: #2B7A78;
---colC: #3AAFA9;
---colD: #DEF2F1;
---colE: #FEFFFF;
---colAnchor: #374785;
---colHover: #17252A;
-}
-
 /* Reset */
-html, body, ul, li, table, thead, tfoot, tbody, th, tr, td, p{
-    border : 0;
-    margin : 0;
-    outline : 0;
-    padding : 0;
-    color : var(--colC);
-}
-
 html, body, ul, li, p{
-    font : 18px/24px 'Arial',sans-serif;
 }
 
-table{
-    font : 80%/100% 'Arial',sans-serif;
-    border-collapse: collapse;
+#allContents{
+    padding-bottom:30px;
 }
 
-
-/* BASICS */
-H1, H2, H3 {
-    font-family: 'Rubik', sans-serif;
-    border-bottom : 0px dotted #B5B3A9;
-    color : var(--colC);
-    font-weight : normal;
-    padding : 0 0 0 25px;
+.contentsDiv{
+    padding-top:20px;
 }
 
-H1 {
-    font-size : 200%;
-    margin : 30px 0 10px 0;
-}
-
-H2 {
-    font-size : 150%;
-    margin : 30px 0 10px 0;
-}
-
-H3 {
-    font-size : 110%;
-    margin : 30px 0 10px 0;
-}
-
-
-#footer {
-    /*border-top : 1px dotted var(--colB);*/
-    text-align: center;
-    padding-left: 5px;
-    padding-right: 5px;
-    position: fixed;
-    bottom:0px;
-    background:white;
-}
-
-#footer p {
-    color : var(--colB);
-    font : 13px/13px 'Arial', sans-serif;
-}
-
-#footer a:hover {
-    color : var(--colHover);
-}
-
-
-#shade {
-    display: none;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top:0px;
-    left:0px;
-    z-index: 11000;
-    background: black;
-    opacity: 0.3;
-}
-
-#loader{
+#loginContainer{
+    float: right;
     display: block;
-    margin: auto;
-    width: 5%;
-    padding: 5% 0; 
- }
-
-.narrowDiv{
-    max-width:750px;
-    width: 90%;
-    margin: auto;
-    overflow: auto;
-    scroll-snap-align: start;
-}
-
-.wideDiv{
-    width:100%;
-    margin: auto;
-    overflow: auto;
-    scroll-snap-align: start;
-}
-
-.spacer{
-   width: 0%;
-   float: left;
-}
-
-.headerDiv{
-    background: var(--colD);
-    color: var(--colB);
-    margin:auto;
-    min-height: 5%;
-    padding: 0px 0 0px 0; 
-    text-align: center;
-    text-transform: uppercase;
-}
-
-.contentsDivnarrow{
-    max-width:750px;
-    width: 90%;
-    margin: auto;
-}
-
-.headerText{
-    font : 180%/200% 'Rubik', sans-serif;
-    vertical-align: middle;
-    display: inline-block;
-}
-
-#topMenu{
-    margin:auto;
-    padding-top:15px;
-    background: white;
-    text-align: center;
-    border-bottom: 1px solid var(--colB);
-}
-
-.topmenuItem{
-    margin-left:10px;
     margin-right:10px;
-    font : 16px/16px 'Rubik', sans-serif;
+    font-size: 12px;
+    line-height: 14px;
 }
 
-#loginContainer{
-    margin-top:5px;
-    margin-right:10px;
-    font : 12px/14px 'Rubik', sans-serif;
+.carousel-inner{
+  width:100%;
+  max-height: 400px;
 }
-
-#exploreMenu{
-    text-align:center;
-    z-index: 10000;
-}
-
-.expmenuItem{
-    display: inline-block;
-    width:80px;
-    height:40px;
-    margin:5px;
-    background: var(--colE);
-}
-
-.expmenuItem span{
-    text-transform: uppercase;
-    font : 14px/12px 'Rubik', sans-serif;
-    vertical-align:middle;
-    line-height:normal;
-    display: inline-block;
-    color: var(--colB);
-}
-
-.expmenuItem.current{
-    background: var(--colD);
-}
-
-.expmenuItem.active{
-    color: var(--colD);
-}
-
-
-#loginContainer{
-    top=0;
-    position:fixed;
-    right:0;
-}
-
-/* this is container where everything sits, apart from footer
-*/
-#mainContents{
-    margin:auto;
-    overflow-y: scroll;
-}
-
-/*    
-#dataDiv{
-    scroll-snap-type: y proximity;
-}
-/*    
-
-/* map size has to be prescribed*/
 
 #mapDiv{
-/*    
-    height: 500px;
-    width: 500px;
-*/
+    width:80%;
+    height:90%;
     margin:auto;
     margin-bottom: 30px;
 }
 
-#introWindow{
-   background-image: url("../img/Reeds3.jpg");
-   background-repeat: no-repeat;
-   background-position: top left;
-   scroll-snap-type: none;
+#logos{
+   padding-bottom:40px;
+   margin-top:40px;
 }
-
-
-#sourcesContents{
-    padding: 20px 20px 100px 20px; 
-}
-
-#datasetContents{
-    padding-bottom: 100px; 
-}
-
-#locationContents{
-    padding-bottom: 100px; 
-}
-
-#figureContents{
-    padding: 20px 20px 100px 20px; 
-    max-width: 1000px; 
-    margin: auto;
-}
-
-#dataContents{
-    padding: 20px 20px 100px 20px; 
-    max-width: 1000px; 
-    margin: auto;
-}
-
-.narrowDiv{
-    margin-bottom:10px;
-}
-
-#introText{
-    width:70%;
-    max-width:400px;
-    float:left;
-    margin-left: 10%;
-    margin-top: 30px;
-}
-
-#introText p {
-    color: #555555;
-    font : 15px/18px 'Rubik', sans-serif;
-    margin-bottom: 10px;
-}
-
-#helpPointer{
-    position:absolute;
-    float:left;
-    bottom:10%;
-}
-
-/*tables*/
-
-td,th {
-    padding:5px;
-    margin:0px;
-}
-
-th { 
-    text-transform: uppercase;
-    background: var(--colC);
-    color: var(--colE);
-    text-align:left;
-    font-family: 'Rubik',sans-serif;
-}
-
-.twoColour tr:nth-child(odd) { 
-    background: var(--colD);
-}
-
-.twoColour tr:nth-child(even) {
-    background: var(--colE);
-}
-
-.fullwidthTable{
-    width: 100%;
-    color: var(--colB);
-}
-
-.narrowTable{
-    width: 50%;
-    color: var(--colB);
-    margin:auto;
-}
-
-
-.dataTable {
-    width: auto;
-}
-
-.dataTable th {
-    width: 100px;
-}
-
-.tableTitle{
-    font: 120%/150% 'Rubik',sans-serif;
-    margin-bottom:5px;
-    text-align:center;
-    background: var(--colE);
-    color: var(--colA);
+#floatFaq{
+    position: fixed;
+    margin-left:5px;
+    bottom:25px;
+    left:5px;
+    font-size:35px;
+    color: orange;
+    cursor: pointer;
 }
 
 .infoLabel{
     text-transform: uppercase;
     text-align: right;
-    color: var(--colC);
+    color: #3AAFA9;
+    vertical-align: top;
 }
 
-.listTable tr{
-    padding-bottom: 20px;
+td,th{
+    padding-bottom: 5px;
+    padding-left: 10px;
 }
 
-.auxDiv {
-    margin:auto;
-    margin-bottom: 50px;
-    margin-top: 50px;
-    padding:20px;
-    width: 50%;
-    color: var(--colC);
-    font-size: 20px;
-    text-align:center;
-    border: 2px solid var(--colB);
+a{
+    cursor: pointer;
 }
 
-
-
-/*random stuff*/
-.clickable {
-    font-weight: bold;
-    color: var(--colAnchor);
-    cursor:pointer;
-    text-decoration:none;
+.highcharts-background{
+    color: #aaa;
+}
+.warning{
+    color: red;
 }
 
-.clickable:hover{
-    color: var(--colHover);
+.narrowTable{
+    max-width:700px;
+    margin: auto;
 }
 
-
-
-
-
-
-
-/*scroll indicator
-
-*/
-
-.floatRight{
-    position:fixed;
-    right:20px;
+.verynarrowTable{
+    max-width:360px;
+    margin: auto;
 }
 
-.floatLeft{
-    position:fixed;
-    left:0;
-}
-
-#quickMenu{
-    top:0;
-    opacity: 1;
-    margin-right: 30px;
-    background:none;
+.wrapper{
+    border:1px solid #cecece;
     padding:5px;
-    cursor: pointer;
-    font : 15px/10px 'Arial',sans-serif;
-    color: rgba(10,10,10,0.5);
 }
 
-#quickMenu:hover{
-    background:white;
-}
-
-#fup{
-    top:0;
-    opacity: 1;
-    padding-right: 20px;
-}
-
-#fdown{
-    bottom:5%;
-    opacity: 0.3;
-    width: 10%;
-}
-
-.floatImg{
-    float: right;
-    margin-right:10%;
-}
-
-#floatFaq{
-    margin-left:5px;
-    bottom:20px;
-}
-
-#floatFaqTxt{
-    font-size:25px;
-    width:30px;
-    height:30px;
-    line-height:30px;
-    color: orange;
-    text-align:center;
-    cursor: pointer;
-    border-radius: 18px;
-    border-width: 2px;
-    border-style: solid;
-    border-color: orange;
-    opacity: 1;
-    background:yellow;
-    font-weight: bold;
-}
- 
-
-
-
-
-
-
-
-/*not sure if these are necessary*/
-
-.centered{
-    text-align: center;
-    margin:auto;
-}
-
-
-/* these are copied from bootstrap.css and are necessary for datetimepicker to run properly*/
-
-[class^="icon-"],
-[class*=" icon-"] {
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  margin-right: .3em;
-  line-height: 14px;
-  vertical-align: text-top;
-  background-image: url("../img/glyphicons-halflings.png");
-  background-position: 14px 14px;
-  background-repeat: no-repeat;
-  margin-top: 1px;
-}
-
-.icon-arrow-left {
-  background-position: -240px -96px;
-}
-
-.icon-arrow-right {
-  background-position: -264px -96px;
-}
-
-
-.topnav2 .menulevel1 {
-    /* this is for menulevel divs in 1st and lower levels*/
-    background: var(--colE);
-    color: var(--colC);
-    width: 90%;
-    margin-left: 5%;
-    margin-top: 2%;
-    text-transform: uppercase;
-}
-  
-.topnav2 .menulevel2 {
-    /* this is for menulevel divs in 2nd and lower levels*/
-    width: 86%;
-    margin-left: 11%;
-    background: var(--colE);
-    color: var(--colC);
-    font-size: 14pt;
-    margin-top: 1%;
-}
-
-.topnav2 .menulevel3 {
-    /* this is for menulevel divs in 3nd and lower levels*/
-    width: 83%;
-    margin-left: 14%;
-    background: var(--colE);
-    color: var(--colC);
-    font-size: 13pt;
-}
-
-.topnav2 .info { 
-    margin-left: 5%;
-    margin-bottom: 10px;
-    color: var(--colC);
-    font : 13px/13px 'Rubik',sans-serif;
-    width: 80%;
-    max-width:400px;
-    margin-bottom: 10px;
-}
-.topnav2 .infoLink { 
-/*    color: var(--colC);
-*/    font : 14px/14px 'Rubik',sans-serif;
-
-}
-
-#logos {
-    margin-left: 5%;
-    margin-top: 10px;
-}
-
-.exploreDiv{
-    padding-bottom:100px;
-}
-
-.downloadDiv{
-    padding-bottom:100px;
+.btn-custom.active{
+    background:#eee !important;
+    box-shadow:none !important;
 }

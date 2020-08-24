@@ -9,15 +9,16 @@
 }
 
 .loginContainer input[type=text],input[type=password],input[type=email] {
-   color: var(--colC);
-   border-color: var(--colD);
+   color: #2B7A78;
+   border-color: #DEF2F1;
    border-width: 0px;
    width:100%;
    margin-bottom:10px;
    height: 30px;
    border-bottom-width: 3px;
    border-bottom-style: dotted;
-   font-size: 20px;
+   font-size: 14px;
+   outline: none;
 }
 
 #formTable{
@@ -30,7 +31,7 @@
     margin: auto;
     font-size:2.5vh;
     padding-bottom:20px;
-    color: var(--colC);
+    color: #3AAFA9;
 }
 
 #errors{
@@ -39,12 +40,12 @@
 }
 
 .formNotification{
-   color: var(--colA);
+   color: #17252A;
 }
 
 button {
-    background-color: var(--colC);
-    color: var(--colE);
+    background-color: #3AAFA9;
+    color: #FEFFFF;
     padding: 5px 5px;
     border: none;
     cursor: pointer;
@@ -70,6 +71,15 @@ button:hover {
 @keyframes animatezoom {
   from {transform: scale(0)} 
   to {transform: scale(1)}
+}
+
+::placeholder{
+    color:#3AAFA9;
+}
+
+table{
+    font : 14px/13px 'Rubik',sans-serif;
+    border-collapse: collapse;
 }
 
 

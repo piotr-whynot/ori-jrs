@@ -17,7 +17,7 @@
 #popupWindowClose{
     position:absolute; 
     right:0px; 
-    padding-right:5px; 
+    padding-right:10px; 
     top:10px;
     cursor:pointer;
     font-size:50px;
@@ -44,43 +44,33 @@
 #popupWindowContents{
     z-index: 11002;
     overflow:auto;
-    background:#FFFFFF;
-    padding-left:0%;
-    padding-right:0%;
-    padding-top:0%;
-    padding-bottom:0%;
-    margin-left:10px;
-    margin-right:10px;
-    margin-top:50px;
-    margin-bottom:20px;
+    padding-top:0 0 0 0;
+    margin-top:50px 10px 20px 10px;
 }
 
 #popupWindow H1{
     font-size: 40px;
     line-height: 40px;
-    margin-top:10px;
-    margin-left:30px;
+    margin:30px 0 10px 5px;
 }
 #popupWindow H2{
     font-size: 30px;
     line-height: 30px;
-    margin-top:50px;
+    margin:20px 0 10px 10px;
 }
 
 #popupWindow H3{
     font-size: 20px;
     line-height: 20px;
+    margin:15px 0 10px 15px;
 }
 
 #popupWindow p{
-    font-size: 14px;
-    margin-top:15px;
-    color:#555555;
+    margin:0 0 15px 20px;
 }
 
 #popupWindow li{
-    font-size: 14px;
-    color:#555555;
+    margin:0px 0 0 50px;
 }
 
 

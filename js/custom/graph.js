@@ -2,18 +2,21 @@ var chart;
 
 function loadPlot(datastream, graphType, isFirst, showcumsum){
 // find first and last date of record and other information from metadata call
-    $('#graph').html("<div id=loader><img src='./img/ajax-loader.gif' class='ajax_loader'></div>");
+    txt="<div class=loader id=loader-1></div>";
+    $('#graph').html(txt);
     ds=datastream; // this has to be like this because datastream may change dynamically, or so I think;-)
     eventapicall="./api/api_envdata.php?calltype=datastream&datastreamID="+ds;
     console.log(eventapicall);
     if (isFirst){
     //isFirst indicates whether this is a first call to loadPlot for a particular datastream. 
     // if yes - graph controlbox is populated depending on showcumsum
-        txt="<div class=graphMenuItem id=timeseries>Show one long time series</div>";
+        txt="<ul class='nav nav-pills nav-stacked'>";
+        txt+="<li class='bg-default'><a class='graphMenuItem text-center' id=timeseries>One long time series</a></li>";
         if (showcumsum){
-            txt+="<div class='graphMenuItem' id=compareyearscumsum>Show year-by-year cumulative</div>";
+            txt+="<li class=bg-default><a class='graphMenuItem text-center' id=compareyearscumsum>Year-by-year cumulative</a></li>";
         }
-        txt+="<div class=graphMenuItem id=compareyearsnormal>Show year-by-year</div>";
+        txt+="<li class=bg-default><a class='graphMenuItem text-center' id=compareyearsnormal>Year-by-year</a></li>";
+        txt+="</ul>";
         $('#graphMenu').html(txt);
     }
 
@@ -48,7 +51,7 @@ function loadPlot(datastream, graphType, isFirst, showcumsum){
             lineWidth=2;
 
             locationName=alldata[0].locationName;
-           $('#'+graphType).addClass('current');
+           $('#'+graphType).parent().addClass('active');
 
             setTimeout(function(){
                 prepareChart("graph", ds, fy, ly+1, measuringUnit, variableName, locationName, graphType, firstm, gapSize)
@@ -160,18 +163,20 @@ function prepareChart(divname, ds, firstyr, lastyr, measuringUnit, variableName,
             }
             seriesData.push({id: id, name: id, data: yrdata, showInLegend:false, color: seriesColor, gapSize: gapSize});
             datayrs.push(id);
-            txt="<b> Highlight years:</b><br>";
+            txt="<div class='center-block text-center'>";
+            txt+="<b> Highlight years:</b><br>";
             year2show=0;
             for(var i=datayrs.length-1, len=0; i >= len; i--){
                 y=datayrs[i];
                 if (year2show==0){year2show=y;}
-                txt+="<input type='checkbox' name='years' onclick='showhideYear(this.value)' value="+y+" />"+y+" "
+                txt+="<div class='checkbox'> <label><input type='checkbox' name='years' onclick='showhideYear(this.value)' value="+y+" />"+y+"</label></div>"
             }
+            txt+="</div>";
             $('#graphMenuAux').html(txt);
             chart=createChart(divname, variableName, measuringUnit, locationName, graphType, seriesData);
             $(":checkbox[value="+year2show+"]").prop("checked","true");
-	    showhideYear(year2show);
-            $("#shade").hide();
+	        showhideYear(year2show);
+           // $("#shade").hide();
         }
     );   
 }
@@ -215,7 +220,7 @@ function createChart(divname, variableName, measuringUnit, locationName,  chartT
         tipdateFormat='%b %e %Y';
         legendEnable=false;
         scrollbarEnable=false;
-        rangeSelEnable=true;
+        rangeSelEnable=false;
     }else{
         axisdateFormat='%e. %b';
         tipdateFormat='%b, %e';
@@ -226,7 +231,7 @@ function createChart(divname, variableName, measuringUnit, locationName,  chartT
 //creates empty chart. all chart formatting defined here
     chart = Highcharts.chart({
 //    chart = new Highcharts.stockChart({
-        chart: {renderTo: divname, zoomType: 'xy', marginRight: 0},
+        chart: {renderTo: divname, zoomType: 'xy', marginRight: 0, backgroundColor: '#fafafa'},
         legend: {
             enabled: legendEnable,
             align: 'left',
@@ -236,7 +241,7 @@ function createChart(divname, variableName, measuringUnit, locationName,  chartT
             layout: 'vertical',
             floating: true
         },
-        credits: {text: '(C) Okavango Research Institute, University of Botswana', enabled: true, href: 'http://www.ori.ub.bw'},
+        credits: {text: '(CC-BY-ND) Okavango Research Institute, University of Botswana', enabled: true, href: 'http://www.ori.ub.bw'},
         tooltip: { valueDecimals: 2,
 	      formatter: function() {
                 var s = variableName;
@@ -284,11 +289,12 @@ function createChart(divname, variableName, measuringUnit, locationName,  chartT
 
 $(document).on('click','.graphMenuItem', function(event){
         var evID=$(event.target).attr('id');
+        console.log(evID);
         var currSelect=$(event.target);
-        if (! $(currSelect).hasClass("current")){
+        if (! $(currSelect).parent().hasClass("active")){
             //console.log(evID);
-            $(".current").removeClass("current");
-            $(currSelect).addClass("current")
+            $(".graphMenuItem").parent().removeClass("active");
+            $(currSelect).parent().addClass("active")
             if (evID=="timeseries"){
                 loadPlot(ds,"timeseries", false);
             }
@@ -305,12 +311,11 @@ $(document).on('click','.graphMenuItem', function(event){
 
 
 function createBiodivChart(divname, variableName, measuringUnit, locationName,  chartType, dataseries){
-    $('#graph').html("");
     axisdateFormat='%b %Y';
     tipdateFormat='%b %e %Y';
     legendEnable=false;
     scrollbarEnable=false;
-    rangeSelEnable=true;
+    rangeSelEnable=false;
 //creates empty chart. all chart formatting defined here
     chart = Highcharts.chart({
 //    chart = new Highcharts.stockChart({
@@ -324,7 +329,7 @@ function createBiodivChart(divname, variableName, measuringUnit, locationName,  
             layout: 'vertical',
             floating: true
         },
-        credits: {text: '(C) Okavango Research Institute, University of Botswana', enabled: true, href: 'http://www.ori.ub.bw'},
+        credits: {text: '(CC-BY-ND) Okavango Research Institute, University of Botswana', enabled: true, href: 'http://www.ori.ub.bw'},
         tooltip: { valueDecimals: 2,
 	      formatter: function() {
                 var s = variableName;
@@ -375,10 +380,10 @@ function createBiodivChart(divname, variableName, measuringUnit, locationName,  
 
 
 function loadBiodivPlot(locationID){
+    txt="<div class=loader id=loader-1></div>";
+    $('#graph').html(txt);
     markerRadius=1;
     lineWidth=2;
-    txt="<div id=graphMenuAux></div>";
-    $('#graphControls').html(txt);
     featureapicall="./api/api_biodiv.php?calltype=checklist&locationID="+locationID;
     $.get(featureapicall, 
         function(data0){
@@ -422,9 +427,8 @@ function loadBiodivPlot(locationID){
                     for (taxonID in taxaList){
                         taxonName=taxaList[taxonID]['scientificName'];
                         seriesData.push({id: taxonID, name: taxonID, data: taxonData[taxonID], color: seriesColor, showInLegend:false});
-                        txt+="<input type='checkbox' name='taxon' onclick='showhideYear(this.value)' value="+taxonID+" />"+taxonName+" <br/>"
+                        txt+="<div class=checkbox><label><input type='checkbox' name='taxon' onclick='showhideYear(this.value)' value="+taxonID+" />"+taxonName+" </label></div>"
                     }
-                    console.log(seriesData);
 
                     chart=createBiodivChart("graph", "organism count", "number or individuals", locationID, "timeseries", seriesData);
 

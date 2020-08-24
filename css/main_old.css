@@ -1,0 +1,467 @@
+/* Reset */
+html, body, ul, li, table, thead, tfoot, tbody, th, tr, td, p{
+    border : 0;
+    margin : 0;
+    outline : 0;
+    padding : 0;
+    color : #2B7A78;
+}
+
+html, body, ul, li, p{
+    font : 14px/22px 'Rubik', sans-serif;
+}
+
+p {
+    margin-bottom: 15px;
+}
+
+
+/* BASICS */
+H1, H2, H3 {
+    border-bottom : 0px dotted #B5B3A9;
+    font-weight : normal;
+    color: #3AAFA9;
+    word-wrap:break-word;
+}
+
+H1 {
+    font-size : 200%;
+    margin : 30px 0 10px 0;
+}
+
+H2 {
+    font-size : 150%;
+    margin : 30px 0 10px 0;
+}
+
+H3 {
+    font-size : 110%;
+    margin : 30px 0 10px 0;
+}
+
+
+#footer {
+    text-align: center;
+    padding-left: 5px;
+    padding-right: 5px;
+    position: fixed;
+    bottom:0px;
+    background:white;
+}
+
+#footer p {
+    color: #2B7A78;
+    font : 13px/13px 'Arial', sans-serif;
+    margin-bottom: 5px;
+}
+
+#footer a:hover {
+    color: #17252A;
+}
+
+
+.contentsDiv{
+    /*max-width:750px;*/
+    width: 90%;
+    margin: auto;
+}
+
+
+.headerDiv{
+    background: #DEF2F1;
+    color: #2B7A78;
+    margin:auto;
+    min-height: 5%;
+    padding: 0px 0 0px 0; 
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.headerText{
+    font-size: 180%;
+    line-height: 200%;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+
+#topMenu{
+    margin:auto;
+    padding-top:15px;
+    background: #F9F9F9;
+    text-align: center;
+    border-bottom: 1px solid #3AAFA9;
+}
+
+.topmenuItem{
+    margin-left:10px;
+    margin-right:10px;
+    font-size: 16px;
+    line-height: 16px;
+}
+
+#exploreMenu{
+    text-align:center;
+    z-index: 10000;
+    background: #F9F9F9;
+    width: 100%;
+    border-bottom: 1px solid #3AAFA9;
+}
+
+
+.expmenuItem{
+    width:55px;
+    height:40px;
+    line-height:40px;
+    font-style: "Rubik";
+    vertical-align:middle;
+    display: inline-block;
+    margin: 3px;
+    background: #DEF2F1;
+    color: #2B7A78;
+}
+
+.expmenuItem span{
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;
+}
+
+.expmenuItem.current{
+    background: #3AAFA9;
+}
+
+
+#loginContainer{
+    position:fixed;
+    top=0;
+    right:0;
+    margin-top:5px;
+    margin-right:10px;
+    font-size: 12px;
+    line-height: 14px;
+}
+
+
+/* this is container where everything sits, apart from footer
+*/
+#mainContents{
+    margin:auto;
+    overflow-y: scroll;
+}
+
+#mainContents>div{
+    width:100%;
+    overflow: auto;
+}
+
+
+#mapDiv{
+    margin:auto;
+    margin-bottom: 30px;
+}
+
+#introWindow{
+   background-image: url("../img/Reeds3.jpg");
+   background-repeat: no-repeat;
+   background-position: top left;
+   scroll-snap-type: none;
+}
+
+
+#sourcesContents{
+    padding: 20px 20px 100px 20px; 
+}
+
+#datasetContents{
+    padding-bottom: 100px; 
+}
+
+#locationContents{
+    padding-bottom: 100px; 
+}
+
+#figureContents{
+    padding: 20px 20px 100px 20px; 
+    max-width: 1000px; 
+    margin: auto;
+}
+
+#dataContents{
+    padding: 20px 20px 100px 20px; 
+    max-width: 1000px; 
+    margin: auto;
+}
+
+
+#introText{
+    width:70%;
+    max-width:400px;
+    float:left;
+    margin-left: 10%;
+    margin-top: 30px;
+}
+
+#introText p {
+    font-size: 15px;
+    line-height:18px;
+}
+
+/*
+#helpPointer{
+    position:absolute;
+    float:left;
+    bottom:10%;
+}
+*/
+
+#loader{
+    display: block;
+    margin: auto;
+    width: 5%;
+    padding: 5% 0; 
+ }
+
+
+
+/*tables*/
+.selectedRow {
+    background: #3AAFA9;
+    border: 2px solid black;
+}
+
+
+.fullwidthTable{
+    width: 100%;
+    max-width: 700px;
+    color: #2B7A78;
+    margin:auto;
+}
+
+.narrowTable{
+    width: 50%;
+    min-width: 360px;
+    color: #2B7A78;
+    margin:auto;
+}
+
+.dataTable {
+    width: auto;
+}
+
+.dataTable th {
+    width: 100px;
+}
+
+.tableTitle{
+    font: 120%/150% 'Rubik',sans-serif;
+    margin-bottom:5px;
+    text-align:center;
+    background: #FEFFFF;
+    color: #17252A;
+}
+
+.listTable tr{
+    padding-bottom: 20px;
+}
+
+
+/* endo of tables*/
+
+
+
+.infoLabel{
+    text-transform: uppercase;
+    text-align: right;
+    color: #3AAFA9;
+}
+
+.auxDiv {
+    margin:auto;
+    margin-bottom: 50px;
+    margin-top: 50px;
+    padding:20px;
+    width: 50%;
+    color: #3AAFA9;
+    font-size: 20px;
+    text-align:center;
+    border: 2px solid #2B7A78;
+}
+
+
+
+/*random stuff*/
+.clickable {
+/*    font-weight: bold;
+    font-family: Arial;
+*/
+    color: #374785;
+    cursor:pointer;
+    text-decoration:none;
+}
+
+.clickable:hover{
+    color: #17252A;
+}
+
+
+
+
+
+
+
+/*scroll indicator
+
+*/
+
+.floatRight{
+    position:fixed;
+    right:20px;
+}
+
+.floatLeft{
+    position:fixed;
+    left:0;
+}
+
+#fup{
+    top:0;
+    opacity: 1;
+    padding-right: 20px;
+}
+
+#fdown{
+    bottom:5%;
+    opacity: 0.3;
+    width: 10%;
+}
+
+.floatImg{
+    float: right;
+    margin-right:10%;
+}
+
+.centered{
+    text-align: center;
+    margin:auto;
+}
+
+
+#floatFaq{
+    margin-left:5px;
+    bottom:20px;
+}
+
+#floatFaqTxt{
+    font-size:25px;
+    line-height:30px;
+    width:30px;
+    height:30px;
+    color: orange;
+    text-align:center;
+    cursor: pointer;
+    border-radius: 18px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: orange;
+    opacity: 1;
+    background:yellow;
+    font-weight: bold;
+}
+ 
+
+/* these are copied from bootstrap.css and are necessary for datetimepicker to run properly*/
+
+[class^="icon-"],
+[class*=" icon-"] {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-right: .3em;
+  line-height: 14px;
+  vertical-align: text-top;
+  background-image: url("../img/glyphicons-halflings.png");
+  background-position: 14px 14px;
+  background-repeat: no-repeat;
+  margin-top: 1px;
+}
+
+.icon-arrow-left {
+  background-position: -240px -96px;
+}
+
+.icon-arrow-right {
+  background-position: -264px -96px;
+}
+
+
+
+/* this is for the direct downloads page*/
+
+.topnav2 li {
+    list-style: none;
+}
+.topnav2 .menulevel1 {
+    /* this is for menulevel divs in 1st and lower levels*/
+    color: #3AAFA9;
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 2%;
+    text-transform: uppercase;
+    font-size: 140% ;
+}
+  
+.topnav2 .menulevel2 {
+    /* this is for menulevel divs in 2nd and lower levels*/
+    width: 86%;
+    margin-left: 11%;
+    color: #3AAFA9;
+    font-size: 120% ;
+    margin-top: 1%;
+}
+
+.topnav2 .menulevel3 {
+    /* this is for menulevel divs in 3nd and lower levels*/
+    width: 83%;
+    margin-left: 14%;
+}
+
+.topnav2 .info { 
+    margin-left: 5%;
+    margin-bottom: 10px;
+    font : 13px/13px 'Rubik',sans-serif;
+    width: 80%;
+    max-width:400px;
+    margin-bottom: 10px;
+}
+.topnav2 .infoLink { 
+    font : 14px/14px 'Rubik',sans-serif;
+}
+
+
+#logos {
+    margin-left: 5%;
+    margin-top: 10px;
+}
+
+.exploreDiv{
+    padding-bottom:100px;
+}
+
+.downloadDiv{
+    padding-bottom:100px;
+}
+
+#shade {
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top:0px;
+    left:0px;
+    z-index: 11000;
+    background: black;
+    opacity: 0.3;
+}
+
+
