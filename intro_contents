@@ -9,10 +9,16 @@
       <img src="img/img-gps.jpg" alt="Fieldwork in Okavango">
     </div>
     <div class="item">
+      <img src="img/img-fish.jpg" alt="Fieldwork in Okavango">
+    </div>
+    <div class="item">
       <img src="img/img-sunset.jpg" alt="Fieldwork in Okavango">
     </div>
     <div class="item">
-      <img src="img/img-reeds.jpg" alt="Fieldwork in Okavango">
+      <img src="img/img-boat.jpg" alt="Fieldwork in Okavango">
+    </div>
+    <div class="item">
+      <img src="img/img-eddy.jpg" alt="Fieldwork in Okavango">
     </div>
     <div class="item">
       <img src="img/img-gps2.jpg" alt="Fieldwork in Okavango">
@@ -37,6 +43,12 @@
     </div>
     <div class="item">
       <img src="img/img-macroinv.jpg" alt="Fieldwork in Okavango">
+    </div>
+    <div class="item">
+      <img src="img/img-invert.jpg" alt="Fieldwork in Okavango">
+    </div>
+    <div class="item">
+      <img src="img/img-core.jpg" alt="Fieldwork in Okavango">
     </div>
   </div>
 </div>
