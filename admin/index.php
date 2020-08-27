@@ -176,12 +176,13 @@ echo"
 <title>Okavango Data - Admin</title>
 <meta charset=\"UTF-8\">
 <meta name=\"description\" content=\"Okavango biodiversity and environmental monitoring\">
-<script type=\"text/javascript\" src=\"../js/jquery/jquery-3.2.0.min.js\"></script>
+<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js\"></script>
 <script type=\"text/javascript\" src=\"../js/bootstrap/bootstrap-datetimepicker.min.js\"></script>
-<script type=\"text/javascript\" src=\"../js/bootstrap/bootstrap.min.js\"></script>
 <script type=\"text/javascript\" src=\"../js/custom/forms.js\"></script>
 <script type=\"text/javascript\" src=\"../js/custom/popup.js\"></script>
+<script type=\"text/javascript\" src=\"../js/bootstrap-3.4.1/bootstrap.min.js\"></script>
 <link rel=\"stylesheet\" href=\"../css/bootstrap-datetimepicker.css\">
+<link rel=\"stylesheet\" href=\"../css/bootstrap-3.4.1.min.css\">
 <link rel=\"stylesheet\" href=\"../css/main.css\">
 <link rel=\"stylesheet\" href=\"../css/admin.css\">
 <link rel=\"stylesheet\" href=\"../css/popup.css\">
@@ -190,22 +191,24 @@ echo"
 suff=\"/biodiv\";
 </script>
 <body>
-<div id=adminContainer>
+<div id=adminContainer class='container-fluid row'>
+<div class='col-sm-2'></div>
+<div class='col-sm-8'>
 ";
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //home button
-echo "<p><a href=\"../\">main page</a>&nbsp";
+echo "<p><a class='btn btn-link' href=\"../\">main page</a>&nbsp";
 if ($_SESSION['accessType']=="admin"){
-    echo "<a href=\"./\">admin home</a><br>";
+    echo "<a class='btn btn-link' href=\"./\">admin home</a><br>";
 }
 echo "<br><br>";
 
 // this is a "plain" call - shows menu
 if ($base=="admin" | ($do=="" & $table=="")){
 echo "
-<table width=800px>
-<tr><th width=700px>biodiversity database<th width=100px></tr>
+<table class='table narrowTable'>
+<tr class=success><th>biodiversity database<th></tr>
 <tr><td>Management of database structure, adding/editing datasets and locations<td><a href=\"./?base=biodivdata&do=edit&table=dataset\">go</a></tr>
 <tr><td>Add/edit events (and occurrences)<td><a href=\"./?base=biodivdata&do=edit&table=event\">go</a></tr>
 <!--
@@ -214,16 +217,16 @@ echo "
 <tr><td>Checklist</><td><a href=\"./?base=biodivdata&do=edit&table=checklist\">edit</a></tr>
 </table>
 <br><br>
-<table width=800px>
-<tr><th width=700px>environmental database<th width=100px></tr>
+<table class='table narrowTable'>
+<tr class=success><th>environmental database<th></tr>
 <tr><td>Management of database structure, adding/editing datasets and locations and datastreams<td><a href=\"./?base=envmondata&do=edit&table=dataset\">go</a></tr>
 <!--
 <tr><td>Add/edit measurements<td><a href=\"./?base=envmondata&do=edit&table=measurement\">go</a></tr>
 -->
 </table>
 <br><br>
-<table width=800px>
-<tr><th width=700px>site admin<th width=100px></tr>
+<table class='table narrowTable'>
+<tr class=success><th>site admin<th></tr>
 <tr><td>Users</><td><a href=\"./?base=users&do=edit&table=users\">go</a></tr>
 <tr><td>Key monitoring locations</><td><a href=\"./?base=envmondata&do=edit&table=keydatastream\">go</a></tr>
 </table>
@@ -251,10 +254,10 @@ if ($base=="envmondata" & $table=="dataset"){
         if ($_SESSION['accessType']=="admin"){
             echo "<a href=./>back</a>";
         }
-        echo "<h2>View/edit dataset in environmental database</h2>";
-        echo "<p><a href=\"./?base=envmondata&do=add&table=dataset\">Add new dataset</a></p>";
-        echo "<table class=twoColour width=800px>";
-        echo "<tr><th>datasetID<th>dataset name<th></tr>";
+        echo "<h2 class=text-center>View/edit dataset in environmental database</h2>";
+        echo "<p class=text-center><a href=\"./?base=envmondata&do=add&table=dataset\">Add new dataset</a></p>";
+        echo "<table class='table table-striped'>";
+        echo "<tr class=success><th>datasetID<th>dataset name<th></tr>";
         while ($row = $result->fetch_assoc()){
             echo "<tr><td>".$row['datasetID']."<td>".$row['datasetName']."<td><a href='./?base=envmondata&do=edit&table=dataset&datasetID=".$row['datasetID']."' >edit dataset info</a><br><a href='./?base=envmondata&do=edit&table=location&datasetID=".$row['datasetID']."' >show locations</a></tr>";
         }
@@ -371,11 +374,11 @@ if ($base=="envmondata" & $table=="location"){
         $query="select distinct location.locationID, locationName, locality, decimalLongitude, decimalLatitude from location join datastream on datastream.locationID=location.locationID where datasetID='{$datasetID}'";
         $result = $mysqli->query($query);
         echo "<a href=./?base=envmondata&do=edit&table=dataset>back</a>";
-        echo "<h2>View/edit location in environmental monitoring database</h2>";
+        echo "<h2 class=text-center>View/edit location in environmental monitoring database</h2>";
         echo "<h3>Current dataset: <b>$datasetID</b></h3>";
-        echo "<p><a href=\"./?base=envmondata&do=add&table=location&datasetID={$datasetID}\">Add new location</a></p>";
-        echo "<table width=800px class=twoColour>";
-        echo "<tr><th width=100px>locationID<th width=100px >locationName<th width=100px>locality<th width=100px>coordinates<th width=300px></tr>";
+        echo "<p class=text-center><a href=\"./?base=envmondata&do=add&table=location&datasetID={$datasetID}\">Add new location</a></p>";
+        echo "<table class='table table-striped'>";
+        echo "<tr class=success><th width=100px>locationID<th width=100px >locationName<th width=100px>locality<th width=100px>coordinates<th width=300px></tr>";
         while ($row = $result->fetch_assoc()){
             echo "<tr><td>".$row['locationID']."<td>".$row['locationName']."<td>".$row['locality']."<td>".$row['decimalLongitude']."<br>".$row['decimalLatitude']."<td><a href='./?base=envmondata&do=edit&table=location&datasetID={$datasetID}&locationID=".$row['locationID']."' >edit location</a><br><a href='./?base=envmondata&do=edit&table=datastream&datasetID={$datasetID}&locationID=".$row['locationID']."' >show datastreams</a><br></tr>";
         }
@@ -562,12 +565,12 @@ if ($base=="envmondata" & $table=="datastream"){
         $query="select datastreamID, locationID, variableName, baseTime from datastream where locationID='".$locationID."'";
         $result = $mysqli->query($query);
         echo "<a href=./?base=envmondata&do=edit&table=location&datasetID={$datasetID}>back</a>";
-        echo "<h2>View/edit datastream in environmental monitoring database</h2>";
+        echo "<h2 class=text-center>View/edit datastream in environmental monitoring database</h2>";
         echo "<h3>Current dataset: <b> $datasetID</b></h3>";
         echo "<h3>Current location: <b> $locationID</b></h3>";
-        echo "<p><a href=\"./?base=envmondata&do=add&table=datastream&datasetID={$datasetID}&locationID={$locationID}\">Add new datastream</a></p>";
-        echo "<table width=800px class=twoColour>";
-        echo "<tr><th>datastreamID<th>locationID<th>Name of variable<th>Base time<th></tr>";
+        echo "<p class=text-center><a href=\"./?base=envmondata&do=add&table=datastream&datasetID={$datasetID}&locationID={$locationID}\">Add new datastream</a></p>";
+        echo "<table class='table table-striped narrowTable'>";
+        echo "<tr class=success><th>datastreamID<th>locationID<th>Name of variable<th>Base time<th></tr>";
         while ($row = $result->fetch_assoc()){
             echo "<tr><td>".$row['datastreamID']."<td>".$row['locationID']."<td>".$row['variableName']."<td>".$row['baseTime']."<td><a href='./?base=envmondata&do=edit&table=datastream&datasetID=$datasetID&locationID=$locationID&datastreamID=".$row['datastreamID']."' >edit</a></tr>";
         }
@@ -688,8 +691,8 @@ if ($base=="envmondata" & $table=="measurement"){
         echo "<a href=./>back</a>";
         echo "<h2>Add/edit measurements in environmental monitoring database</h2>";
         echo "<label><p>Select dataset:</label>";
-        echo "<table width=900px class=twoColour>";
-        echo "<tr><th>Dataset ID<th>Dataset name<th></tr>";
+        echo "<table class='table table-striped narrowTable'>";
+        echo "<tr class=success><th>Dataset ID<th>Dataset name<th></tr>";
         while ($row = $result->fetch_assoc()){
             echo "<tr><td>".$row['datasetID']."<td>".$row['datasetName']."<td><a href='./?base=envmondata&do=edit&table=measurement&datasetID=".$row['datasetID']."' >select</a></tr>";
         }
@@ -703,8 +706,8 @@ if ($base=="envmondata" & $table=="measurement"){
         echo "<h2>Add/edit measurements in environmental monitoring database</h2>";
         echo "<h3>Dataset: ".$datasetID."</h3>";
         echo "<label><p>Select location:</label>";
-        echo "<table width=900px class=twoColour>";
-        echo "<tr><th>Location ID<th>Location name<th>Locality<th>base time<th>type<th></tr>";
+        echo "<table class='table table-striped narrowTable'>";
+        echo "<tr class=success><th>Location ID<th>Location name<th>Locality<th>base time<th>type<th></tr>";
         while ($row = $result->fetch_assoc()){
             //echo "<tr><td>".$row['locationID']."<td>".$row['locationName']."<td>".$row['locality']."<td>".$row['baseTime']."<td>".$row['locationType']."<td><a href='./?base=envmondata&do=edit&table=measurement&locationID=".$row['locationID']."&datasetID=".$datasetID."&baseTime=".$row['baseTime']."&locationType=".$row['locationType']."'>select</a></tr>";
             echo "<tr><td>".$row['locationID']."<td>".$row['locationName']."<td>".$row['locality']."<td>".$row['baseTime']."<td>".$row['locationType']."<td><a href=# onClick=editAnyInPopup('env','".$datasetID."','".$row['locationID']."','".$row['locationType']."','".$row['baseTime']."','null')>select</a></tr>";
@@ -721,13 +724,13 @@ if ($base=="envmondata" & $table=="measurement"){
         echo "<h3>Dataset: ".$datasetID."</h3>";
         echo "<h3>Location: ".$locationID."</h3>";
         echo "<label><p>Select date:</label>";
-        echo "<table width=900px class=twoColour>";
-        echo "<tr><th>locationID<th>date<th></tr>";
+        echo "<table class='table table-striped narrowTable'>";
+        echo "<tr class=success><th>locationID<th>date<th></tr>";
         while ($row = $result->fetch_assoc()){
             echo "<tr><td>".$locationID."<td>".$row['measurementDateTime']."<td><a href='./?base=envmondata&do=edit&table=measurement&datasetID=".$datasetID."&locationID=".$locationID."&date=".$row['measurementDateTime']."&locationType=".$locationType."'>edit</a></tr>";
         }
         echo "</table>";
-        echo "<b><a href=\"./?base=envmondata&do=add&table=measurement&datasetID=$datasetID&locationID=$locationID&locationType=once-off\">Add new date and data</a></b>";
+        echo "<p><a href=\"./?base=envmondata&do=add&table=measurement&datasetID=$datasetID&locationID=$locationID&locationType=once-off\">Add new date and data</a></p>";
 
     }
 
@@ -766,10 +769,9 @@ if ($base=="envmondata" & $table=="keydatastream"){
         }
         // shows list of locations
         echo "<a href=./>back</a>";
-        echo "<h2>Add/remove key monitoring data streams</h2>";
-      echo "<label><p>Select datastream:</label>";
-        echo "<table width=900px class=twoColour>";
-        echo "<tr><th>Datastream ID<th>Dataset ID<th>Location ID<th>Location Name<th><th>variableName<th></tr>";
+        echo "<h2 class=text-center>Add/remove key monitoring data streams</h2>";
+        echo "<table class='table table-striped narrowTable'>";
+        echo "<tr class=success><th>Datastream ID<th>Dataset ID<th>Location ID<th>Location Name<th><th>variableName<th></tr>";
 
         $query="select datastreamID, datasetID, locationName, envmondata.datastream.locationID, variableName from envmondata.datastream left join envmondata.location on envmondata.location.locationID=envmondata.datastream.locationID where envmondata.location.locationType='monitoring'";
         $result = $mysqli->query($query);
@@ -832,10 +834,10 @@ if ($base=="biodivdata" & $table=="dataset"){
         $query="select datasetID, datasetName from dataset";
         $result = $mysqli->query($query);
         echo "<a href=./>back</a>";
-        echo "<h2>View/edit dataset in biodiversity database</h2>";
-        echo "<p><a href=\"./?base=biodivdata&do=add&table=dataset\">Add new dataset</a></p>";
-        echo "<table width=800px>";
-        echo "<tr><th>datasetID<th>dataset name<th></tr>";
+        echo "<h2 class=text-center>View/edit dataset in biodiversity database</h2>";
+        echo "<p class=text-center><a href=\"./?base=biodivdata&do=add&table=dataset\">Add new dataset</a></p>";
+        echo "<table class='table table-striped'>";
+        echo "<tr class=success><th>datasetID<th>dataset name<th></tr>";
         while ($row = $result->fetch_assoc()){
             echo "<tr><td>".$row['datasetID']."<td>".$row['datasetName']."<td><a href='./?base=biodivdata&do=edit&table=dataset&datasetID=".$row['datasetID']."' >edit dataset info</a><br><a href='./?base=biodivdata&do=edit&table=location&datasetID=".$row['datasetID']."' >show locations</tr>";
         }
@@ -942,10 +944,10 @@ if ($base=="biodivdata" & $table=="location"){
         $query="select distinct location.locationID, locationName, locality, decimalLongitude, decimalLatitude from location where datasetID='{$datasetID}'";
         $result = $mysqli->query($query);
         echo "<a href=./?base=biodivdata&do=edit&table=dataset>back</a>";
-        echo "<h2>View/edit location in biodiversity database</h2>";
-        echo "<p><a href=\"./?base=biodivdata&do=add&table=location&datasetID={$datasetID}\">Add new location</a></p>";
-        echo "<table width=800px>";
-        echo "<tr><th>locationID<th>locationName<th>locality<th>coordinates<th></tr>";
+        echo "<h2 class=text-center>View/edit location in biodiversity database</h2>";
+        echo "<p class=text-center><a href=\"./?base=biodivdata&do=add&table=location&datasetID={$datasetID}\">Add new location</a></p>";
+        echo "<table class='table table-striped'>";
+        echo "<tr class=success><th>locationID<th>locationName<th>locality<th>coordinates<th></tr>";
         while ($row = $result->fetch_assoc()){
             echo "<tr><td>".$row['locationID']."<td>".$row['locationName']."<td>".$row['locality']."<td>".$row['decimalLongitude']."<br>".$row['decimalLatitude']."<td><a href='./?base=biodivdata&do=edit&table=location&datasetID={$datasetID}&locationID=".$row['locationID']."' >edit</a></tr>";
         }
@@ -1097,10 +1099,9 @@ if ($base=="biodivdata" & $table=="event"){
         $query="select datasetID, datasetName from dataset";
         $result = $mysqli->query($query);
         echo "<a href=./>back</a>";
-        echo "<h2>Add/edit sampling events in biodiversity monitoring database</h2>";
-        echo "<label><p>Select dataset:</label>";
-        echo "<table width=900px>";
-        echo "<tr><th>Dataset ID<th>Dataset name<th></tr>";
+        echo "<h2 class=text-center>Add/edit sampling events in biodiversity monitoring database</h2>";
+        echo "<table class='table table-striped'>";
+        echo "<tr class=success><th>Dataset ID<th>Dataset name<th></tr>";
         while ($row = $result->fetch_assoc()){
             echo "<tr><td>".$row['datasetID']."<td>".$row['datasetName']."<td><a href='./?base=biodivdata&do=edit&table=event&datasetID=".$row['datasetID']."' >select</a></tr>";
         }
@@ -1112,10 +1113,10 @@ if ($base=="biodivdata" & $table=="event"){
 	#echo $query;
         $result = $mysqli->query($query);
         echo "<a href=./?base=biodivdata&do=edit&table=event>back</a>";
-        echo "<h2>Add/edit event in biodiversity monitoring database</h2>";
+        echo "<h2 class=text-center>Add/edit event in biodiversity monitoring database</h2>";
         echo "<h3>Current dataset: <b>".$datasetID."</b></h3><br>";
-        echo "<table width=900px>";
-        echo "<tr><th>Location ID<th>Location name<th>Locality<th></tr>";
+        echo "<table class='table table-striped'>";
+        echo "<tr class=success><th>Location ID<th>Location name<th>Locality<th></tr>";
         while ($row = $result->fetch_assoc()){
             echo "<tr><td>".$row['locationID']."<td>".$row['locationName']."<td>".$row['locality']."<td><a href='./?base=biodivdata&do=edit&table=event&locationID=".$row['locationID']."&datasetID=".$datasetID."'>select</a></tr>";
         }
@@ -1126,12 +1127,12 @@ if ($base=="biodivdata" & $table=="event"){
         $query="select eventID, eventDate from event where locationID='".$locationID."'";
         $result = $mysqli->query($query);
         echo "<a href=./?base=biodivdata&do=edit&table=event&datasetID={$datasetID}>back</a>";
-        echo "<h2>Add/edit event in biodiversity monitoring database</h2>";
+        echo "<h2 class=text-center>Add/edit event in biodiversity monitoring database</h2>";
         echo "<h3>Current dataset:<b> ".$datasetID."</b></h3>";
         echo "<h3>Current location: <b>".$locationID."</b></h3><br>";
-        echo "<p><a href=\"./?base=biodivdata&do=add&table=event&datasetID={$datasetID}&locationID={$locationID}\">Add new event</a></p>";
-        echo "<table width=900px>";
-        echo "<tr><th>event ID<th>Event date<th></tr>";
+        echo "<p class=text-center><a href=\"./?base=biodivdata&do=add&table=event&datasetID={$datasetID}&locationID={$locationID}\">Add new event</a></p>";
+        echo "<table class='table table-striped'>";
+        echo "<tr class=success><th>event ID<th>Event date<th></tr>";
         while ($row = $result->fetch_assoc()){
             echo "<tr><td>".$row['eventID']."<td>".$row['eventDate']."<td><a href='./?base=biodivdata&do=edit&table=event&locationID=".$locationID."&datasetID=".$datasetID."&eventID=".$row['eventID']."'>edit event</a><br><a href='./?base=biodivdata&do=edit&table=occurrence&locationID=".$locationID."&datasetID=".$datasetID."&eventID=".$row['eventID']."'>edit/add occurrences</a></tr>";
         }
@@ -1316,10 +1317,10 @@ if ($base=="biodivdata" & $table=="checklist"){
         $query="select taxonID, scientificName from checklist";
         $result = $mysqli->query($query);
         echo "<a href=./>back</a>";
-        echo "<h2>Add/edit checklist entries in biodiversity monitoring database</h2>";
-        echo "<p><a href=\"./?base=biodivdata&do=add&table=checklist\">Add new entry</a></p>";
-        echo "<table width=900px class=twoColour>";
-        echo "<tr><th>taxonID<th>Scientific name<th></tr>";
+        echo "<h2 class=text-center>Add/edit checklist entries in biodiversity monitoring database</h2>";
+        echo "<p class=text-center><a href=\"./?base=biodivdata&do=add&table=checklist\">Add new entry</a></p>";
+        echo "<table class='table table-striped narrowTable'>";
+        echo "<tr class=success><th>taxonID<th>Scientific name<th></tr>";
         while ($row = $result->fetch_assoc()){
             echo "<tr><td>".$row['taxonID']."<td>".$row['scientificName']."<td><a href='./?base=biodivdata&do=edit&table=checklist&taxonID=".$row['taxonID']."' >edit</a></tr>";
         }
@@ -1458,10 +1459,10 @@ if ($base=="users" & $table=="users"){
 	$query="select * from users1.users";
         $result = $mysqli->query($query);
         echo "<a href=./>back</a>";
-        echo "<h2>View/edit registered users database</h2>";
-        echo "<b><a href=\"./?base=users&do=add&table=users\">Add user</a></b>";
-        echo "<table width=800px>";
-        echo "<tr><th>name<th>e-mail<th>type<th>last logged in<th>last IP<th></tr>";
+        echo "<h2 class=text-center>View/edit registered users database</h2>";
+        echo "<p class=text-center><a href=\"./?base=users&do=add&table=users\">Add user</a></p>";
+        echo "<table class='table table-striped' >";
+        echo "<tr class=success><th>name<th>e-mail<th>type<th>last logged in<th>last IP<th></tr>";
         while ($row = $result->fetch_assoc()){
             echo "<tr><td>".$row['firstName']." ".$row['lastName']."<td>".$row['emailAddress']."<td>".$row['userType']."<td>".$row['lastLoggedIn']."<td>".$row['lastIpAddress']."<td><a href='./?base=users&do=edit&table=users&userID=".$row['userID']."' >edit</a>&nbsp<a href='./?base=users&do=delete&table=users&userID=".$row['userID']."' >delete</a>&nbsp<a href='./?base=users&do=edit&table=ownership&userID=".$row['userID']."' >edit ownership</a></tr>";
         }
@@ -1557,10 +1558,10 @@ if ($base=="users" & $table=="ownership"){
         $query="select * from users1.ownership where userID='{$userID}'";
         $result = $mysqli->query($query);
         echo "<a href=./?base=users&do=edit&table=users>back</a>";
-        echo "<h2>Dataset/location ownership for user:{$userID} </h2>";
-        echo "<b><a href=\"./?base=users&do=listDatasets&table=ownership&userID={$userID}\">Add new ownership</a></b>";
-        echo "<table width=800px>";
-        echo "<tr><th>itemID<th></tr>";
+        echo "<h2 class=text-center>Dataset/location ownership for user:{$userID} </h2>";
+        echo "<p class=text-center><a href=\"./?base=users&do=listDatasets&table=ownership&userID={$userID}\">Add new ownership</a></p>";
+        echo "<table class='table table-striped'>";
+        echo "<tr class=success><th>itemID<th></tr>";
         while ($row = $result->fetch_assoc()){
             $ownedItemID=$row['ownedItemID'];
             echo "<tr><td>".$row['ownedItemID']."<td>&nbsp<a href='./?base=users&do=delete&table=ownership&userID=".$row['userID']."&ownedItemID=".$row['ownedItemID']."'>delete</a></tr>";
@@ -1584,8 +1585,8 @@ if ($base=="users" & $table=="ownership"){
 	}
         echo "<a href=./?base=users&do=edit&table=ownership&userID={$userID}>back</a>";
         echo "<h2>View/edit dataset/location ownership</h2>";
-        echo "<table width=800px>";
-        echo "<tr><th>Database<th>datasetID<th><th></tr>";
+        echo "<table class='table table-striped narrowTable' >";
+        echo "<tr class=success><th>Database<th>datasetID<th><th></tr>";
 	$query="select datasetID from envmondata.dataset";
         $result = $mysqli->query($query);
 	while ($row = $result->fetch_assoc()){
@@ -1635,8 +1636,8 @@ if ($base=="users" & $table=="ownership"){
 	}
         echo "<a href=./?base=users&do=edit&table=ownership&userID={$userID}>back</a>";
         echo "<h2>View/edit dataset/location ownership</h2>";
-        echo "<table width=800px>";
-        echo "<tr><th>datasetID<th><th></tr>";
+        echo "<table class='table table-striped narrowTable'>";
+        echo "<tr class=success><th>datasetID<th><th></tr>";
         $query="select * from {$databaseID}.location where datasetID='{$datasetID}'";
 	$result = $mysqli->query($query);
 	while ($row = $result->fetch_assoc()){
@@ -1654,6 +1655,7 @@ if ($base=="users" & $table=="ownership"){
 echo"
 <div id='popupBackground'></div>
 <div id='popupWindow'></div>
+</div>
 </div>
 </body>
 </html>";
