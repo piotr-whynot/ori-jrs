@@ -81,7 +81,8 @@ function initialize(){
             txt+="<li><a href=# onClick=updateUserForm()><span class='glyphicon glyphicon-edit'></span> Your&nbspaccount</a></li>";
 	    }
         $('#loginContainer').html(txt);
-        if (ownedItems.length>0){
+        if (ownedItems[0].length>0 || ownedItems[1].length>0){
+            console.log(ownedItems);
             $('[data-id="dataWindow"]').parent().removeClass('hidden');
         }
 
