@@ -1,5 +1,4 @@
 #adminContainer{
-    margin-left:30px;*/
 }
 
 h3{
@@ -8,12 +7,12 @@ h3{
 }
 
 p{
-   font: 90%/110% 'Arial',sans-serif;
     margin-bottom : 10px;
 }
 
 label p{
-   font: 80%/100% 'Arial',sans-serif;
+    font-size: 14px;
+    font-weight:normal;
 }
 
 .warning {

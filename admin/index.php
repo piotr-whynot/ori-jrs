@@ -177,10 +177,10 @@ echo"
 <meta charset=\"UTF-8\">
 <meta name=\"description\" content=\"Okavango biodiversity and environmental monitoring\">
 <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js\"></script>
-<script type=\"text/javascript\" src=\"../js/bootstrap/bootstrap-datetimepicker.min.js\"></script>
-<script type=\"text/javascript\" src=\"../js/custom/forms.js\"></script>
-<script type=\"text/javascript\" src=\"../js/custom/popup.js\"></script>
-<script type=\"text/javascript\" src=\"../js/bootstrap-3.4.1/bootstrap.min.js\"></script>
+<script type=\"text/javascript\" src=\"../js/bootstrap-datetimepicker.min.js\"></script>
+<script type=\"text/javascript\" src=\"../js/forms.js\"></script>
+<script type=\"text/javascript\" src=\"../js/popup.js\"></script>
+<script type=\"text/javascript\" src=\"../js/bootstrap.min.js\"></script>
 <link rel=\"stylesheet\" href=\"../css/bootstrap-datetimepicker.css\">
 <link rel=\"stylesheet\" href=\"../css/bootstrap-3.4.1.min.css\">
 <link rel=\"stylesheet\" href=\"../css/main.css\">
@@ -287,7 +287,7 @@ if ($base=="envmondata" & $table=="dataset"){
             echo "<h3>Current dataset: <b>$datasetID</b></h3>";
         }
         echo"
-<label><p> required fields shaded in yellow-ish</label>
+<p> required fields shaded in yellow-ish</p>
 <form id=form action='#' method=post>
 
 <h3>Dataset ID</h3>
@@ -416,7 +416,7 @@ if ($base=="envmondata" & $table=="location"){
             echo "<h2>Editing location to environmental monitoring database</h2>";
         }
 echo"
-<label><p> required fields shaded in grey</label>
+<label><p> required fields shaded in yellow</label>
 
 <form id=form action='#' method=post>
 
@@ -600,7 +600,7 @@ if ($base=="envmondata" & $table=="datastream"){
             echo "<h2>Editing datastream in environmental monitoring database</h2>";
         }
         echo" 
-<label><p> required fields shaded in grey</label>
+<label><p> required fields shaded in yellow</label>
 
 <form id=form action='#' method=post>
 
@@ -866,6 +866,7 @@ if ($base=="biodivdata" & $table=="dataset"){
         }
         echo"
 <label><p> required fields shaded in yellow-ish</label>
+
 <form id=form action='#' method=post>
 
 <h3>datasetID</h3>

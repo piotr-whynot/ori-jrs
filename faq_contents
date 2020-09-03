@@ -11,13 +11,13 @@
 
 
 <h2 id=whatsinherefaq>What's in here?</h2>
-<p>The Monitoring Website provides access to measurements of environmental, ecological and biological variables from the Okavango Delta. Although the focus is on the Okavango, you will find here also measurements from the broader Okavango region.
-<p>The website actually has a double functionality. What we mean by "access" is the ability to firstly see the data, either the actual numbers or the visualizations of those number, and secondly the ability to get the data onto your computer.
-<p> In this, the website has a double purpose. One is to allow easy access to (hopefully the most recent) monitoring information on key environmental and ecosystem variables. Second, is the access to historical datasets, i.e. datasets generated within a plethora of projects in the past. This is simpl a data recovery and rescue effort.
-<p> Importantly, large part of the motivation to create this website, and funding for it, came from a JRS project. One of that project's objectives was collation, formatting and publication of biodiversity data from the Okavango Delta in the Global Biodiversity Information Facility website, and thus making them available for research now and in the future.
+<p>The Monitoring Website provides access to measurements of environmental, ecological and biological variables from the Okavango Delta. Although the focus is on the Okavango, you will also find here measurements from the broader Okavango region.
+<p>The website actually has dual functionality. What we mean by "access" is firstly - the ability to see the data, either the actual numbers or the visualizations of those number, and secondly - the ability to download the data onto your computer.
+<p> In this, the website has a double purpose. One is to allow an easy access to (hopefully the most recent) monitoring information on key environmental and ecosystem variables. Second, is the access to historical datasets, i.e. datasets generated during a plethora of research projects in the past. This is simply a data recovery and rescue effort.
+<p> A large part of the motivation to create this website, and funding for it, came from a JRS project. One of that project's objectives was collation, formatting and publication of biodiversity data from the Okavango Delta in the Global Biodiversity Information Facility website, and thus making them available for research now and in the future.
 
 <h2 id=whatisntherefaq>What isn't here?</h2>
-<p>This is not a data processing website, i.e. you will not be able to do any analyses on the data, subset them, merge, do calculations. There is no GIS functionality. 
+<p>This is not a data processing website, i.e. you will not be able to do any analyses on the data, subset them, merge, do any calculations. There is no GIS functionality. 
 
 <h2 id=dataorganizationfaq>How are the data organized?</h2>
 <p>Data are divided into several categories. 
@@ -26,24 +26,24 @@
 <li>Secondly, there are <b>Environmental data</b> and <b>Biodiversity data</b>.
 <li>In each of these categories, data are stored in <b>Datasets</b>.
 <li>Each <b>Dataset</b> includes <b>Locations</b>, i.e. places where data are or were collected.
-<li>Things get a bit complicated from now on, unfortunately. Each <i>Monitoring</i> <b>Location</b> will have data for one or several <b>Variables</b>.
-<li> But each <i>Biodiversity</i> location will have a more complex structure. Biodiversity data are captured during <b>Sampling Events</b>.
-<li> Each <b>Event</b> will then record <b>Occurrences</b> and what we call <b>Other measurements</b>. 
+<li>Things get a bit complicated from there, unfortunately. Each <i>Monitoring</i> <b>Location</b> has data for one or several <b>Variables</b>.
+<li> But each <i>Biodiversity</i> location has a more complex structure. Biodiversity data are captured during <b>Sampling Events</b>.
+<li> During each <b>Event</b> recorded are <b>Occurrences</b> and what we call <b>"Other Measurements"</b>. 
 </ul>
 <p>Read about these groupings below.
 
 <h3>Environmental data vs. Biodiversity data</h3>
-<p>Environmental data are data on loosely defined "physical environment" that includes water, soil and air. Under this category you will find data on meteorological conditions (air temperature, humidity, rainfall, wind etc), on hydrological conditions (water flows, water levels, both in surface watr and in groundwater), results of water chemistry and water physical properties measurements.
-<p>Biodiversity data pertain to "biological" variables. This includes presence and abundance of various species or taxa in general, be it plants or animals, but also some characteristics of those plants or animals. For plant surveys those characteristics might include height, percent senescent. For animals it might include characteristics such as sex or maturity.
+<p>Environmental data are data pertaining to a loosely defined "physical environment" that includes water, soil and air. Under this category you will find data on meteorological conditions (air temperature, humidity, rainfall, wind etc), on hydrological conditions (water flows, water levels, both in surface watr and in groundwater), results of water chemistry and water physical properties measurements.
+<p>Biodiversity data pertain to "biological" variables. This includes presence and abundance of various species or taxa in general, be it plants or animals, but also some characteristics of those plants or animals. For plant surveys those characteristics might include height or quantification of senescent and green fraction. For animals it might include characteristics such as sex or maturity.
 <p> It is important to acknowledge here that the need to distinguish these two categories results from two facts - firstly, the data obviously describe different things. Secondly, they are also different in nature and thus the way they are organized (see below). We have organized biodiversity data in the way that is compatible with Global Biodiversity Information Facility (GBIF) requirements.
 
 <h3> Monitoring data vs. Once-off campaigns</h3>
 <p>These two categories group data according to for how long the measurements are or were carried out. The division is relatively straigtforward.
-<p> Monitoring data includes measurements that were carried out with an intention of providing information on temporal variability or behaviour of measured variables. Monitoring measurements usually have a character of a time series that span a substantial amount of time. However, Monitoring data do not necessarily include data that are continuous or regular. Some locations will be monitoring locations but will have very few data points, perhaps one only. That's because measurements at those locations were estabilished with an intention of monitoring, i.e. of continuous measurements, but that monitoring never really took off, or was abandoned for some reason.
+<p> Monitoring data include measurements that were (or are) carried out with an intention of providing information on temporal variability or behaviour of measured variables. Monitoring measurements usually have a character of a time series that span a substantial amount of time. However, Monitoring data do not necessarily include data that are continuous or measured regularly. Some locations are monitoring locations but have very few data points, perhaps one only. That's because measurements at those locations were estabilished with an intention of monitoring, i.e. of continuous measurements, but that monitoring never really took off, or was abandoned for some reason.
 <p>Once-off surveys are exactly that - measurements that were carried out once, usually with an intention of characterizing spatial heterogeneity of the measured variable. Those measurements might include several repeated measurements at the same location, but in principle they provide a snapshot rather than some continous description of the variable of interest.
 
 <h3> Datasets</h3>
-<p>Datasets are natural "groupings" of data that express data source. Datasets very conveniently describe Once-off measurements, as these are usually carried out within research projects or some sort of single evaluation campaign. In such a context, a Dataset will simply be a set of data collected during a research project or a measurement campaign. Because a Dataset is collected within a project/campaign, it will have a particular purpose, and usually will be restricted to a particular set of variables. For example, a Dataset may comprise water chemistry measurements carried out along the Okavango transect, carried out with the objective to understand hydro-geo-chemical processes in the channel/floodplain system. Or it can be measurements of invertebrates in Phelo's Floodplain carried out to understand the aquatic food chain.
+<p>Datasets are natural "groupings" of data that express data source. Datasets very conveniently describe Once-off measurements, as these are usually carried out within research projects or some sort of single measurement campaign. In such a context, a Dataset is simply a set of data collected during a research project or a measurement campaign. Because a Dataset is collected within a project/campaign, it has a particular purpose, and usually is restricted to a particular set of variables. For example, a Dataset may comprise water chemistry measurements carried out along the Okavango transect, carried out with the objective to understand hydro-geo-chemical processes in the channel/floodplain system. Or it can be measurements of invertebrates in Phelo's Floodplain carried out to understand the aquatic food chain.
 <p> Importantly, a Dataset can span both Biodiversity and Environmental data categories. For example, Darwin Biodiversity Project's Dataset included Biodiversity data, but also water chemistry and hydrological data.
 
 <h3>Locations</h3>

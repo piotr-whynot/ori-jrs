@@ -445,18 +445,14 @@ function editMonitoringRecords(datasetID, locationID, baseTime){
         locationName=alldata.features[0].properties.locationName;        
         datasetID=alldata.features[0].properties.datasetID;        
         // populates fixed elements of the data editing popup
-        txt="<div class=infotableDiv id=recordsinfoDiv>";
-        txt+="<div class=tableTitle>";
-        txt+=locationName;
-        txt+="</div>";
-        txt+="<table class='fullwidthTable infoTable'>";
+        txt="<h3 class=text-center>"+locationName+"</h3>";
+        txt+="<table class='infoTable narrowTable'>";
         txt+="<tr><td class=infoLabel width=50%>dataset ID:<td width=50%>"+datasetID+"</tr>";
         txt+="<tr><td class=infoLabel>Location ID:<td>"+locationID+"</tr>";
         txt+="<tr><td class=infoLabel>Base time:<td>"+baseTime+"</tr>";
         txt+="</table>";
-        txt+="</div>";
 
-        txt+="<div class=auxDiv>Select date:<input type=text id=datepicker onChange=populateMonitoringRecords('"+datasetID+"','"+locationID+"','"+baseTime+"')></div>"; 
+        txt+="<div class=text-center>Select date:<input type=text id=datepicker onChange=populateMonitoringRecords('"+datasetID+"','"+locationID+"','"+baseTime+"')></div>"; 
         txt+="<div class=listtableDiv id=records_table></div>";
         showAndScroll(txt,"dataContents","dataWindow");
         console.log(baseTime);
