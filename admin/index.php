@@ -371,7 +371,9 @@ if ($base=="envmondata" & $table=="location"){
     }
     if ($locationID==''&& $datasetID!='' && $do!='add'){
         //listing locations for given dataset
-        $query="select distinct location.locationID, locationName, locality, decimalLongitude, decimalLatitude from location join datastream on datastream.locationID=location.locationID where datasetID='{$datasetID}'";
+        //$query="select distinct location.locationID, locationName, locality, decimalLongitude, decimalLatitude from location join datastream on datastream.locationID=location.locationID where datasetID='{$datasetID}'";
+        $query="select distinct locationID, locationName, locality, decimalLongitude, decimalLatitude from location where datasetID='{$datasetID}'";
+        echo $query;
         $result = $mysqli->query($query);
         echo "<a href=./?base=envmondata&do=edit&table=dataset>back</a>";
         echo "<h2 class=text-center>View/edit location in environmental monitoring database</h2>";
@@ -605,9 +607,9 @@ if ($base=="envmondata" & $table=="datastream"){
 <form id=form action='#' method=post>
 
 <h3>Datastream ID</h3>
-<label><p>max length:20 characters<br> DatastreamID is composed of two elements: locationID and a code for variable. Those are separeted by underscore '_'. Note that locationID is composed of dataset code (ffirst three letters) and location code (up to 6 letters after the underscore). So the datastreamID will have three parts separated by underscores. Example: mla_nq22_DO, ori_boro_wlevel. Datastream ID should have no spaces, and no special characters. It has to be unique.</label><br>
+<label><p>max length:30 characters<br> DatastreamID is composed of two elements: locationID and a code for variable. Those are separeted by underscore '_'. Note that locationID is composed of dataset code (ffirst three letters) and location code (up to 6 letters after the underscore). So the datastreamID will have three parts separated by underscores. Example: mla_nq22_DO, ori_boro_wlevel. Datastream ID should have no spaces, and no special characters. It has to be unique.</label><br>
 <span id=datastreamID class=warning></span>
-<input type=text size=20 name=datastreamID class='nonempty unique nospace' value='{$datastreamID}'><br>
+<input type=text size=30 name=datastreamID class='nonempty unique nospace' value='{$datastreamID}'><br>
 
 <h3>Location ID</h3>
 <label><p>Must be of existing location. Submission will fail, if ID given here does not exist.</label><br>

@@ -31,6 +31,7 @@
 #
 
 $debug=false;
+#$debug=true;
 
 ###########################################################################
 # connecting to db
@@ -43,7 +44,7 @@ $mysqli->select_db('envmondata');
 #check what type of call is this and make sure calltype is correct
 $calltypes=array("data", "datastream", "datasetinfo", 'location');
 
-$calltype='location'; #empty call returns locations
+$calltype="datasetinfo"; #empty call returns datasetinfo
 if (isset($_GET['calltype'])){
     if (in_array($_GET['calltype'],$calltypes)){
         $calltype=$_GET['calltype'];
@@ -143,18 +144,24 @@ if ($calltype=="datasetinfo"){
     ###########################################################################
     # preparing query for all other calls
 
-    # this is expression for table join and it gives all occurrences for given criteria, joins ocurrence, event, location, and dataset tables
-    # need to include occurrences results from the fact that we want taxonID to be included in the query
+    # this is expression for table join and it gives all for given criteria, joins measurement, datastream, location, and dataset tables
+    # need to include measurement if call type is data, or if criteria include startdate, enddate or datetime
 
+    #full query - will return only items where data, datastreams, locations are available
     $query_join=" from measurement join datastream on measurement.datastreamID=datastream.datastreamID join location on datastream.locationID=location.locationID join dataset on location.datasetID=dataset.datasetID ";
-
-    #echo $query_join;
+    if ($startdate || $enddate || $datetime ){
+        $query_join_datastream=$query_join;
+        $query_join_location=$query_join;
+    }else{
+        $query_join_datastream=" from datastream join location on datastream.locationID=location.locationID join dataset on location.datasetID=dataset.datasetID ";
+        $query_join_location=" from location join dataset on location.datasetID=dataset.datasetID ";
+    }
 
     #this merges all criteria
     $query_crit='';
     $con=" where ";
     if ($locationID){
-                $query_crit=$query_crit.$con."location.locationID='".$locationID."' ";
+        $query_crit=$query_crit.$con."location.locationID='".$locationID."' ";
         $con=" and ";
     }
     if ($latmin & $latmax){
@@ -209,7 +216,7 @@ if ($calltype=="datasetinfo"){
     if ($calltype=='location'){
         //location call returns geoJSON    
         #finding all locations in the current dataset that correspond to criteria
-        $query0="select distinct location.locationID ".$query_join.$query_crit;
+        $query0="select distinct location.locationID ".$query_join_location.$query_crit;
         if ($debug){
             echo $query0."<br>";
         }
@@ -296,7 +303,7 @@ if ($calltype=="datasetinfo"){
     #
     if ($calltype=='datastream' || $calltype=="data"){
         #finding all locations in the current dataset that correspond to criteria
-        $query0="select distinct location.locationID ".$query_join.$query_crit;
+        $query0="select distinct location.locationID ".$query_join_datastream.$query_crit;
         if ($debug){
             echo $query0."<br>";
         }
@@ -353,7 +360,7 @@ if ($calltype=="datasetinfo"){
             $datastreamstack=array();
             # iterating through datasets
             # iterating through datastreams for given location for given criteria
-            $query1="SELECT distinct datastream.datastreamID,variableName,variableUnit,baseTime,samplingProtocol ".$query_join.$query_crit." and location.locationID='".$locationID."'";
+            $query1="SELECT distinct datastream.datastreamID,variableName,variableUnit,baseTime,samplingProtocol ".$query_join_datastream.$query_crit." and location.locationID='".$locationID."'";
             if ($debug){
                 echo $query1."<br>";
             }

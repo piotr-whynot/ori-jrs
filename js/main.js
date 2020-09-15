@@ -187,9 +187,9 @@ function showDataset(locationID, datasetID,dBase,obsType, targetDiv, callback){
 // dataset always shown
     describeDataset(dBase, datasetID,null);
     if (dBase=="biodivdata"){
-        var apicall='./api/api_biodiv.php?datasetID='+datasetID+"";
+        var apicall='./api/api_biodiv.php?calltype=location&datasetID='+datasetID+"";
     }else{
-        var apicall='./api/api_envdata.php?datasetID='+datasetID+"";
+        var apicall='./api/api_envdata.php?calltype=location&datasetID='+datasetID+"";
     }
     $.get(apicall, 
         function(data){
@@ -344,7 +344,7 @@ function showLocation(datasetID, locationID, dBase, targetDiv, cleanup){
     }else{
         // this is when dataGroup=='envdata';
         var apicall="./api/api_envdata.php?calltype=data&locationID="+locationID;
-        //console.log(featureapicall);
+        console.log(apicall);
         $.get(apicall, 
         function(data){
             //console.log(featureapicall);
@@ -420,18 +420,25 @@ function showLocation(datasetID, locationID, dBase, targetDiv, cleanup){
                     var dstrm=selfeature['datastreams'][dstrm];
                     var firstDate=dstrm.firstMeasurementDate;
                     var lastDate=dstrm.lastMeasurementDate;
-                    var fD = new Date(firstDate);
-                    var lD = new Date(lastDate);
-                    var fm=fD.getMonth()+1;
-                    var lm=lD.getMonth()+1;
-                    var firstDatestr=fD.getFullYear()+"/"+fm+"/"+fD.getDate()
-                    var lastDatestr=lD.getFullYear()+"/"+lm+"/"+lD.getDate()
-                    //console.log(firstDatestr);
-                    var firstDate=firstDate.replace(/ /g,"_");
-                    var lastDate=lastDate.replace(/ /g,"_");
+                    if(firstDate==null){
+                        //this is when there is no data for the datastream
+                        var enabled="disabled";
+                        var firstDatestr="No data yet available";
+                        var lastDatestr="No data yet available";
+                    }else{
+                        var enabled="";
+                        var fD = new Date(firstDate);
+                        var lD = new Date(lastDate);
+                        var fm=fD.getMonth()+1;
+                        var lm=lD.getMonth()+1;
+                        var firstDatestr=fD.getFullYear()+"/"+fm+"/"+fD.getDate()
+                        var lastDatestr=lD.getFullYear()+"/"+lm+"/"+lD.getDate()
+                        //console.log(firstDatestr);
+                        var firstDate=firstDate.replace(/ /g,"_");
+                        var lastDate=lastDate.replace(/ /g,"_");
+                    }
 
-
-                    txt+="<tr><td><input type='radio' name=variableradio id=var-"+dstrm.datastreamID+" onClick=\"showEnvDatastream('"+dstrm.datastreamID+"','figureWindow');\" ><td>"+dstrm.variableName+"</td><td>["+dstrm.variableUnit+"]</td><td>"+dstrm.baseTime+"</td><td>"+firstDatestr+"</td><td>"+lastDatestr+""; 
+                    txt+="<tr><td><input type='radio' name=variableradio id=var-"+dstrm.datastreamID+" "+enabled+" onClick=\"showEnvDatastream('"+dstrm.datastreamID+"','figureWindow');\" ><td>"+dstrm.variableName+"</td><td>["+dstrm.variableUnit+"]</td><td>"+dstrm.baseTime+"</td><td>"+firstDatestr+"</td><td>"+lastDatestr+""; 
                     txt+="<td>";
 
                     if (ownedItems[0].includes(datasetID) || ownedItems[1].includes(selfeature.locationID) || userType=="admin"){
@@ -497,11 +504,10 @@ function populateFigureContents(){
 function showEnvDatastream(datastreamID, targetDiv){
    // console.log("datastream");
     populateFigureContents();
-
     showhideWrapper("graphWrapper");
     txt="<div class=loader id=loader-1></div>";
     $('#graph').html(txt);
-    openDiv(targetDiv);    
+    openDiv(targetDiv);
     var apicall="./api/api_envdata.php?calltype=datastream&datastreamID="+datastreamID;
     //console.log(apicall);
     $.get(apicall, 
@@ -527,17 +533,20 @@ function showEnvDatastream(datastreamID, targetDiv){
             $('#graphMenu').html(txt);
 
             var datacall="./api/api_envdata.php?calltype=data&datastreamID="+datastreamID;
-            //console.log(datacall);
+            console.log(datacall);
             $.get(datacall,
                 function(data){
                 plotData=JSON.parse(data);
-
-                plotEnvChart(graphType);
-
-                populateEnvDatastreamTable(graphType);
-
                 $("#var-"+datastreamID).prop("checked", true);
-                $('#'+graphType).parent().addClass('active');
+                if(plotData[0].datastreams[0].data.length>0){
+                    //if data available
+                    plotEnvChart(graphType);
+                    populateEnvDatastreamTable(graphType);
+                    $('#'+graphType).parent().addClass('active');
+                }else{
+                    $('#figureContents').html("<div class='alert alert-info text-center'>No data available yet</div>");
+                    
+                }
             });
         }
     );

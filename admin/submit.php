@@ -91,7 +91,7 @@ if ($base=="envmondata" & $table=="location"){
     if ($do=="add"){
         //using prepared statements - apparently v.secure way of interacting with database
         $stmt = $mysqli->prepare("insert into envmondata.location values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-        $stmt->bind_param("ssssdddsddssdssssss", $_POST['locationID'], $_POST['datasetID'], $_POST['locationName'], $_POST['locality'],$_POST['decimalLatitude'],$_POST['decimalLongitude'],$_POST['coordinateUncertaintyInMeters'],$_POST['geodeticDatum'],$verbatimElevation,$elevationUncertaintyInMeters,$_POST['locationType'],$_POST['parentLocationID'],$childLocationValue,$_POST['childLocationUnit'],$_POST['geomorphologicalPosition'],$_POST['countryCode'],$_POST['locationOwner'],$_POST['locationRemarks'], $_POST['associatedMedia']);
+        $stmt->bind_param("ssssdddssssddssdsss", $_POST['locationID'], $_POST['datasetID'], $_POST['locationName'], $_POST['locality'],$_POST['decimalLatitude'],$_POST['decimalLongitude'],$_POST['coordinateUncertaintyInMeters'],$_POST['geodeticDatum'],$_POST['countryCode'],$_POST['locationRemarks'], $_POST['associatedMedia'],$verbatimElevation,$elevationUncertaintyInMeters,$_POST['locationType'],$_POST['parentLocationID'],$childLocationValue,$_POST['childLocationUnit'],$_POST['geomorphologicalPosition'],$_POST['locationOwner']);
     }else if ($do=="edit"){
         $stmt = $mysqli->prepare("update envmondata.location set  datasetID=?, locationName=?, locality=?,  decimalLatitude=?, decimalLongitude=?, coordinateUncertaintyInMeters=?, geodeticDatum=?, verbatimElevation=?, elevationUncertaintyInMeters=?, locationType=?, parentLocationID=?, childLocationValue=?, childLocationUnit=?, geomorphologicalPosition=?, countryCode=?, locationOwner=?, locationRemarks=?, associatedMedia=? where locationID=?");
 
@@ -117,12 +117,13 @@ if ($base=="envmondata" & $table=="datastream"){
     $errorflag=false;
     $mysqli->select_db('envmondata');
     // these are for numeric fields that may be null
-    if ($_POST['sampleSizeValue']==''){ $sampleSizeValue=NULL;}else{$sampleSizeValue=$_POST['sampleSizeValue'];}
+    if ($_POST['sampleSizeValue']==''){ $sampleSizeValue=NULL;} else {$sampleSizeValue=$_POST['sampleSizeValue'];}
 //echo $do;
 //echo  $_POST['locationID'].$_POST['variableType'].$_POST['variableName'].$_POST['variableUnit'].$_POST['baseTime'].$_POST['basisOfRecord'].$_POST['samplingEffort'].$_POST['samplingProtocol'].$sampleSizeValue.$_POST['sampleSizeUnit'].$_POST['datastreamID'];
     if ($do=="add"){
         //using prepared statements - apparently v.secure way of interacting with database
         $stmt = $mysqli->prepare("insert into envmondata.datastream values (?,?,?,?,?,?,?,?,?,?,?)");
+        $stmt->bind_param("sssssssssds", $_POST['datastreamID'], $_POST['locationID'], $_POST['variableType'], $_POST['variableName'], $_POST['variableUnit'],$_POST['baseTime'],$_POST['basisOfRecord'],$_POST['samplingEffort'],$_POST['samplingProtocol'],$sampleSizeValue,$_POST['sampleSizeUnit']);
     }else if ($do=="edit"){
         $stmt = $mysqli->prepare("update envmondata.datastream set locationID=?, variableType=?, variableName=?, variableUnit=?,  baseTime=?, basisOfRecord=?, samplingEffort=?, samplingProtocol=?, sampleSizeValue=?, sampleSizeUnit=? where datastreamID=?");
 
