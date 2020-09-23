@@ -244,9 +244,17 @@ if ($base=="envmondata" & $table=="dataset"){
     $datasetName="";
     $institutionCode="";
     $ownerInstitutionCode="";
+    $datasetLicence="CC BY-NC";
     $datasetDescription="";
     $publications="";
     $datasetRemarks="";
+    $subjectScope="";
+    $geographicScope="";
+    $temporalScope="";
+    $samplingApproach="";
+    $methodSteps="";
+    $qualityControl="";
+    $datasetCitation="";
     if ($datasetID=='' && $do!='add'){
         // datasetID is not set - shows list of all datasets
         $query="select datasetID, datasetName from dataset";
@@ -271,9 +279,17 @@ if ($base=="envmondata" & $table=="dataset"){
         $datasetName=$row['datasetName'];
         $institutionCode=$row['institutionCode'];
         $ownerInstitutionCode=$row['ownerInstitutionCode'];
+        $datasetLicence=$row['datasetLicence'];
         $datasetDescription=$row['datasetDescription'];
         $publications=$row['publications'];
         $datasetRemarks=$row['datasetRemarks'];
+        $subjectScope=$row['subjectScope'];
+        $geographicScope=$row['geographicScope'];
+        $temporalScope=$row['temporalScope'];
+        $samplingApproach=$row['samplingApproach'];
+        $methodSteps=$row['methodSteps'];
+        $qualityControl=$row['qualityControl'];
+        $datasetCitation=$row['datasetCitation'];
     }
     if (($datasetID!='' && $do=="edit") || $do=="add"){
      // this is common to "edit" and "add" functionality - form that is populated when "edit", or remains empty when "add"
@@ -310,6 +326,22 @@ if ($base=="envmondata" & $table=="dataset"){
 <span id=ownerInstitutionCode class=warning></span>
 <input type=text size=100 name=ownerInstitutionCode value='{$ownerInstitutionCode}'><br>
 
+<h3>Dataset Licence</h3>
+<label><p><br>Licence under which the dataset is shared</label><br>
+<span id=datasetLicence class=warning></span>
+
+<select name=datasetLicence width=20>";
+$licenceList=array("CC0","CC BY","CC BY-NC");
+foreach ($licenceList as $lic){ 
+echo "<option class=nonempty value='$lic' ";
+if ($datasetLicence==$lic){
+    echo " selected";
+}
+echo ">$lic</option>";
+}
+echo "</select>";
+
+echo "
 <h3>Dataset Description</h3>
 <label><p>max length:900 characters<br>Longer description of the dataset</label><br>
 <span id=datasetDescription class=warning></span>
@@ -321,9 +353,45 @@ if ($base=="envmondata" & $table=="dataset"){
 <textarea cols=80 rows=10 size=900 name=publications>{$publications}</textarea><br>
 
 <h3>Dataset Remarks</h3>
-<label><p>max length:900 characters<br>Any other remarks you might have</label><br>
+<label><p>max length:9000 characters<br>Any other remarks you might have</label><br>
 <span id=datasetRemarks class=warning></span>
-<textarea cols=80 rows=10 size=900 name=datasetRemarks>{$datasetRemarks}</textarea><br>
+<textarea cols=80 rows=10 size=9000 name=datasetRemarks>{$datasetRemarks}</textarea><br>
+
+<h3>Subject scope</h3>
+<label><p>max length:250 characters<br>What does this dataset measure?</label><br>
+<span id=subjectScope class=warning></span>
+<textarea cols=80 rows=4 size=250 name=subjectScope>{$subjectScope}</textarea><br>
+
+<h3>Temporal scope</h3>
+<label><p>max length:250 characters<br>What period does this dataset cover?</label><br>
+<span id=temporalScope class=warning></span>
+<textarea cols=80 rows=4 size=250 name=temporalScope>{$temporalScope}</textarea><br>
+
+<h3>Geographic scope</h3>
+<label><p>max length:250 characters<br>What geographic region does this dataset cover?</label><br>
+<span id=geographicScope class=warning></span>
+<textarea cols=80 rows=4 size=250 name=geographicScope>{$geographicScope}</textarea><br>
+
+<h3>Sampling Approach</h3>
+<label><p>max length:900 characters<br>General approach to sampling</label><br>
+<span id=samplingApproach class=warning></span>
+<textarea cols=80 rows=10 size=900 name=samplingApproach>{$samplingApproach}</textarea><br>
+
+<h3>Method steps</h3>
+<label><p>max length:900 characters<br>Detailed steps involved in the process</label><br>
+<span id=methodSteps class=warning></span>
+<textarea cols=80 rows=10 size=900 name=methodSteps>{$methodSteps}</textarea><br>
+
+<h3>Quality Control</h3>
+<label><p>max length:900 characters<br>How was data/sampling quality ensured?</label><br>
+<span id=qualityControl class=warning></span>
+<textarea cols=80 rows=10 size=900 name=qualityControl>{$qualityControl}</textarea><br>
+
+<h3>Dataset citation</h3>
+<label><p>max length:250 characters<br>How should the data be cited</label><br>
+<span id=datasetCitation class=warning></span>
+<textarea cols=80 rows=4 size=250 name=datasetCitation>{$datasetCitation}</textarea><br>
+
 
 <input type='button' class='button' value=' Save ' onClick=validateForm(\"$do\",'base=envmondata&do={$do}&table=dataset','./?base=envmondata&do=edit&table=dataset');>
 
@@ -828,9 +896,18 @@ if ($base=="biodivdata" & $table=="dataset"){
     $datasetName="";
     $institutionCode="";
     $ownerInstitutionCode="";
+    $datasetLicence="CC BY-NC";
     $datasetRemarks="";
     $datasetDescription="";
     $publications="";
+    $subjectScope="";
+    $geographicScope="";
+    $temporalScope="";
+    $samplingApproach="";
+    $methodSteps="";
+    $qualityControl="";
+    $datasetCitation="";
+
     if ($datasetID=='' && $do!='add'){
         // datasetID is not set - shows list of all datasets
         $query="select datasetID, datasetName from dataset";
@@ -854,9 +931,17 @@ if ($base=="biodivdata" & $table=="dataset"){
         $datasetName=$row['datasetName'];
         $institutionCode=$row['institutionCode'];
         $ownerInstitutionCode=$row['ownerInstitutionCode'];
+        $datasetLicence=$row['datasetLicence'];
         $datasetDescription=$row['datasetDescription'];
         $publications=$row['publications'];
         $datasetRemarks=$row['datasetRemarks'];
+        $subjectScope=$row['subjectScope'];
+        $geographicScope=$row['geographicScope'];
+        $temporalScope=$row['temporalScope'];
+        $samplingApproach=$row['samplingApproach'];
+        $methodSteps=$row['methodSteps'];
+        $qualityControl=$row['qualityControl'];
+        $datasetCitation=$row['datasetCitation'];
     }
     if (($datasetID!='' && $do=="edit") || $do=="add"){
      // this is common to "edit" and "add" functionality - form that is populated when "edit", or remains empty when "add"
@@ -886,10 +971,26 @@ if ($base=="biodivdata" & $table=="dataset"){
 <span id=institutionCode class=warning></span>
 <input type=text size=100 name=institutionCode class=nonempty value='{$institutionCode}'><br>
 
-<h3>owner Institution Name</h3>
+<h3>Owner Institution Name</h3>
 <label><p>max length:100 characters<br>Name of institution that is a legal owner of data</label><br>
 <span id=ownerInstitutionCode class=warning></span>
 <input type=text size=100 name=ownerInstitutionCode value='{$ownerInstitutionCode}'><br>
+
+<h3>Dataset Licence</h3>
+<label><p><br>Licence under which the dataset is shared</label><br>
+<span id=datasetLicence class=warning></span>
+<select name=datasetLicence width=20>";
+$licenceList=array("CC0","CC BY","CC BY-NC");
+foreach ($licenceList as $lic){ 
+echo "<option class=nonempty value='$lic' ";
+if ($datasetLicence==$lic){
+    echo " selected";
+}
+echo ">$lic</option>";
+}
+echo "</select>";
+
+echo "
 
 <h3>datasetDescription</h3>
 <label><p>max length:900 characters<br>Longer description of the dataset</label><br>
@@ -905,6 +1006,42 @@ if ($base=="biodivdata" & $table=="dataset"){
 <label><p>max length:900 characters<br>Any other remarks you might have</label><br>
 <span id=datasetRemarks class=warning></span>
 <textarea cols=40 rows=6 size=900 name=datasetRemarks>{$datasetRemarks}</textarea><br>
+
+<h3>Subject scope</h3>
+<label><p>max length:250 characters<br>What does this dataset measure?</label><br>
+<span id=subjectScope class=warning></span>
+<textarea cols=80 rows=4 size=250 name=subjectScope>{$subjectScope}</textarea><br>
+
+<h3>Temporal scope</h3>
+<label><p>max length:250 characters<br>What period does this dataset cover?</label><br>
+<span id=temporalScope class=warning></span>
+<textarea cols=80 rows=4 size=250 name=temporalScope>{$temporalScope}</textarea><br>
+
+<h3>Geographic scope</h3>
+<label><p>max length:250 characters<br>What geographic region does this dataset cover?</label><br>
+<span id=geographicScope class=warning></span>
+<textarea cols=80 rows=4 size=250 name=geographicScope>{$geographicScope}</textarea><br>
+
+<h3>Sampling Approach</h3>
+<label><p>max length:900 characters<br>General approach to sampling</label><br>
+<span id=samplingApproach class=warning></span>
+<textarea cols=80 rows=10 size=900 name=samplingApproach>{$samplingApproach}</textarea><br>
+
+<h3>Method steps</h3>
+<label><p>max length:900 characters<br>Detailed steps involved in the process</label><br>
+<span id=methodSteps class=warning></span>
+<textarea cols=80 rows=10 size=900 name=methodSteps>{$methodSteps}</textarea><br>
+
+<h3>Quality Control</h3>
+<label><p>max length:900 characters<br>How was data/sampling quality ensured?</label><br>
+<span id=qualityControl class=warning></span>
+<textarea cols=80 rows=10 size=900 name=qualityControl>{$qualityControl}</textarea><br>
+
+<h3>Dataset citation</h3>
+<label><p>max length:250 characters<br>How should the data be cited</label><br>
+<span id=datasetCitation class=warning></span>
+<textarea cols=80 rows=4 size=250 name=datasetCitation>{$datasetCitation}</textarea><br>
+
 
 <input type='button' class='button' value=' Save ' onClick=validateForm(\"$do\",'base=biodivdata&do={$do}&table=dataset','./?base=biodivdata&do=edit&table=dataset');>
 

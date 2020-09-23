@@ -111,5 +111,7 @@ a{
   background-position: -264px -96px;
 }
 
-
+input[type="radio"]{
+    cursor: pointer;
+}
 

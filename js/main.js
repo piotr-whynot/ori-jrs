@@ -221,11 +221,33 @@ function describeDataset(dBase, datasetID, targetDiv){
             txt+="<tr><td class=infoLabel>description:<td>"+currentDataset['datasetDescription']+"</tr>";
             txt+="<tr><td class=infoLabel>institution holding data:<td>"+currentDataset['institutionCode']+"</tr>";
             txt+="<tr><td class=infoLabel>institution owning data:<td>"+currentDataset['ownerInstitutionCode']+"</tr>";
+            txt+="<tr><td class=infoLabel>dataset licence:<td>"+currentDataset['datasetLicence']+"</tr>";
 		    if (currentDataset['publications']){
                 txt+="<tr><td class=infoLabel>relevant publications:<td>"+currentDataset['publications']+"</tr>";
 		    }
 		    if (currentDataset['datasetRemarks']){
                 txt+="<tr><td class=infoLabel>remarks:<td>"+currentDataset['datasetRemarks']+"</tr>";
+		    }
+		    if (currentDataset['geographicScope']){
+                txt+="<tr><td class=infoLabel>Geographic scope:<td>"+currentDataset['geographicScope']+"</tr>";
+		    }
+		    if (currentDataset['subjectScope']){
+                txt+="<tr><td class=infoLabel>Subject scope:<td>"+currentDataset['subjectScope']+"</tr>";
+		    }
+		    if (currentDataset['temporalScope']){
+                txt+="<tr><td class=infoLabel>Temporal scope:<td>"+currentDataset['temporalScope']+"</tr>";
+		    }
+		    if (currentDataset['samplingApproach']){
+                txt+="<tr><td class=infoLabel>Sampling approach:<td>"+currentDataset['samplingApproach']+"</tr>";
+		    }
+		    if (currentDataset['methodSteps']){
+                txt+="<tr><td class=infoLabel>Method steps:<td>"+currentDataset['methodSteps']+"</tr>";
+		    }
+		    if (currentDataset['qualityControl']){
+                txt+="<tr><td class=infoLabel>Quality control:<td>"+currentDataset['qualityControl']+"</tr>";
+		    }
+		    if (currentDataset['datasetCitation']){
+                txt+="<tr><td class=infoLabel>Dataset citation:<td>"+currentDataset['datasetCitation']+"</tr>";
 		    }
 		    txt+="</table>";
             if (ownedItems[0].includes(datasetID) || userType=="admin"){

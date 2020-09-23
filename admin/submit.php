@@ -59,12 +59,13 @@ if ($base=="envmondata" & $table=="dataset"){
     $mysqli->select_db('envmondata');
     if ($do=="add"){
         //using prepared statements - apparently v.secure way of interacting with database
-        $stmt = $mysqli->prepare("insert into envmondata.dataset values (?,?,?,?,?,?,?)");
-        $stmt->bind_param("sssssss", $_POST['datasetID'], $_POST['datasetName'], $_POST['institutionCode'],$_POST['ownerInstitutionCode'],$_POST['datasetDescription'],$_POST['publications'],$_POST['datasetRemarks']);
+        $stmt = $mysqli->prepare("insert into envmondata.dataset values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        $stmt->bind_param("sssssssssssssss", $_POST['datasetID'], $_POST['datasetName'], $_POST['institutionCode'],$_POST['ownerInstitutionCode'],$_POST['datasetLicence'],$_POST['datasetDescription'],$_POST['publications'],$_POST['datasetRemarks'],$_POST['subjectScope'],$_POST['temporalScope'],$_POST['geographicScope'],$_POST['samplingApproach'],$_POST['methodSteps'],$_POST['qualityControl'],$_POST['datasetCitation']);
     }else if ($do=="edit"){
-        $stmt = $mysqli->prepare("update envmondata.dataset set datasetName=?, institutionCode=?, ownerInstitutionCode=?, datasetDescription=?, publications=?, datasetRemarks=? where datasetID=?");
-        $stmt->bind_param("sssssss", $_POST['datasetName'], $_POST['institutionCode'],$_POST['ownerInstitutionCode'],$_POST['datasetDescription'],$_POST['publications'],$_POST['datasetRemarks'], $_POST['datasetID']);
+        $stmt = $mysqli->prepare("update envmondata.dataset set datasetName=?, institutionCode=?, ownerInstitutionCode=?,datasetLicence=?, datasetDescription=?, publications=?, datasetRemarks=? , subjectScope=?, temporalScope=?, geographicScope=?, samplingApproach=?, methodSteps=?, qualityControl=?, datasetCitation=? where datasetID=?");
+        $stmt->bind_param("sssssssssssssss", $_POST['datasetName'], $_POST['institutionCode'],$_POST['ownerInstitutionCode'],$_POST['datasetLicence'],$_POST['datasetDescription'],$_POST['publications'],$_POST['datasetRemarks'],$_POST['subjectScope'],$_POST['temporalScope'],$_POST['geographicScope'],$_POST['samplingApproach'],$_POST['methodSteps'],$_POST['qualityControl'],$_POST['datasetCitation'], $_POST['datasetID']);
     }
+
     if (!$stmt->execute()) {
         $errorflag=true;
         echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
@@ -150,11 +151,11 @@ if ($base=="biodivdata" & $table=="dataset"){
     $mysqli->select_db('biodivdata');
     if ($do=="add"){
         //using prepared statements - apparently v.secure way of interacting with database
-        $stmt = $mysqli->prepare("insert into biodivdata.dataset values (?,?,?,?,?,?,?)");
-        $stmt->bind_param("sssssss", $_POST['datasetID'], $_POST['datasetName'], $_POST['institutionCode'],$_POST['ownerInstitutionCode'],$_POST['datasetDescription'],$_POST['publications'],$_POST['datasetRemarks']);
+        $stmt = $mysqli->prepare("insert into biodivdata.dataset values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        $stmt->bind_param("sssssssssssssss", $_POST['datasetID'], $_POST['datasetName'], $_POST['institutionCode'],$_POST['ownerInstitutionCode'],$_POST['datasetLicence'],$_POST['datasetDescription'],$_POST['publications'],$_POST['datasetRemarks'],$_POST['subjectScope'],$_POST['temporalScope'],$_POST['geographicScope'],$_POST['samplingApproach'],$_POST['methodSteps'],$_POST['qualityControl'],$_POST['datasetCitation']);
     }else if ($do=="edit"){
-        $stmt = $mysqli->prepare("update biodivdata.dataset set datasetName=?, institutionCode=?, ownerInstitutionCode=?, datasetDescription=?, publications=?, datasetRemarks=? where datasetID=?");
-        $stmt->bind_param("sssssss", $_POST['datasetName'], $_POST['institutionCode'],$_POST['ownerInstitutionCode'],$_POST['datasetDescription'],$_POST['publications'],$_POST['datasetRemarks'], $_POST['datasetID']);
+        $stmt = $mysqli->prepare("update biodivdata.dataset set datasetName=?, institutionCode=?, ownerInstitutionCode=?,datasetLicence=?, datasetDescription=?, publications=?, datasetRemarks=? , subjectScope=?, temporalScope=?, geographicScope=?, samplingAproach=?, methodSteps=?, qualityControl=?, datasetCitation=? where datasetID=?");
+        $stmt->bind_param("sssssssssssssss", $_POST['datasetName'], $_POST['institutionCode'],$_POST['ownerInstitutionCode'],$_POST['datasetLicence'],$_POST['datasetDescription'],$_POST['publications'],$_POST['datasetRemarks'],$_POST['subjectScope'],$_POST['temporalScope'],$_POST['geographicScope'],$_POST['samplingApproach'],$_POST['methodSteps'],$_POST['qualityControl'],$_POST['datasetCitation'], $_POST['datasetID']);
     }
     if (!$stmt->execute()) {
         $errorflag=true;
