@@ -219,6 +219,7 @@ if ($format=="json"){
                 "locationType"=>$row12['locationType'],
                 "locality"=>$row12['locality'],
                 "geomorphologicalPosition"=>$row12['geomorphologicalPosition'],
+                "associatedMedia"=>$row12['associatedMedia'],
                 );
                 $feature=array(
                 "type"=>"Feature",
@@ -255,6 +256,7 @@ if ($format=="json"){
                 "locationType"=>$row12['locationType'],
                 "locality"=>$row12['locality'],
                 "geomorphologicalPosition"=>$row12['geomorphologicalPosition'],
+                "associatedMedia"=>$row12['associatedMedia'],
                 );
                 $eventstack=array();
                 #data array will have the following structure:
@@ -446,6 +448,7 @@ if ($format=="csv"){
                     "locationType"=>$row12['locationType'],
                     "datasetID"=>$row12['datasetID'],
                     "geomorphologicalPosition"=>$row12['geomorphologicalPosition'],
+                    "associatedMedia"=>$row12['associatedMedia'],
                 );
                 array_push($locationcsvstack,$locationcsv);
             }
@@ -488,6 +491,7 @@ if ($format=="csv"){
                     "locality"=>$row12['locality'],
                     "locationType"=>$row12['locationType'],
                     "geomorphologicalPosition"=>$row12['geomorphologicalPosition'],
+                    "associatedMedia"=>$row12['associatedMedia'],
                 );
                 $keys=array_keys($locationcsv);
                 fputcsv($outfile, $keys);

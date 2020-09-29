@@ -441,7 +441,7 @@ if ($base=="envmondata" & $table=="location"){
         //listing locations for given dataset
         //$query="select distinct location.locationID, locationName, locality, decimalLongitude, decimalLatitude from location join datastream on datastream.locationID=location.locationID where datasetID='{$datasetID}'";
         $query="select distinct locationID, locationName, locality, decimalLongitude, decimalLatitude from location where datasetID='{$datasetID}'";
-        echo $query;
+//        echo $query;
         $result = $mysqli->query($query);
         echo "<a href=./?base=envmondata&do=edit&table=dataset>back</a>";
         echo "<h2 class=text-center>View/edit location in environmental monitoring database</h2>";
@@ -488,7 +488,7 @@ if ($base=="envmondata" & $table=="location"){
 echo"
 <label><p> required fields shaded in yellow</label>
 
-<form id=form action='#' method=post>
+<form id=form action='#' method=post enctype='multipart/form-data'>
 
 <h3>Location ID</h3>
 <label><p>max length:20 characters<br>A location belongs to a given dataset. Even if measurements are carried out at the same place, but belong to different datasets, they will fall under different locations. LocationID is typically constructed as follows: three letters describing dataset, underscore (\"_\"), and up to 6 characters describing the location, usually either the location code used in the source dataset, or some abbreviation of it. No spaces, no special characters. LocationID has to be unique. Example: mla_nq22, ori_boro </label><br>
@@ -598,11 +598,20 @@ echo ">monitoring</option>
 <textarea cols=40 rows=6 size=255 name=locationRemarks>{$locationRemarks}</textarea><br>
 
 <h3>Associated Media</h3>
-<label><p>upload a photo of measurement location here. For the time being not functional</label><br>
-<span id=associatedMedia class=warning></span>
-<input type=text size=10 name=associatedMedia class='none' disabled value='{$associatedMedia}'><br>
+<label><p>add/remove photo of measurement location</label><br>
+<span id=associatedMedia class=warning></span>";
 
-<input type='button' class='button' value=' Save ' onClick=validateForm(\"$do\",'base=envmondata&do={$do}&table=location','./?base=envmondata&do=edit&table=location&datasetID=$datasetID');>
+echo "<div id=associatedMediaDiv>";
+if ($associatedMedia){
+    echo "<input type=hidden name=associatedMedia class='none' value='{$associatedMedia}'>";
+    echo "<img width=400px src='${associatedMedia}'><br><input type=button onClick='removePhoto()' value='Remove this photo'>";
+}else{
+    echo "<input type=hidden name=associatedMedia class='none' value=''>";
+    echo "<input type='file' name='fileToUpload' id='fileToUpload' onChange='activateUpload()'><input type='button' id=uploadButton value='Upload this photo' onClick='uploadPhoto()' disabled>";
+}
+echo"</div></br>";
+
+echo"<input type='button' class='button' value=' Save ' onClick=validateForm(\"$do\",'base=envmondata&do={$do}&table=location','./?base=envmondata&do=edit&table=location&datasetID=$datasetID');>
 
 <input type='button' class='button' value=' Cancel ' onClick='window.location=\"./?base=envmondata&do=edit&table=location&datasetID=$datasetID\"';>
 </form>

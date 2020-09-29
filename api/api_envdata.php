@@ -253,6 +253,7 @@ if ($calltype=="datasetinfo"){
                     "locationType"=>$row12['locationType'],
                     "locationOwner"=>$row12['locationOwner'],
                     "geomorphologicalPosition"=>$row12['geomorphologicalPosition'],
+                    "associatedMedia"=>$row12['associatedMedia'],
                 );
                 $feature=array(
                     "type"=>"Feature",
@@ -270,6 +271,7 @@ if ($calltype=="datasetinfo"){
                 "locationType"=>$row12['locationType'],
                 "datasetID"=>$row12['datasetID'],
                 "geomorphologicalPosition"=>$row12['geomorphologicalPosition'],
+                "associatedMedia"=>$row12['associatedMedia'],
                 );
                 array_push($locationcsvstack,$locationcsv);
             }
@@ -339,6 +341,7 @@ if ($calltype=="datasetinfo"){
                     "locationType"=>$row12['locationType'],
                     "locationOwner"=>$row12['locationOwner'],
                     "geomorphologicalPosition"=>$row12['geomorphologicalPosition'],
+                    "associatedMedia"=>$row12['associatedMedia'],
                 );
             }else{
                 ##storing for csv format
@@ -351,6 +354,7 @@ if ($calltype=="datasetinfo"){
                 "locality"=>$row12['locality'],
                 "locationType"=>$row12['locationType'],
                 "geomorphologicalPosition"=>$row12['geomorphologicalPosition'],
+                "associatedMedia"=>$row12['associatedMedia'],
                 );
                 $keys=array_keys($locationcsv);
                 fputcsv($outfile, $keys);

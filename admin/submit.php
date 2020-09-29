@@ -88,15 +88,37 @@ if ($base=="envmondata" & $table=="location"){
     if ($_POST['verbatimElevation']==''){ $verbatimElevation=NULL;}else{$verbatimElevation=$_POST['verbatimElevation'];}
     if ($_POST['elevationUncertaintyInMeters']==''){ $elevationUncertaintyInMeters=NULL;}else{$elevationUncertaintyInMeters=$_POST['elevationUncertaintyInMeters'];}
     if ($_POST['childLocationValue']==''){ $childLocationValue=NULL;}else{$childLocationValue=$_POST['childLocationValue'];}
-
+    if ($_POST['associatedMedia']!=''){
+        if (substr($_POST['associatedMedia'],0,2)=='..'){
+            // new file stored in temp
+            $file=$_POST['associatedMedia'];
+            echo $file;
+            $ext=strtolower(pathinfo($file)['extension']);
+            $fname=pathinfo($file)['filename'];
+            $newfile="../associatedMedia/".$_POST['locationID']."_media.".$ext;
+            echo $newfile;
+            rename($file, $newfile);
+            echo "<br>";
+            echo dirname($_SERVER['PHP_SELF']);
+            echo "<br>";
+            echo str_replace(dirname($_SERVER['PHP_SELF']),"admin","");
+            echo "<br>";
+            $associatedMedia="http://".$_SERVER['HTTP_HOST'].str_replace("admin","",dirname($_SERVER['PHP_SELF']))."associatedMedia/".$_POST['locationID']."_media.".$ext;
+            echo $associatedMedia;
+        }else{
+           // old file
+           $associatedMedia=$_POST['associatedMedia'];
+        }
+    }
     if ($do=="add"){
         //using prepared statements - apparently v.secure way of interacting with database
         $stmt = $mysqli->prepare("insert into envmondata.location values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-        $stmt->bind_param("ssssdddssssddssdsss", $_POST['locationID'], $_POST['datasetID'], $_POST['locationName'], $_POST['locality'],$_POST['decimalLatitude'],$_POST['decimalLongitude'],$_POST['coordinateUncertaintyInMeters'],$_POST['geodeticDatum'],$_POST['countryCode'],$_POST['locationRemarks'], $_POST['associatedMedia'],$verbatimElevation,$elevationUncertaintyInMeters,$_POST['locationType'],$_POST['parentLocationID'],$childLocationValue,$_POST['childLocationUnit'],$_POST['geomorphologicalPosition'],$_POST['locationOwner']);
+        $stmt->bind_param("ssssdddssssddssdsss", $_POST['locationID'], $_POST['datasetID'], $_POST['locationName'], $_POST['locality'],$_POST['decimalLatitude'],$_POST['decimalLongitude'],$_POST['coordinateUncertaintyInMeters'],$_POST['geodeticDatum'],$_POST['countryCode'],$_POST['locationRemarks'], $associatedMedia,$verbatimElevation,$elevationUncertaintyInMeters,$_POST['locationType'],$_POST['parentLocationID'],$childLocationValue,$_POST['childLocationUnit'],$_POST['geomorphologicalPosition'],$_POST['locationOwner']);
+
     }else if ($do=="edit"){
         $stmt = $mysqli->prepare("update envmondata.location set  datasetID=?, locationName=?, locality=?,  decimalLatitude=?, decimalLongitude=?, coordinateUncertaintyInMeters=?, geodeticDatum=?, verbatimElevation=?, elevationUncertaintyInMeters=?, locationType=?, parentLocationID=?, childLocationValue=?, childLocationUnit=?, geomorphologicalPosition=?, countryCode=?, locationOwner=?, locationRemarks=?, associatedMedia=? where locationID=?");
 
-        $stmt->bind_param("sssdddsddssdsssssss", $_POST['datasetID'], $_POST['locationName'], $_POST['locality'],$_POST['decimalLatitude'],$_POST['decimalLongitude'],$_POST['coordinateUncertaintyInMeters'],$_POST['geodeticDatum'],$verbatimElevation,$elevationUncertaintyInMeters,$_POST['locationType'],$_POST['parentLocationID'],$childLocationValue,$_POST['childLocationUnit'],$_POST['geomorphologicalPosition'],$_POST['countryCode'],$_POST['locationOwner'],$_POST['locationRemarks'],$_POST['associatedMedia'], $_POST['locationID']);
+        $stmt->bind_param("sssdddsddssdsssssss", $_POST['datasetID'], $_POST['locationName'], $_POST['locality'],$_POST['decimalLatitude'],$_POST['decimalLongitude'],$_POST['coordinateUncertaintyInMeters'],$_POST['geodeticDatum'],$verbatimElevation,$elevationUncertaintyInMeters,$_POST['locationType'],$_POST['parentLocationID'],$childLocationValue,$_POST['childLocationUnit'],$_POST['geomorphologicalPosition'],$_POST['countryCode'],$_POST['locationOwner'],$_POST['locationRemarks'],$associatedMedia, $_POST['locationID']);
     }
     if (!$stmt->execute()) {
         $errorflag=true;

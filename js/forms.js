@@ -127,7 +127,7 @@ function runAjaxChecks(queue, i, callback) {
         },
         error: function(response) {
             console.log("error");
-            $("span#"+queue[i].data.item+"").html("Something went seriously wrong... Whom do you call? Ghostbusters!<br>");
+            $("span#"+queue[i].data.item+"").html("Something went seriously wrong... We are terribly sorry. Please let us know what were you trying to do.<br>");
             retvalue=false;
             if (i<queue.length-1){
                 runAjaxChecks(queue, ii, callback);
@@ -159,6 +159,52 @@ function submitForm(argstring, returnstr){
 }
 
 
+function uploadPhoto(){
+    retval=true;
+    aform=document.querySelector("#form");
+    var fdata=new FormData(aform);
+    var file = document.getElementById('fileToUpload').files[0];
+    console.log(file, file.size);
+    if(file && file.size > 2097152) {
+        txt="Sorry. File too big. Max allowed size is 2 MB (2097152 Bytes). Yours is "+file.size+" bytes!";
+        retval=false;
+        $("span#associatedMedia").html(txt+"<br>");
+    }else{
+        $.ajax({
+            url: "uploadMedia.php", 
+            type: "POST",             
+            data: fdata,
+            contentType: false,       
+            cache: false,             
+            processData:false, 
+            success: function(data) {
+                     data=JSON.parse(data);
+                     if(data[0]==1){
+                         alert("photo checked and uploaded successfully");
+                         $("span#associatedMedia").html("");
+                         txt="<input type=hidden name=associatedMedia class='none' value='"+data[1]+"'>";
+                         txt+="<img width=400px src='"+data[1]+"'><br><input type=button onClick='removePhoto()' value='Remove this photo'>";
+                         $("#associatedMediaDiv").html(txt);
+                     }else{
+                         $("span#associatedMedia").html(data[1]+"<br>");
+                     }
+            }
+        });
+    }
+}
+
+
+function removePhoto(){
+    txt="<input type=hidden name=associatedMedia class='none' value=''>";
+    txt+="<input type='file' name='fileToUpload' id='fileToUpload' onChange=activateUpload()><input type='button' id=uploadButton value='Upload photo' onClick='uploadPhoto()' disabled>";
+    $("#associatedMediaDiv").html(txt);
+}
+
+
+function activateUpload(){
+    $('#uploadButton').removeAttr('disabled');
+    $("span#associatedMedia").html("");
+}
 
 //************************************************************************************************************
 function editAnyInPopup(database, datasetID, locationID, locationType, baseTime, datetime){

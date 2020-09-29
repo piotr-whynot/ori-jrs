@@ -391,6 +391,9 @@ function showLocation(datasetID, locationID, dBase, targetDiv, cleanup){
             txt+="<tr><td class=infoLabel>location owner:<td>"+selfeature['locationOwner']+"</tr>";
             txt+="<tr><td class=infoLabel>geomorphological position:<td>"+selfeature['geomorphologicalPosition']+"</tr>";
             txt+="<tr><td class=infoLabel>location remarks:<td>"+selfeature['locationRemarks']+"</tr>";
+            if (selfeature['associatedMedia']>''){
+                txt+="<tr><td class=infoLabel>location photo:<td><img width=200px src="+selfeature['associatedMedia']+"></tr>";
+            }
             txt+="</table>";
 
             if (ownedItems[0].includes(datasetID) || ownedItems[1].includes(locationID) || userType=="admin"){
