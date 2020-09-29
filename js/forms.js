@@ -180,7 +180,7 @@ function uploadPhoto(){
             success: function(data) {
                      data=JSON.parse(data);
                      if(data[0]==1){
-                         alert("photo checked and uploaded successfully");
+                         alert("Photo checked and stored on the server successfully\nNote that you still need to save changes to upload the photo to the database");
                          $("span#associatedMedia").html("");
                          txt="<input type=hidden name=associatedMedia class='none' value='"+data[1]+"'>";
                          txt+="<img width=400px src='"+data[1]+"'><br><input type=button onClick='removePhoto()' value='Remove this photo'>";

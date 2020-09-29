@@ -328,11 +328,27 @@ function showLocation(datasetID, locationID, dBase, targetDiv, cleanup){
             txt+="</h3>";
             txt+="<table class='infoTable narrowTable'>";
             // this displays all properties coming from api
-            for (key in selfeature){
-                if ( key != "events"){
-                    txt+="<tr><td class=infoLabel width=50%>"+key+":<td width=50%>"+selfeature[key]+"</tr>";
-                }
+            txt+="<tr><td class=infoLabel width=50%>dataset ID:<td width=50%>"+selfeature['datasetID']+"</tr>";
+            txt+="<tr><td class=infoLabel>Location Name:<td>"+selfeature['locationName']+"</tr>";
+            txt+="<tr><td class=infoLabel>Location type:<td>"+selfeature['locationType']+"</tr>";
+            txt+="<tr><td class=infoLabel>locality:<td>"+selfeature['locality']+"</tr>";
+            txt+="<tr><td class=infoLabel>latitude:<td>"+selfeature['decimalLatitude']+"</tr>";
+            txt+="<tr><td class=infoLabel>longitude:<td>"+selfeature['decimalLongitude']+"</tr>";
+            txt+="<tr><td class=infoLabel>coordinate uncertainty [m]:<td>"+selfeature['coordinateUncertaintyInMeters']+"</tr>";
+            txt+="<tr><td class=infoLabel>elevation [m a.m.s.l]:<td>"+selfeature['verbatimElevation']+"</tr>";
+            txt+="<tr><td class=infoLabel>elevation uncertainty [m]:<td>"+selfeature['elevationUncertaintyInMeters']+"</tr>";
+//            txt+="<tr><td class=infoLabel>location owner:<td>"+selfeature['locationOwner']+"</tr>";
+            txt+="<tr><td class=infoLabel>geomorphological position:<td>"+selfeature['geomorphologicalPosition']+"</tr>";
+//            txt+="<tr><td class=infoLabel>location remarks:<td>"+selfeature['locationRemarks']+"</tr>";
+            if (selfeature['associatedMedia']>''){
+                txt+="<tr><td class=infoLabel>location photo:<td><img width=200px src="+selfeature['associatedMedia']+"></tr>";
             }
+            txt+="</table>";
+
+            if (ownedItems[0].includes(datasetID) || ownedItems[1].includes(locationID) || userType=="admin"){
+                txt+="<div class=text-center><a href=# onClick=editLocation('"+dataGroup+"','"+selfeature['datasetID']+"','"+selfeature['locationID']+"')>edit location info</a></div>";
+            }
+
             var datasetID=selfeature['datasetID'];
             txt+="</table>";
 
@@ -365,7 +381,7 @@ function showLocation(datasetID, locationID, dBase, targetDiv, cleanup){
         });
     }else{
         // this is when dataGroup=='envdata';
-        var apicall="./api/api_envdata.php?calltype=data&locationID="+locationID;
+        var apicall="./api/api_envdata.php?calltype=datastream&locationID="+locationID;
         console.log(apicall);
         $.get(apicall, 
         function(data){

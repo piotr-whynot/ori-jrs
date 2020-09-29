@@ -92,19 +92,19 @@ if ($base=="envmondata" & $table=="location"){
         if (substr($_POST['associatedMedia'],0,2)=='..'){
             // new file stored in temp
             $file=$_POST['associatedMedia'];
-            echo $file;
+//            echo $file;
             $ext=strtolower(pathinfo($file)['extension']);
             $fname=pathinfo($file)['filename'];
             $newfile="../associatedMedia/".$_POST['locationID']."_media.".$ext;
-            echo $newfile;
+//            echo $newfile;
             rename($file, $newfile);
-            echo "<br>";
-            echo dirname($_SERVER['PHP_SELF']);
-            echo "<br>";
-            echo str_replace(dirname($_SERVER['PHP_SELF']),"admin","");
-            echo "<br>";
+//            echo "<br>";
+//            echo dirname($_SERVER['PHP_SELF']);
+//            echo "<br>";
+//            echo str_replace(dirname($_SERVER['PHP_SELF']),"admin","");
+//            echo "<br>";
             $associatedMedia="http://".$_SERVER['HTTP_HOST'].str_replace("admin","",dirname($_SERVER['PHP_SELF']))."associatedMedia/".$_POST['locationID']."_media.".$ext;
-            echo $associatedMedia;
+//            echo $associatedMedia;
         }else{
            // old file
            $associatedMedia=$_POST['associatedMedia'];

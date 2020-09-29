@@ -1217,12 +1217,22 @@ echo "
 <textarea cols=40 rows=6 size=255 name=locationRemarks>{$locationRemarks}</textarea><br>
 
 <h3>associatedMedia</h3>
-<label><p>upload a photo of measurement location here. For the time being not functional</label><br>
+<label><p>upload a photo of measurement location here. File has to be smaller than 2MB</label><br>
 <span id=associatedMedia class=warning></span>
-<input type=text size=50 name=associatedMedia class='none' disabled value='{$associatedMedia}'><br>
+";
+
+echo "<div id=associatedMediaDiv>";
+if ($associatedMedia){
+    echo "<input type=hidden name=associatedMedia class='none' value='{$associatedMedia}'>";
+    echo "<img width=400px src='${associatedMedia}'><br><input type=button onClick='removePhoto()' value='Remove this photo'>";
+}else{
+    echo "<input type=hidden name=associatedMedia class='none' value=''>";
+    echo "<input type='file' name='fileToUpload' id='fileToUpload' onChange='activateUpload()'><input type='button' id=uploadButton value='Upload this photo' onClick='uploadPhoto()' disabled>";
+}
+echo"</div></br>";
 
 
-<input type='button' class='button' value=' Save ' onClick=validateForm(\"$do\",'base=biodivdata&do={$do}&table=location','./?base=biodivdata&do=edit&table=location&datasetID=$datasetID');>
+echo"<input type='button' class='button' value=' Save ' onClick=validateForm(\"$do\",'base=biodivdata&do={$do}&table=location','./?base=biodivdata&do=edit&table=location&datasetID=$datasetID');>
 
 <input type='button' class='button' value=' Cancel ' onClick='window.location=\"./?base=biodivdata&do=edit&table=location&datasetID=$datasetID\"';>
 </form>

@@ -214,10 +214,19 @@ if ($format=="json"){
                 "coordinates"=>array($row12['decimalLongitude'],$row12['decimalLatitude'])
                 );
                 $locationproperties=array(
+                "datasetID"=>$row12['datasetID'],
                 "locationID"=>$row12['locationID'],
                 "locationName"=>$row12['locationName'],
                 "locationType"=>$row12['locationType'],
                 "locality"=>$row12['locality'],
+                "decimalLatitude"=>$row12['decimalLatitude'],
+                "decimalLongitude"=>$row12['decimalLongitude'],
+                "coordinateUncertaintyInMeters"=>$row12['coordinateUncertaintyInMeters'],
+                "geodeticDatum"=>$row12['geodeticDatum'],
+                "locationRemarks"=>$row12['locationRemarks'],
+                "verbatimElevation"=>$row12['verbatimElevation'],
+                "elevationUncertaintyInMeters"=>$row12['elevationUncertaintyInMeters'],
+                "locationRemarks"=>$row12['locationRemarks'],
                 "geomorphologicalPosition"=>$row12['geomorphologicalPosition'],
                 "associatedMedia"=>$row12['associatedMedia'],
                 );
@@ -249,14 +258,22 @@ if ($format=="json"){
                 $result12 = $mysqli->query($query12);
                 $row12= $result12->fetch_assoc();
                 $locationproperties=array(
+                "datasetID"=>$row12['datasetID'],
                 "locationID"=>$row12['locationID'],
-                "longitude"=>$row12['decimalLongitude'],
-                "latitude"=>$row12['decimalLatitude'],
                 "locationName"=>$row12['locationName'],
                 "locationType"=>$row12['locationType'],
                 "locality"=>$row12['locality'],
+                "decimalLatitude"=>$row12['decimalLatitude'],
+                "decimalLongitude"=>$row12['decimalLongitude'],
+                "coordinateUncertaintyInMeters"=>$row12['coordinateUncertaintyInMeters'],
+                "geodeticDatum"=>$row12['geodeticDatum'],
+                "locationRemarks"=>$row12['locationRemarks'],
+                "verbatimElevation"=>$row12['verbatimElevation'],
+                "elevationUncertaintyInMeters"=>$row12['elevationUncertaintyInMeters'],
+                "locationRemarks"=>$row12['locationRemarks'],
                 "geomorphologicalPosition"=>$row12['geomorphologicalPosition'],
                 "associatedMedia"=>$row12['associatedMedia'],
+
                 );
                 $eventstack=array();
                 #data array will have the following structure:
