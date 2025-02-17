@@ -1,4 +1,5 @@
 function loginForm(){
+    console.log("loginform");
     frm="<div class='loginContainer form-group text-center'><form>"; 
     frm+="<table>";
     frm+="<tr><td></td><td><span class='warning'></span></td></tr>";
@@ -134,7 +135,8 @@ function updatePassword(passwordCode){
 
 
 
-function login(){ 
+function login(){
+	console.log("login");
     $('.warning').html("").hide();
     emailAddress = $('input[name=emailAddress]').val();
     password = $('input[name=password]').val();
@@ -143,6 +145,7 @@ function login(){
 	        'emailAddress': emailAddress,
 	        'password': password
 	    };
+	    
 	    $.ajax({
 	        type : 'POST',
             url  : 'login.php?action=login',
@@ -151,6 +154,8 @@ function login(){
             encode  : true
 	    })
         .done(function(data) {
+		console.log("login");
+		console.log(data);
             if(data[0]=='true'){
 		        responseForm("Logged in", "current");
             }else{

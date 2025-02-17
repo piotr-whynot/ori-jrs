@@ -10,14 +10,14 @@ function plotEnvChart(graphType){
         setTimeout(function(){
             chart=createEnvChart("graph", graphType, seriesData, datayrs);
             txt="<div class='center-block text-center'>";
-            txt+="<b> Highlight years:</b><br>";
+            txt+="<b> Highlight years:</b><br><div id='highlightData'>";
             year2show=0;
             for(var i=datayrs.length-1, len=0; i >= len; i--){
                 y=datayrs[i];
                 if (year2show==0){year2show=y;}
                     txt+="<div class='checkbox'> <label><input type='checkbox' name='years' onclick='showhideYear(this.value)' value="+y+" />"+y+"</label></div>"
             }
-            txt+="</div>";
+            txt+="</div></div>";
             $('#graphMenuAux').html(txt);
             $(":checkbox[value="+year2show+"]").prop("checked","true");
             showhideYear(year2show);
@@ -59,8 +59,8 @@ function processEnvChartData(graphType, callback){
     }
     var mindays=0
     for(var i=0, len=data.length; i < len; i++){
-        var dte0=new Date(data[i][0]);
-        var dte=new Date(data[i][0]);
+        var dte0=new Date(data[i][0].replace(/\s/, 'T')+'Z');
+        var dte=new Date(data[i][0].replace(/\s/, 'T')+'Z');
         dte.setMinutes(dte.getMinutes() - dte.getTimezoneOffset())
         //console.log(dte);
         var cury=dte.getFullYear();
@@ -170,17 +170,23 @@ function createEnvChart(divname, graphType, seriesData, datayrs){
         tooltip: { valueDecimals: 2,
 	      formatter: function() {
                 var s = variableName;
-	        $.each(this.points, function(i, point) {
-                if (chartType=="timeseries"){
+                if (graphType=="timeseries"){
                     yrlabel='';
                 }else{				
-                    yrlabel=', '+point.series.name;
+                    s+='<br>year(s):'+this.point.series.name;
                 }
-                s += '<br>' + Highcharts.dateFormat(tipdateFormat, this.x) +yrlabel+': '+ point.y+" ["+measuringUnit+"]";
-            });
+                s += '<br>'+Highcharts.dateFormat(tipdateFormat, this.x) +': '+ this.point.y+" ["+measuringUnit+"]";
+
+	        //$.each(this.points, function(i, point) {
+                //if (graphType=="timeseries"){
+                //    yrlabel='';
+                //}else{				
+                //    yrlabel=', '+point.series.name;
+                //}
+                //s += '<br>'+Highcharts.dateFormat(tipdateFormat, this.x) +yrlabel+': '+ point.y+" ["+measuringUnit+"]";
+                //});
 	        return s;			
           },
-          shared: false	
         },
 
         scrollbar: {enabled: false}, 

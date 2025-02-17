@@ -115,3 +115,21 @@ input[type="radio"]{
     cursor: pointer;
 }
 
+
+#highlightData{
+  height: 200px;
+  overflow-y: auto;
+  scrollbar-width: thin; 
+}
+
+.clickable {
+    color: #374785;
+    cursor:pointer;
+    text-decoration:none;
+}
+
+.clickable:hover{
+    color: #17252A;
+}
+
+

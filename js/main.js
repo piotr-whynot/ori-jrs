@@ -136,13 +136,12 @@ function showHome(){
 }
 
 
-function showExplore(){
+function showExplore(){console.log("show explore");
     $(".homeDiv").hide()
     $("#exploreMenu").show()
     openDiv("sourcesWindow");
     openAccordion("all");
 }
-
 
 
 
@@ -209,8 +208,10 @@ function describeDataset(dBase, datasetID, targetDiv){
         var apicall="./api/api_envdata.php?calltype=datasetinfo&datasetID="+datasetID+"";
     }
     //console.log(apicall);
+    console.log(apicall);
     $.get(apicall, 
         function(data){
+	    console.log(data);
             currentDataset=JSON.parse(data)[datasetID];
             txt="<h3 class=text-center>";
 		    txt+=currentDataset['datasetName'];
@@ -299,6 +300,7 @@ function showLocationWrapper(feature,layer){
 
 
 function showLocation(datasetID, locationID, dBase, targetDiv, cleanup){
+	
     //setting things on the map
     if(typeof currentMarker === 'undefined'){
 
@@ -467,14 +469,17 @@ function showLocation(datasetID, locationID, dBase, targetDiv, cleanup){
                         var firstDatestr="No data yet available";
                         var lastDatestr="No data yet available";
                     }else{
+			
                         var enabled="";
-                        var fD = new Date(firstDate);
-                        var lD = new Date(lastDate);
+                        var fD = new Date(firstDate.replace(/\s/, 'T')+'Z');
+                        var lD = new Date(lastDate.replace(/\s/, 'T')+'Z');
                         var fm=fD.getMonth()+1;
+			   // alert(firstDate);
+			   // alert(fD);
                         var lm=lD.getMonth()+1;
                         var firstDatestr=fD.getFullYear()+"/"+fm+"/"+fD.getDate()
                         var lastDatestr=lD.getFullYear()+"/"+lm+"/"+lD.getDate()
-                        //console.log(firstDatestr);
+                        console.log(firstDatestr);
                         var firstDate=firstDate.replace(/ /g,"_");
                         var lastDate=lastDate.replace(/ /g,"_");
                     }
@@ -608,9 +613,13 @@ function populateEnvDatastreamTable(_datastreamID){
     txt+="<thead>";
     txt+="<tr><th>Date<th>"+variableName+" ["+variableUnit+"]</tr>";
     txt+="<tbody>";
+    console.log(variableName);
     for(var i=0, len=data.length; i < len; i++){
-        var dte=new Date(data[i][0]);
-        txt+="<tr><td>"+dte.toISOString().slice(0, 10)+"<td>"+data[i][1]+"</tr>";
+        //console.log(data[i][0]);
+	var dte=new Date(data[i][0].replace(/\s/, 'T')+'Z');
+	//console.log("DATEs");
+	//console.log(dte);
+        txt+="<tr><td>"+dte.toISOString().substring(0, 10)+"<td>"+data[i][1]+"</tr>";
     }
     txt+="</tbody>";
     txt+="</table>";
@@ -744,12 +753,12 @@ function showEnvEvent(locationID, evDate, targetDiv){
 // ************************************************************************************************************************************
 
 
-function initializeMap(){
+function initializeMap(){console.log("map");
     //main function for initializing map interface
     map = L.map('mapDiv', {dragging: true, center: new L.LatLng(-19.3, 23), zoom: 9, zindex: 30});
     map.scrollWheelZoom.disable();
     // loads openstreetmap. For the time being the only option for background. Perhaps one day will implement google satellite overlay... 
-    var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
     osm=new L.TileLayer(osmUrl, {minZoom: 7, maxZoom: 15, attribution: osmAttrib});    
     osm.addTo(map);
@@ -1031,10 +1040,20 @@ function pageinModal(page,title){
 }
 
 
-function textinModal(txt,title){ 
+function textinModal(txt,title){
+    console.log("textinModal");
     $(".modal-title").html(title);
     $(".modal-body").html(txt);
     $('#myModal').modal('show');
+}
+
+function openAccordion_test(_id){
+    //$(".topnav ul").show();
+    $("#"+_id).parent("li").find("ul").show();
+    //$("#"+_id).parents("ul").show();
+    $("#"+_id+" span.openCloseSign").html("<img src='img/icon_minus.svg' height=20 width=20>");
+//    $("#"+_id+"~ul").show();
+//    $("#"+_id+"~span").html("<img src='img/icon_minus.svg' height=20 width=20>");
 }
 
 

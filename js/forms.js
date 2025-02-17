@@ -144,6 +144,7 @@ function submitForm(argstring, returnstr){
     console.log(retvalue);
     if (retvalue){
          console.log("attempting submit...");
+         console.log($('#form').serialize());
          $.post("./submit.php?"+argstring, $('#form').serialize(), function(data) {
              console.log(data);
              if(data=="success"){
@@ -394,17 +395,29 @@ function populateMonitoringRecords(datasetID, locationID, baseTime){
     if (baseTime=="daily"){
         // Date asssumes that string in locale datetime, and it converts it to UTC datetime
         d= new Date("15 "+$("#datepicker").val()+" UTC");
+	console.log("day");
+	    console.log(d);
         m=d.getMonth();
         month=parseInt(m)+1;
         year=d.getFullYear();
         console.log(d, month, year);
         // create data table - needs to be re-created at every date change
-        var fd= new Date(year+" "+month+" 01 UTC");
+	//month has to be double digit
+	var fdtemp="";
+	if(m<10){
+		fdtemp = String(year+"-0"+month+"-"+"01");
+	}else{
+		fdtemp = String(year+"-"+month+"-01");
+	}
+	//console.log(fdtemp);
+	var fd = new Date(fdtemp);
+	//console.log(testdate);
+        //var fd= new Date(year+","+month+",01 UTC");
         m=fd.getMonth()+1;
         var ld = new Date(fd.getFullYear(), m, 0);
         fdstr=date2str(fd);
         ldstr=date2str(ld);
-        console.log(fdstr, ldstr);
+        //console.log(fdstr, ldstr);
 	// reading all datastreams for location
         console.log("./api/api_envdata.php?calltype=datastream&datasetID="+datasetID+"&locationID="+locationID);
         $.get("./api/api_envdata.php?calltype=datastream&datasetID="+datasetID+"&locationID="+locationID,
@@ -417,6 +430,10 @@ function populateMonitoringRecords(datasetID, locationID, baseTime){
             txt+="<table class='narrowTable dataTable'>";
             // populating table header rows
             // first and last record to be shown in current table
+	    //Safari browser prefers month to be double digits
+	    if(month<10){
+		    month="0"+month;
+             }
             var fd= new Date(year+"-"+month+"-01");
             var ld = new Date(fd.getFullYear(), fd.getMonth() + 1, 0);
             txt+="<tr><th>Day";
@@ -425,9 +442,10 @@ function populateMonitoringRecords(datasetID, locationID, baseTime){
                 dstrm=datastreams[dstrm];
                 txt+="<th>"+dstrm.variableName+"<br>["+dstrm.variableUnit+"]";
                 // first and last record in the database
-                var fmeasd= new Date(dstrm.firstMeasurementDate);
+		//console.log(dstrm.firstMeasurementDate);
+                var fmeasd= new Date(dstrm.firstMeasurementDate.replace(/\s/, 'T')+'Z');
                 fmeasdstr=date2str(fmeasd);
-                var lmeasd= new Date(dstrm.lastMeasurementDate);
+                var lmeasd= new Date(dstrm.lastMeasurementDate.replace(/\s/, 'T')+'Z');
                 lmeasdstr=date2str(lmeasd);
                 datesrow+="<td>"+fmeasdstr+"<br>"+lmeasdstr;
             }

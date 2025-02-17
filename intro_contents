@@ -1,83 +1,88 @@
+<div>
 <div class='row'>
 <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="4000">
   <!-- Wrapper for slides -->
-  <div class="carousel-inner" role=listbox>
+
+  <div class="carousel-inner" role="listbox">
     <div class="item active">
-      <img src="img/img-gauge.jpg" alt="Fieldwork in Okavango">
+      <img src="img/img-gauge.jpg" alt="Fieldwork in Okavango"></img>
     </div>
     <div class="item">
-      <img src="img/img-gps.jpg" alt="Fieldwork in Okavango">
+      <img src="img/img-gps.jpg" alt="Fieldwork in Okavango"></img>
     </div>
     <div class="item">
-      <img src="img/img-fish.jpg" alt="Fieldwork in Okavango">
+      <img src="img/img-fish.jpg" alt="Fieldwork in Okavango"></img>
     </div>
     <div class="item">
-      <img src="img/img-sunset.jpg" alt="Fieldwork in Okavango">
+      <img src="img/img-sunset.jpg" alt="Fieldwork in Okavango"></img>
     </div>
     <div class="item">
-      <img src="img/img-boat.jpg" alt="Fieldwork in Okavango">
+      <img src="img/img-boat.jpg" alt="Fieldwork in Okavango"></img>
     </div>
     <div class="item">
-      <img src="img/img-eddy.jpg" alt="Fieldwork in Okavango">
+      <img src="img/img-eddy.jpg" alt="Fieldwork in Okavango"></img>
     </div>
     <div class="item">
-      <img src="img/img-gps2.jpg" alt="Fieldwork in Okavango">
+      <img src="img/img-gps2.jpg" alt="Fieldwork in Okavango"></img>
     </div>
     <div class="item">
-      <img src="img/img-theodolite.jpg" alt="Fieldwork in Okavango">
+      <img src="img/img-theodolite.jpg" alt="Fieldwork in Okavango"></img>
     </div>
     <div class="item">
-      <img src="img/img-tower.jpg" alt="Fieldwork in Okavango">
+      <img src="img/img-tower.jpg" alt="Fieldwork in Okavango"></img>
     </div>
     <div class="item">
-      <img src="img/img-tree.jpg" alt="Fieldwork in Okavango">
+      <img src="img/img-tree.jpg" alt="Fieldwork in Okavango"></img>
     </div>
     <div class="item">
-      <img src="img/img-water.jpg" alt="Fieldwork in Okavango">
+      <img src="img/img-water.jpg" alt="Fieldwork in Okavango"></img>
     </div>
     <div class="item">
-      <img src="img/img-wind.jpg" alt="Fieldwork in Okavango">
+      <img src="img/img-wind.jpg" alt="Fieldwork in Okavango"></img>
     </div>
     <div class="item">
-      <img src="img/img-sunset2.jpg" alt="Fieldwork in Okavango">
+      <img src="img/img-sunset2.jpg" alt="Fieldwork in Okavango"></img>
     </div>
     <div class="item">
-      <img src="img/img-macroinv.jpg" alt="Fieldwork in Okavango">
+      <img src="img/img-macroinv.jpg" alt="Fieldwork in Okavango"></img>
     </div>
     <div class="item">
-      <img src="img/img-invert.jpg" alt="Fieldwork in Okavango">
+      <img src="img/img-invert.jpg" alt="Fieldwork in Okavango"></img>
     </div>
     <div class="item">
-      <img src="img/img-core.jpg" alt="Fieldwork in Okavango">
+      <img src="img/img-core.jpg" alt="Fieldwork in Okavango"></img>
     </div>
   </div>
 </div>
 </div>
 
-
-<div class=row>
+<div class='row'>
 <div id="introText" class='col-sm-6 pt-4'>
 <h3> Okavango Delta biodiversity and environmental data</h3>
 <p>
 The (Okavango) Monitoring and Data Sharing website provides access to environmental, ecological and biodiversity data from the Okavango Delta and the broader Okavango region.
-
+</p>
 <p>
 You will find here (hopefully the most recent) results of environmental and biodiversity monitoring activities but also historical data gathered during short-term research projects in the past. This is simply a data recovery and rescue effort.
-
+</p>
 <p>
-Biodiversity data available here are also stored in Global Biodiversity Information Facility (<a class=clickable href='https://www.gbif.org' target=_blank>GBIF</a>). You can access our biodiversity data on GBIF <a class='clickable' href='https://www.gbif.org/dataset/search?publishing_org=02b89818-33ab-4bf7-984d-f88a8e0b0b0f' target=_blank> here</a>.
+Biodiversity data available here are also stored in Global Biodiversity Information Facility (<a class='clickable' href='https://www.gbif.org' target='_blank'>GBIF</a>). You can access our biodiversity data on GBIF <a class='clickable' href='https://www.gbif.org/dataset/search?publishing_org=02b89818-33ab-4bf7-984d-f88a8e0b0b0f' target='_blank'> here</a>.
+
+</p>
 <p>
 You will be able to "explore" various datasets - see what was measured, when and where, plot data in graphs and tables, and, should you wish to do so, downlodad data to perform any analyses on your computer.
-
-<p>
-This site is maintained by the staff of the Monitoring Unit of the <a class=clickable href="https://www.ori.ub.bw" target=_blank>Okavango Research Institute</a> of <a class=clickable href="https://www.ub.bw" target=_blank>the University of Botswana</a> and developed under funding from <a class=clickable href="https://jrsbiodiversity.org/grants/ori-2017/" target=_blank> JRS Biodiversity Foundation</a>.
 </p>
-<p><a href=# onClick='pageinModal("faq_contents", "FAQ");'>Learn more...</a>
 <p>
-<button class='btn btn-block btn-default' onClick=showExplore()>Explore our data</button>
+This site is maintained by the staff of the Monitoring Unit of the <a class='clickable' href="https://www.ori.ub.bw" target='_blank'>Okavango Research Institute</a> of <a class='clickable' href="https://www.ub.bw" target='_blank'>the University of Botswana</a> and developed under funding from <a class='clickable' href="https://jrsbiodiversity.org/grants/ori-2017/" target='_blank'> JRS Biodiversity Foundation</a>.
+</p>
+<p><a href='#' onClick='pageinModal("faq_contents", "FAQ");'>Learn more...</a>
+</p>
+<p>
+<button class='btn btn-block btn-default' onClick='showExplore()'>Explore our data</button>
+</p>
 </div>
-
     <div id='logos' class='col-sm-6 py-4 text-center'>
-        <ahref="https://www.ori.ub.bw" target=_blank ><img src='./img/UB-logo2.svg' width=100px></a>
+        <a href="https://www.ori.ub.bw" target='_blank' ><img src='./img/UB-logo2.svg' width='100px'></img></a>
     </div>
+</div>
 </div>

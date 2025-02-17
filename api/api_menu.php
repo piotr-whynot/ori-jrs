@@ -72,7 +72,7 @@ function getowned($mysqli){
     $userID=$_SESSION['userInfo'][0]; 
         // find datasets owned by user
         $ownedItems=array();
-        $sql="SELECT distinct datasetID, datasetName FROM envmondata.dataset JOIN users1.ownership ON envmondata.dataset.datasetID=users1.ownership.ownedItemID WHERE userID=${userID}";
+        $sql="SELECT distinct datasetID, datasetName FROM envmondata.dataset JOIN users.ownership ON envmondata.dataset.datasetID=users.ownership.ownedItemID WHERE userID=${userID}";
         $res=$mysqli->query($sql);
         if(mysqli_num_rows($res)){
             while($owned=$res->fetch_array()){
@@ -88,7 +88,7 @@ function getowned($mysqli){
                 $ownedItems[]=$itemarr;
             }
         }
-        $sql="SELECT distinct datasetID, datasetName FROM biodivdata.dataset JOIN users1.ownership ON biodivdata.dataset.datasetID=users1.ownership.ownedItemID WHERE userID=${userID}";
+        $sql="SELECT distinct datasetID, datasetName FROM biodivdata.dataset JOIN users.ownership ON biodivdata.dataset.datasetID=users.ownership.ownedItemID WHERE userID=${userID}";
         $res=$mysqli->query($sql);
         if(mysqli_num_rows($res)){
             while($owned=$res->fetch_array()){
@@ -106,7 +106,7 @@ function getowned($mysqli){
         }
 
         // find datasets owned by user
-        $sql="SELECT distinct locationID, locationName, datasetID FROM envmondata.location JOIN users1.ownership ON envmondata.location.locationID=users1.ownership.ownedItemID WHERE userID=${userID}";
+        $sql="SELECT distinct locationID, locationName, datasetID FROM envmondata.location JOIN users.ownership ON envmondata.location.locationID=users.ownership.ownedItemID WHERE userID=${userID}";
         $res=$mysqli->query($sql);
         if(mysqli_num_rows($res)){
             while($owned=$res->fetch_array()){
@@ -116,7 +116,7 @@ function getowned($mysqli){
 	                "locationID"=>$owned['locationID'],
 	                "locationName"=>$owned['locationName'],
 	                "datasetID"=>$owned['datasetID'],
-	                "dataBase"=>'biodivdata'
+	                "dataBase"=>'envmondata'
                 );
                 $ownedItems[]=$itemarr;
             }

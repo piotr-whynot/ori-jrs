@@ -120,7 +120,8 @@ if (isset($_GET['baseTime'])){
 ###########################################################################
 if ($calltype=="datasetinfo"){
 #if datasetinfo call
-    $query="select * from dataset";
+	$query="select * from dataset";
+	//echo $query;
     if($datasetID){
         $query=$query." where datasetID='".$datasetID."' ";
     }

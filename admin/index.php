@@ -165,7 +165,13 @@ include '/.creds/.credentials.php';
 
 
 // opening database link
-$mysqli->select_db($base);
+//$mysqli->select_db($base);
+if ($base=="admin"){
+    $cont=True;
+}else{
+    $mysqli->select_db($base);
+}
+
 
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1603,6 +1609,7 @@ if ($base=="biodivdata" & $table=="checklist"){
 #
 # user and user table
 #
+
 if ($base=="users" & $table=="users"){
     // resetting dataset variables
 //    $userID="";
@@ -1614,8 +1621,13 @@ if ($base=="users" & $table=="users"){
     $dateRegistered="";
     $lastLoggedIn="";
     $lastIpAddress="";
+
+    if ($userID!="" && $do=='delete'){
+        echo "deleting user ".$userID;
+    }
+
     if ($userID=="" && $do!='add'){
-	$query="select * from users1.users";
+	$query="select * from users.users";
         $result = $mysqli->query($query);
         echo "<a href=./>back</a>";
         echo "<h2 class=text-center>View/edit registered users database</h2>";
@@ -1627,9 +1639,10 @@ if ($base=="users" & $table=="users"){
         }
         echo "</table>";
     }
+
     if ($userID!='' && $do=="edit"){
        // when $datasetID is set through url argument - query database for dataset values
-        $query="select * from users1.users where userID='{$userID}'";
+        $query="select * from users.users where userID='{$userID}'";
         $result = $mysqli->query($query);
         $row = $result->fetch_assoc();
         $userID=$row['userID'];
@@ -1642,6 +1655,7 @@ if ($base=="users" & $table=="users"){
         $lastLoggedIn=$row['lastLoggedIn'];
         $lastIpAddress=$row['lastIpAddress'];
     }
+
     if (($userID!='' && $do=="edit") || $do=="add"){
      // this is common to "edit" and "add" functionality - form that is populated when "edit", or remains empty when "add"
         echo "<a href=./?base=users&do=edit&table=users>back</a>";
@@ -1714,7 +1728,7 @@ if ($base=="users" & $table=="users"){
 
 if ($base=="users" & $table=="ownership"){
     if ($do=="edit"){
-        $query="select * from users1.ownership where userID='{$userID}'";
+        $query="select * from users.ownership where userID='{$userID}'";
         $result = $mysqli->query($query);
         echo "<a href=./?base=users&do=edit&table=users>back</a>";
         echo "<h2 class=text-center>Dataset/location ownership for user:{$userID} </h2>";
@@ -1728,7 +1742,7 @@ if ($base=="users" & $table=="ownership"){
         echo "</table>";
     }else if ($do=="delete"){
         echo "<a href=./?base=users&do=edit&table=ownership&userID={$userID}>back</a>";
-        $query="delete from users1.ownership where userID={$userID} and ownedItemID='{$ownedItemID}'";
+        $query="delete from users.ownership where userID={$userID} and ownedItemID='{$ownedItemID}'";
 	$result = $mysqli->query($query);
 	if($result){
 	    echo "<br>Done";
@@ -1737,8 +1751,9 @@ if ($base=="users" & $table=="ownership"){
 	}
     }else if ($do=="listDatasets"){
 	//check which items are owned
-        $query="select ownedItemID from users1.ownership where userID='{$userID}'";
+        $query="select ownedItemID from users.ownership where userID='{$userID}'";
         $result = $mysqli->query($query);
+	$owneditems=array();
 	while ($row = $result->fetch_assoc()){
 	    $owneditems[]=$row['ownedItemID'];
 	}
@@ -1769,7 +1784,7 @@ if ($base=="users" & $table=="ownership"){
 
     }else if ($do=="addownershipDataset"){
         echo "<a href=./?base=users&do=edit&table=ownership&userID={$userID}>back</a>";
-        $query="insert into users1.ownership values ({$userID}, '{$ownedItemID}')";
+        $query="insert into users.ownership values ({$userID}, '{$ownedItemID}')";
 	$result = $mysqli->query($query);
 	if($result){
 	    echo "<br>Done";
@@ -1778,7 +1793,7 @@ if ($base=="users" & $table=="ownership"){
 	}
     }else if ($do=="addownershipLocation"){
         echo "<a href=./?base=users&do=edit&table=ownership&userID={$userID}>back</a>";
-        $query="insert into users1.ownership values ({$userID}, '{$locationID}')";
+        $query="insert into users.ownership values ({$userID}, '{$locationID}')";
 	$result = $mysqli->query($query);
 	if($result){
 	    echo "<br>Done";
@@ -1787,7 +1802,7 @@ if ($base=="users" & $table=="ownership"){
 	}
 
     }else if ($do=="listLocations"){
-        $query="select ownedItemID from users1.ownership where userID='{$userID}'";
+        $query="select ownedItemID from users.ownership where userID='{$userID}'";
         $result = $mysqli->query($query);
 	$owneditems=array();
 	while ($row = $result->fetch_array()){

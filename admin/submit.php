@@ -308,7 +308,7 @@ if ($base=="biodivdata" & $table=="occurrence"){
 #
 if ($base=="users" & $table=="users"){
     $errorflag=false;
-    $mysqli->select_db('users1');
+    $mysqli->select_db('users');
     if ($do=="add"){
 	$datestr = date('Y-m-d H:i:s');
 	$passwordCode=md5(mt_rand(0,1000000));

@@ -4,7 +4,7 @@ include '/.creds/.credentials.php';
 //need to pick up these to know what to submit
 //echo "checking..";
 
-$base="users1";
+$base="users";
 
 if(isset($_REQUEST['item'])){
     $item  = $_REQUEST['item'];
@@ -65,8 +65,8 @@ function checkIfExists2($database, $datatable,$column, $value, $id){
 }
 
 if ($userID){
-	checkIfExists2("users1" ,'users','emailAddress',$value, $userID);
+	checkIfExists2("users" ,'users','emailAddress',$value, $userID);
 }else{
-	checkIfExists1("users1" ,'users','emailAddress',$value);
+	checkIfExists1("users" ,'users','emailAddress',$value);
 }
 ?>
